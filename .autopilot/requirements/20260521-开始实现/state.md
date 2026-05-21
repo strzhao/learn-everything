@@ -1,8 +1,8 @@
 ---
 active: true
-phase: "merge"
+phase: "done"
 gate: ""
-iteration: 1
+iteration: 2
 max_iterations: 30
 max_retries: 3
 retry_count: 1
@@ -12,7 +12,7 @@ fast_mode: false
 brief_file: ""
 next_task: ""
 auto_approve: false
-knowledge_extracted: ""
+knowledge_extracted: "true"
 task_dir: "/Users/stringzhao/workspace_sync/personal_projects/learn-everything/.autopilot/requirements/20260521-开始实现"
 session_id: e1f45a9d-e472-47f7-9724-97bfab125e86
 started_at: "2026-05-21T03:58:26Z"
@@ -445,3 +445,11 @@ gate: ""
 - [2026-05-21T04:48:00Z] acceptance-check.sh 重跑 12/12 PASS；contract-checker 第 2 轮 PASS；phase: implement → qa
 - [2026-05-21T05:00:00Z] qa-reviewer 发现 SKILL.md 第 307-508 行重复（重要偏离），已截断到 306 行，acceptance-check 仍 12/12 PASS
 - [2026-05-21T05:02:00Z] QA 报告写入 state.md；4 项 minor + 4 项测试改进建议作为技术债不阻断；gate: "" → "review-accept"
+- [2026-05-21T06:16:02Z] 用户批准验收，进入合并阶段
+- [2026-05-21T06:25:00Z] dry-run 端到端验证 38/38 PASS（覆盖 8 个 E2E 场景中可机器验证部分：S1 首次启动 / S2 多动作切换 / S4 切换主题 / S5 恢复主题 / S6 stuck escape / S8 跨会话恢复）；契约 1 + 契约 5 字面量全合规
+- [2026-05-21T06:30:00Z] commit-agent 提交 initial commit `cb8e36d`：feat 初始化 learn-everything（16 文件 / 2363 行）
+- [2026-05-21T06:35:00Z] 知识沉淀完成（commit `75c122e`）：3 条高价值条目落 `.autopilot/`
+  - **Pattern**: 契约规约字面量化（避免语义描述让 contract-checker 能字面比对）— 来自本轮 description 缺"单入口"字面量教训
+  - **Pattern**: 测试脚本必须先备份再覆盖用户环境（trap EXIT + mv 备份策略）— 来自 acceptance-check.sh 的设计经验
+  - **Decision**: 中文 markdown 字数验收用 wc -m 而非 wc -w，按 1 中文字 ≈ 2-3 字符换算 — 来自 V2 字数检查的蓝/红队冲突
+- [2026-05-21T06:38:00Z] knowledge_extracted: "true"，phase: merge → done

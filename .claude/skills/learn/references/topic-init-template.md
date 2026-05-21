@@ -1,6 +1,6 @@
 # topic-init-template.md — 新 Topic 初始化模板
 
-当用户首次使用 `/learn <topic>` 创建一个新 topic 时，AI 应按照本模板在 `.learn/topics/<slug>/state.md` 写入初始内容。
+当用户首次使用 `/learn <topic>` 创建一个新 topic 时，AI 应按照本模板在 `topics/<slug>/state.md` 写入初始内容。
 
 ---
 

@@ -1,21 +1,28 @@
 # CLAUDE.md — learn-everything 仓库协作约定
 
-本文档定义了在本仓库（learn-everything）中工作时的协作规范，供 Claude Code 和人工贡献者共同遵守。
+本文档定义在本仓库工作时的协作规范。Claude Code 在进入此项目时会自动读取本文件作为上下文，同时自动加载 `.claude/skills/learn/SKILL.md` 作为项目级 skill。
 
-## 仓库结构说明
+## 仓库结构
 
 ```
 learn-everything/
-├── skills/learn/           ← skill 源码（安装到 ~/.claude/skills/learn 的内容）
-│   ├── SKILL.md            ← 主入口，frontmatter + 调度逻辑
-│   ├── references/         ← 调度规则和模板文档
-│   └── pedagogy/           ← 5 份教学法资料（格式固定）
-├── scripts/
-│   └── install.sh          ← 安装脚本（创建 symlink）
-├── tests/                  ← 测试（见"如何测试"）
+├── .claude/skills/learn/        ← skill 装载点（Claude Code 自动加载，仅本项目生效）
+│   ├── SKILL.md                  ← 主入口：frontmatter + 调度核心
+│   ├── references/               ← 调度规则与模板
+│   │   ├── decision-tree.md
+│   │   └── topic-init-template.md
+│   └── pedagogy/                 ← 5 份学习法资料（格式固定）
+├── topics/                       ← 长期学习状态库（git 跟踪、一等内容）
+│   ├── _active                   ← 当前 active topic slug（无扩展名）
+│   ├── INDEX.md                  ← AI 自动维护
+│   ├── _archive/                 ← 已 completed 的 topic
+│   └── <slug>/                   ← 活跃或暂停的 topic
+├── tests/acceptance-check.sh     ← 结构合规性自检（保留作为 QA 工具）
 ├── README.md
-└── CLAUDE.md               ← 本文件
+└── CLAUDE.md                     ← 本文件
 ```
+
+**关键约定**：本 skill 是项目级（`.claude/skills/<name>/`），仅在 learn-everything 项目目录下生效。不再有 `install.sh` 全局安装脚本。`topics/` 是项目的一等内容，git 跟踪。
 
 ---
 
@@ -23,150 +30,94 @@ learn-everything/
 
 ### 修改 SKILL.md
 
-`SKILL.md` 是 skill 的主入口，修改时须遵守：
+`SKILL.md` 是 skill 主入口。修改时必须：
 
-1. **frontmatter 必须保留**：`name: learn`、`description`、`allowed-tools` 三个字段不可删除
-2. **字数要求**：正文 ≥ 1500 词（`wc -w skills/learn/SKILL.md` 验证）
-3. **引用完整性**：必须至少引用一次 `references/` 和至少一次 `pedagogy/`（`grep -c "references/" skills/learn/SKILL.md` 验证）
-4. **契约一致性**：修改后必须确保 `state.md` 字段枚举、动作类型枚举与 `references/decision-tree.md` 保持 1:1 匹配
+1. **frontmatter 保留**：`name: learn`、`description`、`allowed-tools` 三字段必填
+2. **description 含字面量**：必须含触发关键词（"learn" 或 "学习"）和"单入口"四字
+3. **字数 ≥1500 字符**（`wc -m`）
+4. **引用完整性**：至少引用一次 `references/` 和一次 `pedagogy/`
+5. **契约一致性**：state.md 字段、动作枚举、目录结构必须与 `references/decision-tree.md` 1:1 匹配
 
 ### 修改 references/decision-tree.md
 
-决策树是 AI 调度的权威来源（single source of truth）。修改时：
+调度树是 AI 行为的权威源（single source of truth）。修改时：
 
-1. 动作类型枚举（`lecture|socratic|task|accept|stuck-detected|stuck->lecture|assemble`）不可随意增删，增删须同步更新 SKILL.md 中的动作类型表格
-2. `stuck_count` 逻辑（+1 触发条件、归零触发条件、阈值 3）是契约（contract），修改须同步更新 SKILL.md、topic-init-template.md
-3. 每次修改后运行自检：`wc -w skills/learn/references/decision-tree.md`（≥ 300 词）
+1. 动作枚举 `lecture|socratic|task|accept|stuck-detected|stuck->lecture|assemble|archive` 增删须同步 SKILL.md 和 acceptance-check.sh
+2. `stuck_count` 阈值 3 / 归零条件是契约，修改须同步 SKILL.md + topic-init-template.md
+3. 目录管理三件事（多 topic 列表 / INDEX 维护 / 归档）的规则**全部 AI 驱动**，禁止引入新的 sh 脚本承担这些职责
+4. 修改后字数 ≥300（`wc -m`）
 
 ### 修改 references/topic-init-template.md
 
-模板定义了 `state.md` 的初始格式。修改时：
+模板定义 state.md 初始格式。修改时：
 
-1. YAML frontmatter 字段增删须同步更新 decision-tree.md（字段读取逻辑）和 SKILL.md（字段说明表格）
-2. `status` 枚举值（`active|paused|completed`）、`bloom_level` 枚举值（六级）是契约，不可随意扩展
-3. 修改后运行：`wc -w skills/learn/references/topic-init-template.md`（≥ 300 词）
+1. YAML 字段增删须同步 decision-tree.md（字段读取）和 SKILL.md（说明表）
+2. `status` 枚举（`active|paused|completed`）和 `bloom_level` 枚举（六级）是契约，不可扩展
+3. 字数 ≥300（`wc -m`）
 
 ### 修改 pedagogy/*.md
 
-5 份教学法资料格式固定（5 段落：方法名/核心理念/适用场景/在 learn-everything 中的应用启示/来源引用）。修改时：
+5 份资料格式固定（5 段落：方法名 / 核心理念 / 适用场景 / 在 learn-everything 中的应用启示 / 来源引用）。修改时：
 
-1. 保持 5 段落结构不变
-2. 字数控制在 200-500 词（`wc -w skills/learn/pedagogy/<file>.md` 验证）
-3. 文件名（slug 格式）不可更改，因为 SKILL.md 中有硬编码引用
+1. 5 段落结构不变
+2. 字数 200-2000 字符（`wc -m`，对应 200-500 中文字）
+3. 文件名（kebab-case slug）不可改，SKILL.md 有引用
 
 ---
 
 ## 如何测试
 
-### 结构合规性自检（每次修改后必跑）
+### 结构合规性自检
 
 ```bash
-# 在仓库根目录下运行
-bash -c '
-echo "=== 1. 核心文件存在 ==="
-ls skills/learn/SKILL.md skills/learn/references/{topic-init-template,decision-tree}.md
-
-echo "=== 2. pedagogy 文件数量 ==="
-ls skills/learn/pedagogy/*.md | wc -l
-
-echo "=== 3. pedagogy 字数（每份 200-500）==="
-for f in skills/learn/pedagogy/*.md; do wc -w "$f"; done
-
-echo "=== 4. SKILL.md frontmatter ==="
-head -10 skills/learn/SKILL.md | grep -E "^name:|^description:"
-
-echo "=== 5. SKILL.md 字数 ==="
-wc -w skills/learn/SKILL.md
-
-echo "=== 6. SKILL.md 引用 ==="
-echo "references/ 引用次数: $(grep -c "references/" skills/learn/SKILL.md)"
-echo "pedagogy/ 引用次数: $(grep -c "pedagogy/" skills/learn/SKILL.md)"
-
-echo "=== 7. references 字数 ==="
-wc -w skills/learn/references/{topic-init-template,decision-tree}.md
-
-echo "=== 8. README.md 章节 ==="
-grep -E "^## (安装|使用|设计)" README.md | wc -l
-
-echo "=== 9. install.sh 可执行 ==="
-test -x scripts/install.sh && echo "executable" || echo "NOT executable"
-
-echo "=== 10. symlink 状态 ==="
-test -L ~/.claude/skills/learn && echo "symlink OK" || echo "NOT symlink"
-'
+bash tests/acceptance-check.sh
 ```
 
-### 手动功能测试（集成测试）
+acceptance-check.sh 验证：核心文件齐全、frontmatter 正确、字数合规、契约关键字面量在位。详见脚本注释。
 
-在一个临时目录下测试完整流程：
+### 手动功能测试
 
-```bash
-# 1. 创建临时测试目录
-mkdir -p /tmp/learn-test && cd /tmp/learn-test
-
-# 2. 调用 /learn，开始一个测试 topic
-# （在 Claude Code 中执行 /learn "测试主题-temp"）
-
-# 3. 验证 .learn/ 目录结构
-ls -la .learn/
-cat .learn/active.md
-cat ".learn/topics/$(cat .learn/active.md)/state.md"
-
-# 4. 验证 state.md 格式合规
-grep -E "^status: (active|paused|completed)$" ".learn/topics/$(cat .learn/active.md)/state.md"
-grep -E "^stuck_count: [0-9]+$" ".learn/topics/$(cat .learn/active.md)/state.md"
-
-# 5. 清理测试目录
-cd ~ && rm -rf /tmp/learn-test
-```
+在 Claude Code 中：
+1. cd 到本项目根目录
+2. 输入 `/learn` 测试主题或 `/learn` 推进现有 topic
+3. 检查 `topics/<slug>/state.md` 字段是否符合契约
+4. 检查 `topics/INDEX.md` 是否被自动重写
+5. 完成一个 topic 后检查它是否被自动 mv 到 `topics/_archive/<slug>/`
 
 ---
 
 ## 如何发布
 
-本 skill 采用"源码即发布"（source-is-release）模式，无构建步骤：
+"源码即发布"，无构建步骤：
 
-1. **开发完成后**，运行结构合规性自检（见上）
-2. **合并到主分支**（`main` 或 `master`）
-3. **用户更新**：只需 `git pull` 即可——symlink 指向本地目录，拉取后立即生效
-
-### 版本说明
-
-暂无正式语义版本（semver）。如需追踪变更，使用 git log。
-
-### 多用户共享（可选）
-
-如果多个用户需要共享同一个 skill：
-
-```bash
-# 方案 A：每人 clone 一份
-git clone <repo-url> ~/learn-everything
-bash ~/learn-everything/scripts/install.sh
-
-# 方案 B：共享只读目录（不推荐，因为 install.sh 需要写 ~/.claude/）
-```
+1. 修改后跑 `bash tests/acceptance-check.sh` 确认全绿
+2. 合并到 `main`
+3. 用户更新：`git pull` 即生效（项目级 skill，下次进入项目自动重新加载 SKILL.md）
 
 ---
 
 ## 契约变更流程（Breaking Changes）
 
-以下修改属于"契约破坏性变更"（breaking changes），可能导致已有 `.learn/` 数据与新版本不兼容：
+以下修改会导致已有 `topics/` 数据与新版本不兼容：
 
-- 增删 `state.md` 的 YAML 字段
+- 增删 state.md 的 YAML 字段
 - 修改 `status`、`bloom_level` 枚举值
-- 修改 `artifacts/<NN-name>/` 的目录命名规则
-- 修改 journal.md 的动作类型枚举
+- 修改 artifacts 目录命名规则（NN 零填充位数等）
+- 修改 journal.md 动作枚举
+- 修改 `_active` 文件格式
+- 修改 INDEX.md / _archive/ 的位置或语义
 
-执行契约破坏性变更时，必须：
-1. 在 commit message 中注明 `BREAKING CHANGE:`
-2. 在 README.md 中记录迁移步骤（migration steps）
-3. 提供迁移脚本（如果用户有现有 `.learn/` 数据需要迁移）
+执行 breaking change 时：
+1. commit message 注明 `BREAKING CHANGE:`
+2. README 记录迁移步骤
+3. 提供迁移指引（手工或 AI 辅助），但不引入新 sh 脚本
 
 ---
 
 ## 代码风格
 
-- SKILL.md 和所有文档使用中文写作，技术术语保留英文括注（如"间隔效应（spacing effect）"）
+- 中文写作，技术术语保留英文括注（如"间隔效应（spacing effect）"）
 - 文件名使用 kebab-case
 - YAML frontmatter 使用 2 空格缩进
-- Shell 脚本使用 `set -euo pipefail`，函数名使用 `snake_case`
+- **不引入新的 sh 脚本承担目录管理职责**——`topics/` 的所有读写、归档、索引重生成都由 AI 在调度过程中完成
+- 已有的 `tests/acceptance-check.sh` 仅作为 QA 自检工具保留，不参与运行时调度
