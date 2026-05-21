@@ -1,0 +1,41 @@
+.autopilot/index.md
+  2c61a2575acdea39 1-12
+.autopilot/patterns.md
+  2c61a2575acdea39 1-48
+.autopilot/decisions.md
+  2c61a2575acdea39 1-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.7",
+  "base_commit_sha": "75c122e4c5552f61d28d403819901aa2c73cdf6c",
+  "prompts": {
+    "2c61a2575acdea39": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1f45a9d-e472-47f7-9724-97bfab125e86",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 78,
+      "total_deletions": 0,
+      "accepted_lines": 78,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".autopilot/patterns.md": {
+          "additions": 48,
+          "accepted_lines": 48
+        },
+        ".autopilot/index.md": {
+          "additions": 12,
+          "accepted_lines": 12
+        },
+        ".autopilot/decisions.md": {
+          "additions": 18,
+          "accepted_lines": 18
+        }
+      }
+    }
+  }
+}
