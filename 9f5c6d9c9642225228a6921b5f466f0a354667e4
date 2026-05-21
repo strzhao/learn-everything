@@ -1,0 +1,173 @@
+.gitignore
+  235b1be9901efcdb 1-2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.7",
+  "base_commit_sha": "9f5c6d9c9642225228a6921b5f466f0a354667e4",
+  "prompts": {
+    "0ddee575fecb3486": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1935cee-7501-4e8c-9b3b-584a4c606156",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1235,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "tools/agent-notebook/tests/fixtures/errors/lesson.md": {
+          "accepted_lines": 36
+        },
+        "tools/agent-notebook/tests/fixtures/normal/lesson.md": {
+          "accepted_lines": 28
+        },
+        "tools/agent-notebook/lib/parse-lesson.ts": {
+          "accepted_lines": 151
+        },
+        "tools/agent-notebook/tests/helpers/server.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/api.acceptance.test.ts": {
+          "accepted_lines": 236
+        },
+        "tools/agent-notebook/lib/slice.ts": {
+          "accepted_lines": 116
+        },
+        "tools/agent-notebook/tests/blue-parse-lesson.test.ts": {
+          "accepted_lines": 147
+        },
+        "tools/agent-notebook/tests/blue-render-markdown.test.ts": {
+          "accepted_lines": 43
+        },
+        "tools/agent-notebook/tests/blue-slice.test.ts": {
+          "accepted_lines": 69
+        },
+        "tools/agent-notebook/server.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/include-syntax.acceptance.test.ts": {
+          "accepted_lines": 259
+        }
+      }
+    },
+    "235b1be9901efcdb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aa594c2b-cee6-4641-9455-ada4a1d9f28f",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 2,
+      "total_deletions": 0,
+      "accepted_lines": 2,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".gitignore": {
+          "additions": 2,
+          "accepted_lines": 2
+        }
+      }
+    },
+    "2c61a2575acdea39": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1f45a9d-e472-47f7-9724-97bfab125e86",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 115,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".claude/skills/learn/pedagogy/gemini-learning-mode.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/feynman-technique.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/blooms-taxonomy.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/socratic-method.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/spaced-repetition.md": {
+          "accepted_lines": 23
+        }
+      }
+    },
+    "73ef76e51e7cd5da": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5a3cbebc-2f63-44e3-8e0d-ee79c3df6b0d",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 129,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".learn/topics/agent-harness-engineering/state.md": {
+          "accepted_lines": 38
+        },
+        ".learn/topics/agent-harness-engineering/artifacts/01-minimal-agent-loop/README.md": {
+          "accepted_lines": 40
+        },
+        ".learn/topics/agent-harness-engineering/journal.md": {
+          "accepted_lines": 51
+        }
+      }
+    },
+    "9b09e84aa8bfdadc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "88ec1183-412e-4889-acc7-f08b95248d09",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 27,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".learn/topics/agent-harness-engineering/state.md": {
+          "accepted_lines": 17
+        },
+        ".learn/topics/agent-harness-engineering/journal.md": {
+          "accepted_lines": 9
+        },
+        ".learn/active.md": {
+          "accepted_lines": 1
+        }
+      }
+    },
+    "bfb46a5b1bd7bfaa": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dd8ed929-6d21-4746-be6b-9084fda49d75",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 21,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".learn/topics/agent-harness-engineering/journal.md": {
+          "accepted_lines": 21
+        }
+      }
+    }
+  }
+}
