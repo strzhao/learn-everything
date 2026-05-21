@@ -1,0 +1,354 @@
+tools/agent-notebook/tests/fixtures/normal/run-log.txt
+  0ddee575fecb3486 1
+tools/agent-notebook/tests/fixtures/v11/normal/README.md
+  0ddee575fecb3486 1
+tools/agent-notebook/tests/api.acceptance.test.ts
+  0ddee575fecb3486 1-236
+tools/agent-notebook/server.ts
+  0ddee575fecb3486 1-107
+tools/agent-notebook/lib/parse-lesson.ts
+  0ddee575fecb3486 1-187
+tools/agent-notebook/tests/v11-xss.acceptance.test.ts
+  0ddee575fecb3486 1-141
+tools/agent-notebook/tests/blue-parse-lesson.test.ts
+  0ddee575fecb3486 1-147
+tools/agent-notebook/lib/messages-replay.ts
+  0ddee575fecb3486 1-169
+tools/agent-notebook/tests/blue-messages-replay.test.ts
+  0ddee575fecb3486 1-103
+tools/agent-notebook/public/app.js
+  0ddee575fecb3486 1-159,161-162,164,166-169,171-178,180-415
+tools/agent-notebook/tests/fixtures/v11/normal/lesson.md
+  0ddee575fecb3486 1-19
+tools/agent-notebook/tests/messages-replay.acceptance.test.ts
+  0ddee575fecb3486 1-197
+tools/agent-notebook/tests/fixtures/v11/normal/agent.ts
+  0ddee575fecb3486 1
+tools/agent-notebook/tests/v11-api-file.acceptance.test.ts
+  0ddee575fecb3486 1-163
+tools/agent-notebook/tests/blue-render-markdown.test.ts
+  0ddee575fecb3486 1-43
+tools/agent-notebook/tests/helpers/server.ts
+  0ddee575fecb3486 1-75
+tools/agent-notebook/lib/file-server.ts
+  0ddee575fecb3486 1-94
+tools/agent-notebook/public/index.html
+  0ddee575fecb3486 1-47
+tools/agent-notebook/tests/fixtures/normal/agent.ts
+  0ddee575fecb3486 1
+tools/agent-notebook/lib/slice.ts
+  0ddee575fecb3486 1-123
+tools/agent-notebook/tests/fixtures/normal/README.md
+  0ddee575fecb3486 1
+tools/agent-notebook/README.md
+  0ddee575fecb3486 1-73
+tools/agent-notebook/tests/fixtures/errors/run-log.txt
+  0ddee575fecb3486 1
+tools/agent-notebook/tests/blue-slice.test.ts
+  0ddee575fecb3486 1-73
+tools/agent-notebook/tests/fixtures/v11/normal/run-log.txt
+  0ddee575fecb3486 1
+tools/agent-notebook/tests/fixtures/errors/lesson.md
+  0ddee575fecb3486 1-36
+tools/agent-notebook/tests/fixtures/normal/lesson.md
+  0ddee575fecb3486 1-28
+tools/agent-notebook/public/style.css
+  0ddee575fecb3486 1-89
+tools/agent-notebook/tests/fixtures/v11/xss/lesson.md
+  0ddee575fecb3486 1-12
+tools/agent-notebook/tests/v11-block-source.acceptance.test.ts
+  0ddee575fecb3486 1-178
+tools/agent-notebook/tests/fixtures/errors/agent.ts
+  0ddee575fecb3486 1
+tools/agent-notebook/tests/include-syntax.acceptance.test.ts
+  0ddee575fecb3486 1-259
+tools/agent-notebook/tests/fixtures/v11/xss/snippet.ts
+  0ddee575fecb3486 1-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.7",
+  "base_commit_sha": "f40e8df6e1949b312d5f00b3d5ceeb7012c86942",
+  "prompts": {
+    "0ddee575fecb3486": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1935cee-7501-4e8c-9b3b-584a4c606156",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 3833,
+      "total_deletions": 1236,
+      "accepted_lines": 3934,
+      "overriden_lines": 5,
+      "per_file_stats": {
+        ".learn/topics/agent-harness-engineering/artifacts/01-minimal-agent-loop/README.md": {
+          "deletions": 40
+        },
+        "tools/agent-notebook/tests/messages-replay.acceptance.test.ts": {
+          "additions": 197,
+          "accepted_lines": 197
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/lesson.md": {
+          "additions": 19,
+          "accepted_lines": 19
+        },
+        "tools/agent-notebook/tests/helpers/server.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/fixtures/errors/agent.ts": {
+          "additions": 75,
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/lib/messages-replay.ts": {
+          "additions": 183,
+          "deletions": 14,
+          "accepted_lines": 169
+        },
+        ".learn/topics/agent-harness-engineering/journal.md": {
+          "deletions": 81
+        },
+        "tools/agent-notebook/tests/v11-xss.acceptance.test.ts": {
+          "additions": 141,
+          "accepted_lines": 141
+        },
+        "tools/agent-notebook/server.ts": {
+          "additions": 32,
+          "accepted_lines": 107
+        },
+        "tools/agent-notebook/tests/fixtures/v11/xss/lesson.md": {
+          "additions": 12,
+          "accepted_lines": 12
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/README.md": {
+          "additions": 82,
+          "accepted_lines": 82
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/agent.ts": {
+          "additions": 75,
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/fixtures/errors/lesson.md": {
+          "accepted_lines": 36
+        },
+        "tools/agent-notebook/tests/blue-messages-replay.test.ts": {
+          "additions": 105,
+          "deletions": 2,
+          "accepted_lines": 103
+        },
+        "tools/agent-notebook/tests/v11-api-file.acceptance.test.ts": {
+          "additions": 163,
+          "accepted_lines": 163
+        },
+        "tools/agent-notebook/tests/fixtures/normal/README.md": {
+          "additions": 82,
+          "accepted_lines": 82
+        },
+        "tools/agent-notebook/_smoke.ts": {
+          "additions": 9,
+          "deletions": 9
+        },
+        ".learn/topics/agent-harness-engineering/state.md": {
+          "deletions": 55
+        },
+        "tools/agent-notebook/tests/include-syntax.acceptance.test.ts": {
+          "accepted_lines": 259
+        },
+        "tools/agent-notebook/tests/fixtures/normal/run-log.txt": {
+          "additions": 149,
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/api.acceptance.test.ts": {
+          "accepted_lines": 236
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/run-log.txt": {
+          "additions": 149,
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/blue-parse-lesson.test.ts": {
+          "accepted_lines": 147
+        },
+        "tools/agent-notebook/tests/blue-slice.test.ts": {
+          "additions": 13,
+          "deletions": 9,
+          "accepted_lines": 73
+        },
+        "tools/agent-notebook/_smoke2.ts": {
+          "additions": 18,
+          "deletions": 18
+        },
+        "tools/agent-notebook/lib/render-markdown.ts": {
+          "additions": 78,
+          "accepted_lines": 78
+        },
+        "tools/agent-notebook/tests/fixtures/normal/agent.ts": {
+          "additions": 75,
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/v11-block-source.acceptance.test.ts": {
+          "additions": 180,
+          "deletions": 2,
+          "accepted_lines": 178
+        },
+        "tools/agent-notebook/tests/blue-render-markdown.test.ts": {
+          "accepted_lines": 43
+        },
+        "tools/agent-notebook/lib/slice.ts": {
+          "additions": 9,
+          "deletions": 2,
+          "accepted_lines": 123
+        },
+        "tools/agent-notebook/public/app.js": {
+          "additions": 1155,
+          "deletions": 683,
+          "accepted_lines": 410,
+          "overriden_lines": 5
+        },
+        "tools/agent-notebook/tests/fixtures/normal/lesson.md": {
+          "accepted_lines": 28
+        },
+        "tools/agent-notebook/public/index.html": {
+          "additions": 47,
+          "accepted_lines": 47
+        },
+        "tools/agent-notebook/public/style.css": {
+          "additions": 416,
+          "deletions": 315,
+          "accepted_lines": 89
+        },
+        "tools/agent-notebook/tests/fixtures/errors/run-log.txt": {
+          "additions": 149,
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/lib/file-server.ts": {
+          "additions": 94,
+          "accepted_lines": 94
+        },
+        "tools/agent-notebook/tests/fixtures/v11/xss/snippet.ts": {
+          "additions": 11,
+          "accepted_lines": 11
+        },
+        "tools/agent-notebook/README.md": {
+          "additions": 73,
+          "accepted_lines": 73
+        },
+        "tools/agent-notebook/lib/parse-lesson.ts": {
+          "additions": 42,
+          "deletions": 6,
+          "accepted_lines": 187
+        }
+      }
+    },
+    "235b1be9901efcdb": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "aa594c2b-cee6-4641-9455-ada4a1d9f28f",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "2c61a2575acdea39": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1f45a9d-e472-47f7-9724-97bfab125e86",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 115,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".claude/skills/learn/pedagogy/blooms-taxonomy.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/socratic-method.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/spaced-repetition.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/feynman-technique.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/gemini-learning-mode.md": {
+          "accepted_lines": 23
+        }
+      }
+    },
+    "73ef76e51e7cd5da": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "5a3cbebc-2f63-44e3-8e0d-ee79c3df6b0d",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "9b09e84aa8bfdadc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "88ec1183-412e-4889-acc7-f08b95248d09",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".learn/active.md": {
+          "accepted_lines": 1
+        }
+      }
+    },
+    "bfb46a5b1bd7bfaa": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dd8ed929-6d21-4746-be6b-9084fda49d75",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0
+    },
+    "d41c0410981b7f4c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d04a4fbe-9ad3-4fad-8d3d-6b5c6e497566",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 14,
+      "total_deletions": 0,
+      "accepted_lines": 14,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "topics/_active": {
+          "additions": 1,
+          "accepted_lines": 1
+        },
+        "topics/INDEX.md": {
+          "additions": 13,
+          "accepted_lines": 13
+        }
+      }
+    }
+  }
+}
