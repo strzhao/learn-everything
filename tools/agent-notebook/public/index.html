@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>agent-notebook · messages</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="/static/style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css"
+          onerror="console.warn('highlight.js theme failed to load')" />
+    <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"
+            onerror="window.__hljsFailed=true;console.warn('highlight.js failed to load, falling back to plaintext')"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-left">
+        <span class="brand">agent-notebook</span>
+        <span class="banner" id="task-banner">loading…</span>
+      </div>
+      <div class="topbar-right">
+        <button id="prev-btn" type="button">← 上一步</button>
+        <span class="step-indicator" id="step-indicator">round 0 / 0</span>
+        <button id="next-btn" type="button">下一步 →</button>
+      </div>
+    </header>
+    <main class="layout">
+      <section class="lesson" id="lesson">
+        <p class="loading">正在加载 lesson…</p>
+      </section>
+      <aside class="sidebar" id="sidebar">
+        <h2>messages 数组</h2>
+        <p class="hint" id="snapshot-hint">展开下一轮 round 查看 messages 演化</p>
+        <ol class="messages" id="messages-list"></ol>
+      </aside>
+    </main>
+    <div class="drawer-mask hidden" id="drawer-mask"></div>
+    <aside class="drawer hidden" id="drawer" aria-hidden="true">
+      <header class="drawer-head">
+        <span class="drawer-title" id="drawer-title">file</span>
+        <button id="drawer-close" type="button" aria-label="关闭">×</button>
+      </header>
+      <div class="drawer-body" id="drawer-body">
+        <p class="loading">正在加载文件…</p>
+      </div>
+    </aside>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
