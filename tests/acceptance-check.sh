@@ -173,6 +173,39 @@ check_decision_tree_contract() {
   $ok && pass "DT: 含目录管理三件事 + archive 动作 + 路径已迁移到 topics/"
 }
 
+# ── V_ASK_USER：AskUserQuestion 交互契约 ────────────────────────────────────
+check_ask_user_question() {
+  local skill_md="$SKILL_DIR/SKILL.md"
+  local dt="$SKILL_DIR/references/decision-tree.md"
+  local ok=true
+
+  # SKILL.md 的 allowed-tools 必须包含 AskUserQuestion
+  if ! grep -qE '^[[:space:]]*-[[:space:]]*AskUserQuestion[[:space:]]*$' "$skill_md"; then
+    fail "ASK_USER: SKILL.md frontmatter allowed-tools 缺 AskUserQuestion"; ok=false
+  fi
+
+  # SKILL.md 正文必须含"交互机制"章节
+  if ! grep -qF '交互机制' "$skill_md"; then
+    fail "ASK_USER: SKILL.md 缺'交互机制'章节"; ok=false
+  fi
+
+  # decision-tree.md 必须提及 AskUserQuestion + 阶段 4.5 契约章节
+  if ! grep -q 'AskUserQuestion' "$dt"; then
+    fail "ASK_USER: decision-tree.md 缺 AskUserQuestion 规范"; ok=false
+  fi
+  if ! grep -qF '阶段 4.5' "$dt"; then
+    fail "ASK_USER: decision-tree.md 缺'阶段 4.5'交互工具契约章节"; ok=false
+  fi
+
+  # SKILL.md 中 socratic 段落必须强制 AskUserQuestion（防退化）
+  # 检查"socratic"+"AskUserQuestion"在同 200 字符窗口内（粗略契约校验）
+  if ! awk '/socratic/{found=1} found && /AskUserQuestion/{print; exit}' "$skill_md" | grep -q .; then
+    fail "ASK_USER: SKILL.md socratic 段落未绑定 AskUserQuestion"; ok=false
+  fi
+
+  $ok && pass "ASK_USER: SKILL.md + decision-tree.md 均含 AskUserQuestion 交互契约"
+}
+
 # ── V_DOCS：README + CLAUDE 完整 ───────────────────────────────────────────
 check_docs() {
   local ok=true
@@ -233,6 +266,7 @@ main() {
 
   echo "── 调度契约 ────────────────────────────────────────────────────"
   check_decision_tree_contract
+  check_ask_user_question
   echo ""
 
   echo "── 文档 + topics 布局 ──────────────────────────────────────────"

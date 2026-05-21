@@ -12,7 +12,7 @@ topic: <用户输入的主题名称，保留原始表述>
 slug: <kebab-case 格式，全小写，空格替换为连字符>
 status: active
 stuck_count: 0
-created_at: <ISO8601 时间戳，精确到秒，如 2025-11-05T14:23:00+08:00>
+created_at: <ISO8601 时间戳，精确到秒，如 2026-05-21T14:23:00+08:00>
 updated_at: <ISO8601 时间戳，与 created_at 相同>
 bloom_level: remember
 artifact_count: 0
@@ -20,17 +20,15 @@ artifact_count: 0
 
 ## 当前位置
 
-（初始化）用户刚开始学习「<topic>」。尚未进行任何讲解或反问。下一步：完成首轮 `lecture`，介绍该主题的核心概念和学习路径。
+bloom: remember | 已覆盖: （首轮 lecture 后由 AI 追加首个概念名）
 
 ## 下一步建议
 
-- 动作类型：`lecture`
-- 建议切入角度：从「<topic>」最核心的一个概念出发，用类比（analogy）介绍，控制在 200-400 字内，不要一次性覆盖所有内容
-- 本轮目标：让用户对该主题建立第一印象（first impression），引发兴趣和好奇心
+预判: socratic 验证 <首轮概念>
 
 ## 卡点记录
 
-（暂无。每当 stuck_count 触发 stuck-detected 动作时，在此追加记录：卡在了什么概念、卡的原因推测。）
+（暂无）
 ```
 
 ---
@@ -52,33 +50,37 @@ artifact_count: 0
 
 ## H2 段落规范
 
+**整体原则**：三个 H2 段落**按需简洁更新**，每段 1-3 行，不写 prose 段落。详见 `SKILL.md` 的 `## 落盘策略` 章节（仅里程碑动作触发 state.md 更新）。
+
 ### `## 当前位置`
 
-记录学生此刻在学习旅程中的具体坐标，包含：
-- 已学习的概念清单（bullet 列表，初始化时为空）
-- 当前 bloom_level 对应的理解深度描述
-- 上一轮动作类型及其结果摘要（初始化时写"尚未开始"）
+形如 `bloom: <level> | 已覆盖: <concept1>, <concept2>, ...`，1-2 行。
 
-**更新时机**：每次 `accept` 动作完成后，以及每次 `assemble` 动作完成后。
+**"已覆盖"清单是概念追踪的权威源**——取代旧设计中由 journal 各 lecture 摘要承担的追踪职责。每次 `accept`（socratic 或 task 通过）时，AI 在"已覆盖"清单后追加新概念名（用 `, ` 分隔），不删除历史项。
+
+**更新时机**：仅 `accept` / `assemble` 时；过渡态动作（lecture/socratic/task）不更新。
 
 ### `## 下一步建议`
 
-AI 对自身下一轮行动的预规划，包含：
-- 推荐动作类型（`lecture` / `socratic` / `task` / `assemble`）
-- 具体的问题或任务描述（如果下一步是 `socratic`，这里预写问题方向）
-- 本轮期望达到的认知目标（Bloom 层级对应的期望行为）
+AI 对自身下一轮行动的预规划，形如：
 
-**更新时机**：每轮动作结束时更新，供下次调度参考。
+```
+预判: <动作类型> (<具体方向>) | 备选: <动作类型> (<方向>)
+```
+
+1-2 行即可。备选可省略。
+
+**更新时机**：仅在 `task` 下发时或其他里程碑动作触发时按需更新——**不要求每轮更新**。下次调度时若发现 `## 下一步建议` 已陈旧（与 journal 末条不符），AI 在新里程碑触发时覆盖即可。
 
 ### `## 卡点记录`
 
-时间序列的卡点日志，每条记录包含：
-- 触发时间（ISO8601）
-- 卡住的具体概念
-- stuck_count 达到触发阈值时的推断原因
-- 已采取的应对动作（`stuck->lecture` 后补记）
+append-only 一行/卡点，形如：
 
-**更新时机**：每次 `stuck-detected` 动作时追加；`stuck->lecture` 执行后，在对应条目补记"→ 已切换讲解模式"。
+```
+- <date> <concept>（hint <N>/原因）→ <处理方式>
+```
+
+**更新时机**：每次 `stuck-detected` 追加一行（含 hint 编号）；`stuck->lecture` 执行后在对应条目末尾补 "→ 已切换讲解模式" 或 "→ 暂存"。`stuck_count` 归零不清除历史卡点条目（append-only）。
 
 ---
 
@@ -90,26 +92,26 @@ topic: Python 异步编程
 slug: python-async-programming
 status: active
 stuck_count: 0
-created_at: 2025-11-05T14:23:00+08:00
-updated_at: 2025-11-05T14:23:00+08:00
+created_at: 2026-05-21T14:23:00+08:00
+updated_at: 2026-05-21T14:23:00+08:00
 bloom_level: remember
 artifact_count: 0
 ---
 
 ## 当前位置
 
-（初始化）用户刚开始学习「Python 异步编程」。尚未进行任何讲解或反问。下一步：完成首轮 `lecture`，介绍同步 vs 异步的核心差异。
+bloom: remember | 已覆盖: 同步阻塞 vs 异步事件循环（餐厅类比）
 
 ## 下一步建议
 
-- 动作类型：`lecture`
-- 建议切入角度：用"餐厅点餐"类比解释什么是同步阻塞（synchronous blocking），再对比 Python `asyncio` 的事件循环（event loop）机制
-- 本轮目标：让用户理解"为什么需要异步"（motivation），而非急于介绍 `async/await` 语法
+预判: socratic 验证 (问"为什么需要异步")
 
 ## 卡点记录
 
 （暂无）
 ```
+
+> 后续每次 accept 时，AI 在"已覆盖"清单后追加新概念名（如 `, async/await 语法, Future 对象`）。`## 下一步建议` 仅在 task 下发或里程碑触发时更新，不要求每轮重写。
 
 ---
 
