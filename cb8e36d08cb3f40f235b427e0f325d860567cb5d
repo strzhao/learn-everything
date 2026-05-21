@@ -1,0 +1,126 @@
+.autopilot/active
+  2c61a2575acdea39 1
+.autopilot/tasks/learn-everything-design/brainstorm.md
+  2c61a2575acdea39 1-73
+skills/learn/pedagogy/blooms-taxonomy.md
+  2c61a2575acdea39 1-23
+skills/learn/pedagogy/socratic-method.md
+  2c61a2575acdea39 1-23
+skills/learn/references/topic-init-template.md
+  2c61a2575acdea39 1-126
+.autopilot/requirements/20260521-开始实现/state.md
+  2c61a2575acdea39 1-447
+tests/acceptance-check.sh
+  2c61a2575acdea39 1-455
+.autopilot/requirements/20260521-开始实现/brainstorm.md
+  2c61a2575acdea39 1-73
+README.md
+  2c61a2575acdea39 1-135
+skills/learn/references/decision-tree.md
+  2c61a2575acdea39 1-308
+CLAUDE.md
+  2c61a2575acdea39 1-172
+skills/learn/pedagogy/feynman-technique.md
+  2c61a2575acdea39 1-23
+skills/learn/SKILL.md
+  2c61a2575acdea39 1-306
+scripts/install.sh
+  2c61a2575acdea39 1-152
+skills/learn/pedagogy/spaced-repetition.md
+  2c61a2575acdea39 1-23
+skills/learn/pedagogy/gemini-learning-mode.md
+  2c61a2575acdea39 1-23
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.7",
+  "base_commit_sha": "cb8e36d08cb3f40f235b427e0f325d860567cb5d",
+  "prompts": {
+    "2c61a2575acdea39": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1f45a9d-e472-47f7-9724-97bfab125e86",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 2753,
+      "total_deletions": 390,
+      "accepted_lines": 2363,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".autopilot/tasks/learn-everything-design/brainstorm.md": {
+          "additions": 73,
+          "accepted_lines": 73
+        },
+        "skills/learn/pedagogy/spaced-repetition.md": {
+          "additions": 38,
+          "deletions": 15,
+          "accepted_lines": 23
+        },
+        ".autopilot/active": {
+          "additions": 1,
+          "accepted_lines": 1
+        },
+        "CLAUDE.md": {
+          "additions": 172,
+          "accepted_lines": 172
+        },
+        "tests/acceptance-check.sh": {
+          "additions": 558,
+          "deletions": 103,
+          "accepted_lines": 455
+        },
+        "skills/learn/references/decision-tree.md": {
+          "additions": 308,
+          "accepted_lines": 308
+        },
+        "skills/learn/references/topic-init-template.md": {
+          "additions": 126,
+          "accepted_lines": 126
+        },
+        "skills/learn/pedagogy/feynman-technique.md": {
+          "additions": 38,
+          "deletions": 15,
+          "accepted_lines": 23
+        },
+        ".autopilot/requirements/20260521-开始实现/brainstorm.md": {
+          "additions": 73,
+          "accepted_lines": 73
+        },
+        "skills/learn/pedagogy/gemini-learning-mode.md": {
+          "additions": 37,
+          "deletions": 14,
+          "accepted_lines": 23
+        },
+        "skills/learn/pedagogy/blooms-taxonomy.md": {
+          "additions": 39,
+          "deletions": 16,
+          "accepted_lines": 23
+        },
+        ".autopilot/requirements/20260521-开始实现/state.md": {
+          "additions": 447,
+          "accepted_lines": 447
+        },
+        "skills/learn/pedagogy/socratic-method.md": {
+          "additions": 42,
+          "deletions": 19,
+          "accepted_lines": 23
+        },
+        "scripts/install.sh": {
+          "additions": 152,
+          "accepted_lines": 152
+        },
+        "README.md": {
+          "additions": 135,
+          "accepted_lines": 135
+        },
+        "skills/learn/SKILL.md": {
+          "additions": 514,
+          "deletions": 208,
+          "accepted_lines": 306
+        }
+      }
+    }
+  }
+}
