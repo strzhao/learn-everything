@@ -24,6 +24,9 @@ const state={task:"",blocks:[],snapshots:[],cursor:0,expanded:new Set()};
 // 任务 11: 抽屉状态缓存（filePath → { scrollTop, focusLine }）
 const drawerStates=new Map();
 let currentDrawerFile=null;
+// v1.3: 当前 task 名（来自 URL query），所有 fetch 都带 ?task= 把后端切对
+function getCurrentTask(){return new URLSearchParams(location.search).get("task")||"";}
+function withTaskQuery(qs){const t=getCurrentTask();if(!t)return qs;const sep=qs.includes("?")?"&":"?";return `${qs}${sep}task=${encodeURIComponent(t)}`;}
 
 function init(){
   document.getElementById("prev-btn").addEventListener("click",stepPrev);
@@ -33,7 +36,7 @@ function init(){
   document.addEventListener("keydown",(e)=>{
     if(e.key==="Escape"&&!document.getElementById("drawer").classList.contains("hidden"))closeDrawer();
   });
-  fetch("/api/lesson").then((r)=>r.json()).then(onLessonLoaded).catch((e)=>{
+  fetch(withTaskQuery("/api/lesson")).then((r)=>r.json()).then(onLessonLoaded).catch((e)=>{
     document.getElementById("lesson").innerHTML=`<div class="lesson-error">[ERROR] failed to fetch /api/lesson: ${escapeHtml(e.message||e)}</div>`;
   });
 }
@@ -43,7 +46,9 @@ function onLessonLoaded(data){
     return;
   }
   state.task=data.task;state.blocks=data.blocks||[];state.snapshots=data.messagesSnapshots||[];
-  document.getElementById("task-banner").textContent=`task: ${state.task}`;
+  const banner=document.getElementById("task-banner");
+  banner.textContent=`task: ${state.task}`;banner.classList.add("clickable");banner.title="切换任务";
+  banner.onclick=openDrawerTaskList;
   const firstRoundBlockIdx=state.blocks.findIndex((b)=>b.type==="log"&&b.source&&typeof b.source.round==="number");
   if(firstRoundBlockIdx>=0)state.expanded.add(firstRoundBlockIdx);
   state.cursor=state.snapshots.length>0?1:0;
@@ -296,7 +301,7 @@ async function openDrawer(filePath,focusLine,startLine,endLine){
   body.innerHTML=`<p class="loading">正在加载 ${escapeHtml(filePath)}…</p>`;
   title.textContent=filePath;currentDrawerFile=filePath;
   let res,json;
-  try{res=await fetch(`/api/file?path=${encodeURIComponent(filePath)}`);}
+  try{res=await fetch(withTaskQuery(`/api/file?path=${encodeURIComponent(filePath)}`));}
   catch(e){body.innerHTML=`<div class="lesson-error">[ERROR] fetch failed: ${escapeHtml(String(e.message||e))}</div>`;return;}
   if(!res.ok){
     let errMsg=`HTTP ${res.status}`;
@@ -413,3 +418,29 @@ function openDrawerJson(title,allMessages,focusIdx){
   });
 }
 bindToolPairHover();init();
+
+// v1.3: 顶部 banner 点击 → 列出同 root 下所有 task，可切换
+async function openDrawerTaskList(){
+  const drawer=document.getElementById("drawer"),mask=document.getElementById("drawer-mask");
+  const titleEl=document.getElementById("drawer-title"),body=document.getElementById("drawer-body");
+  drawer.classList.remove("hidden");mask.classList.remove("hidden");
+  drawer.setAttribute("aria-hidden","false");document.body.classList.add("drawer-open");
+  titleEl.textContent="task 列表";currentDrawerFile=null;
+  body.innerHTML=`<p class="loading">正在加载 task 列表…</p>`;
+  let json;
+  try{const res=await fetch(withTaskQuery("/api/tasks"));if(!res.ok)throw new Error(`HTTP ${res.status}`);json=await res.json();}
+  catch(e){body.innerHTML=`<div class="lesson-error">[ERROR] failed to fetch /api/tasks: ${escapeHtml(String(e.message||e))}</div>`;return;}
+  const banner=document.createElement("div");banner.className="drawer-banner";
+  banner.textContent=`root: ${json.root} · 共 ${json.tasks.length} 个 task`;
+  body.innerHTML="";body.appendChild(banner);
+  const ul=document.createElement("ul");ul.className="task-list";
+  for(const t of json.tasks){
+    const li=document.createElement("li");li.className="task-item"+(t.active?" active":"");
+    const name=document.createElement("span");name.className="task-name";name.textContent=t.name;
+    const tag=document.createElement("span");tag.className="task-tag";tag.textContent=t.active?"当前":"切换 →";
+    li.appendChild(name);li.appendChild(tag);
+    if(!t.active)li.addEventListener("click",()=>{location.search=`?task=${encodeURIComponent(t.name)}`;});
+    ul.appendChild(li);
+  }
+  body.appendChild(ul);
+}

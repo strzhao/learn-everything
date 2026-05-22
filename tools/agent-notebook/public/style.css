@@ -6,6 +6,17 @@ body.drawer-open{overflow:hidden;}
 .topbar-left{display:flex;align-items:baseline;gap:12px;}
 .brand{font-weight:600;}
 .banner{font-size:13px;color:#555;background:#f0f0f0;border-radius:4px;padding:2px 8px;}
+.banner.clickable{cursor:pointer;user-select:none;transition:background 0.15s,color 0.15s;}
+.banner.clickable:hover{background:#dbeafe;color:#0a4d7a;}
+.banner.clickable::after{content:" ▾";opacity:0.6;font-size:10px;}
+/* v1.3: 任务列表抽屉 */
+.task-list{list-style:none;padding:8px;margin:0;}
+.task-item{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border:1px solid #d0d7de;border-radius:6px;margin-bottom:6px;background:#fff;cursor:pointer;transition:background 0.1s,border-color 0.1s;}
+.task-item:hover{background:#f6f8fa;border-color:#0969da;}
+.task-item.active{background:#dbeafe;border-color:#0969da;cursor:default;}
+.task-item .task-name{font-family:ui-monospace,monospace;font-size:13px;color:#24292f;}
+.task-item .task-tag{font-size:11px;color:#57606a;}
+.task-item.active .task-tag{color:#0969da;font-weight:600;}
 .topbar-right{display:flex;align-items:center;gap:8px;}
 .topbar-right button{font:inherit;border:1px solid #bbb;background:#fff;border-radius:4px;padding:4px 10px;cursor:pointer;}
 .topbar-right button:hover{background:#f0f0f0;}
