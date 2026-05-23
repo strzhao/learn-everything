@@ -20,7 +20,12 @@ function langToHljs(lang){
   return m[lang]??lang??"plaintext";
 }
 
-const state={task:"",blocks:[],snapshots:[],cursor:0,expanded:new Set()};
+// v1.4: state 多 run 重构 —— 每个 run 独立 cursor，sidebar 顶部 tabs 切换
+const state={task:"",blocks:[],runs:[],currentRunId:"",cursors:new Map(),expanded:new Set()};
+function getCurrentRun(){return state.runs.find((r)=>r.id===state.currentRunId)||null;}
+function getCurrentSnapshots(){const r=getCurrentRun();return r?r.snapshots:[];}
+function getCurrentCursor(){return state.cursors.get(state.currentRunId)||0;}
+function setCurrentCursor(c){state.cursors.set(state.currentRunId,c);}
 // 任务 11: 抽屉状态缓存（filePath → { scrollTop, focusLine }）
 const drawerStates=new Map();
 let currentDrawerFile=null;
@@ -45,14 +50,39 @@ function onLessonLoaded(data){
     document.getElementById("lesson").innerHTML=`<div class="lesson-error">[ERROR] ${escapeHtml(data.error)}</div>`;
     return;
   }
-  state.task=data.task;state.blocks=data.blocks||[];state.snapshots=data.messagesSnapshots||[];
+  state.task=data.task;state.blocks=data.blocks||[];state.runs=data.runs||[];
   const banner=document.getElementById("task-banner");
   banner.textContent=`task: ${state.task}`;banner.classList.add("clickable");banner.title="切换任务";
   banner.onclick=openDrawerTaskList;
-  const firstRoundBlockIdx=state.blocks.findIndex((b)=>b.type==="log"&&b.source&&typeof b.source.round==="number");
+  // 默认活跃 run = 第一个；每个 run 初始 cursor=1（已展开第一轮），无 run 时 cursor=0
+  state.currentRunId=state.runs.length>0?state.runs[0].id:"";
+  state.cursors=new Map();
+  for(const r of state.runs)state.cursors.set(r.id,r.snapshots.length>0?1:0);
+  // 默认展开当前 run 的第一个 round 块
+  const firstRoundBlockIdx=state.blocks.findIndex((b)=>b.type==="log"&&b.source&&b.source.file===state.currentRunId&&typeof b.source.round==="number");
   if(firstRoundBlockIdx>=0)state.expanded.add(firstRoundBlockIdx);
-  state.cursor=state.snapshots.length>0?1:0;
-  renderLesson();renderSidebar();renderStep();
+  renderRunTabs();renderLesson();renderSidebar();renderStep();
+}
+// v1.4: 渲染 sidebar 顶部 run tabs
+function renderRunTabs(){
+  const nav=document.getElementById("run-tabs");if(!nav)return;
+  nav.innerHTML="";
+  if(state.runs.length<=1){nav.style.display="none";return;}
+  nav.style.display="";
+  for(const r of state.runs){
+    const btn=document.createElement("button");
+    btn.type="button";btn.className="run-tab"+(r.id===state.currentRunId?" active":"");
+    btn.textContent=r.label;btn.title=r.id;
+    btn.addEventListener("click",()=>switchRun(r.id));
+    nav.appendChild(btn);
+  }
+}
+function switchRun(id){
+  if(id===state.currentRunId)return;
+  state.currentRunId=id;
+  // 切到新 run，展开它当前 cursor 对应的 round 块（若 cursor>0）
+  syncExpandedToCursor();
+  renderRunTabs();renderLesson();renderSidebar();renderStep();scrollToCurrentRound();
 }
 function renderLesson(){
   const root=document.getElementById("lesson");root.innerHTML="";
@@ -139,8 +169,9 @@ function renderMessageCard(msg,idx,isNew,roundForMsg){
   jsonBtn.textContent="{ } JSON";jsonBtn.title="查看完整 JSON";
   jsonBtn.addEventListener("click",(e)=>{
     e.stopPropagation();
-    // 任务 v1.2: 全周期 = 最终快照的完整 messages 数组（messages 演化只追加不修改，索引稳定）
-    const allMsgs=state.snapshots.length>0?state.snapshots[state.snapshots.length-1].messages:[msg];
+    // 任务 v1.2: 全周期 = 当前 run 最终快照的完整 messages 数组（messages 演化只追加不修改，索引稳定）
+    const cur=getCurrentSnapshots();
+    const allMsgs=cur.length>0?cur[cur.length-1].messages:[msg];
     openDrawerJson(`messages 全周期 · 定位 [${idx}] ${role}`,allMsgs,idx);
   });
   head.appendChild(jsonBtn);
@@ -214,19 +245,20 @@ function renderTextField(text,kind){
 function renderSidebar(){
   const list=document.getElementById("messages-list");const hint=document.getElementById("snapshot-hint");
   list.innerHTML="";
-  if(state.snapshots.length===0){hint.textContent="lesson 不含 round 日志块，无法重建 messages 演化";return;}
-  if(state.cursor===0){hint.textContent="点击 [下一步] 推进到 Round 1";return;}
-  const snap=state.snapshots[state.cursor-1];
-  hint.textContent=`当前快照: 推进到 Round ${snap.roundIndex} 后，messages 数组共 ${snap.messages.length} 条`;
+  const snapshots=getCurrentSnapshots();const cursor=getCurrentCursor();
+  if(state.runs.length===0){hint.textContent="lesson 不含 round 日志块，无法重建 messages 演化";return;}
+  if(snapshots.length===0){hint.textContent=`run "${getCurrentRun()?.label||""}" 无可重建快照`;return;}
+  if(cursor===0){hint.textContent="点击 [下一步] 推进到 Round 1";return;}
+  const snap=snapshots[cursor-1];
+  hint.textContent=`run "${getCurrentRun()?.label||""}" · 推进到 Round ${snap.roundIndex} 后，messages 共 ${snap.messages.length} 条`;
   const added=new Set(snap.addedIndices);
-  // 计算每条 message 属于哪一轮：以前一快照为分界
-  const prevLen=state.cursor>=2?state.snapshots[state.cursor-2].messages.length:0;
+  const prevLen=cursor>=2?snapshots[cursor-2].messages.length:0;
   snap.messages.forEach((msg,i)=>{
     let rfm=null;
     if(i>=prevLen){rfm=snap.roundIndex;}
     else{
-      for(let s=0;s<state.cursor-1;s++){
-        if(state.snapshots[s].addedIndices.includes(i)){rfm=state.snapshots[s].roundIndex;break;}
+      for(let s=0;s<cursor-1;s++){
+        if(snapshots[s].addedIndices.includes(i)){rfm=snapshots[s].roundIndex;break;}
       }
     }
     list.appendChild(renderMessageCard(msg,i,added.has(i),rfm));
@@ -246,30 +278,37 @@ function bindToolPairHover(){
   });
 }
 function renderStep(){
-  document.getElementById("step-indicator").textContent=`round ${state.cursor} / ${state.snapshots.length}`;
-  document.getElementById("prev-btn").disabled=state.cursor<=0;
-  document.getElementById("next-btn").disabled=state.cursor>=state.snapshots.length;
+  const snapshots=getCurrentSnapshots();const cursor=getCurrentCursor();const run=getCurrentRun();
+  const label=run?run.label:"-";
+  document.getElementById("step-indicator").textContent=`${label}: round ${cursor} / ${snapshots.length}`;
+  document.getElementById("prev-btn").disabled=cursor<=0;
+  document.getElementById("next-btn").disabled=cursor>=snapshots.length;
 }
 function roundBlockIndices(){
-  return state.blocks.map((b,i)=>({b,i})).filter((x)=>x.b.type==="log"&&typeof x.b.source?.round==="number").map((x)=>x.i);
+  // 仅当前 run 的 round block 参与 cursor 推进 / 展开折叠
+  return state.blocks.map((b,i)=>({b,i}))
+    .filter((x)=>x.b.type==="log"&&x.b.source&&x.b.source.file===state.currentRunId&&typeof x.b.source.round==="number")
+    .map((x)=>x.i);
 }
 function syncExpandedToCursor(){
-  const r=roundBlockIndices();
-  for(let k=0;k<state.cursor&&k<r.length;k++)state.expanded.add(r[k]);
+  const r=roundBlockIndices();const cursor=getCurrentCursor();
+  for(let k=0;k<cursor&&k<r.length;k++)state.expanded.add(r[k]);
 }
 function stepNext(){
-  if(state.cursor>=state.snapshots.length)return;
-  state.cursor+=1;syncExpandedToCursor();renderLesson();renderSidebar();renderStep();scrollToCurrentRound();
+  const snapshots=getCurrentSnapshots();let cursor=getCurrentCursor();
+  if(cursor>=snapshots.length)return;
+  cursor+=1;setCurrentCursor(cursor);syncExpandedToCursor();renderLesson();renderSidebar();renderStep();scrollToCurrentRound();
 }
 function stepPrev(){
-  if(state.cursor<=0)return;
+  let cursor=getCurrentCursor();
+  if(cursor<=0)return;
   const r=roundBlockIndices();
-  if(state.cursor-1<r.length&&state.cursor>1)state.expanded.delete(r[state.cursor-1]);
-  state.cursor-=1;renderLesson();renderSidebar();renderStep();scrollToCurrentRound();
+  if(cursor-1<r.length&&cursor>1)state.expanded.delete(r[cursor-1]);
+  cursor-=1;setCurrentCursor(cursor);renderLesson();renderSidebar();renderStep();scrollToCurrentRound();
 }
 function scrollToCurrentRound(){
-  if(state.cursor<=0)return;
-  const r=roundBlockIndices();const targetIdx=r[state.cursor-1];
+  const cursor=getCurrentCursor();if(cursor<=0)return;
+  const r=roundBlockIndices();const targetIdx=r[cursor-1];
   if(typeof targetIdx!=="number")return;
   const el=document.getElementById("lesson").children[targetIdx];
   if(el&&el.scrollIntoView)el.scrollIntoView({behavior:"smooth",block:"center"});

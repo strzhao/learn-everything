@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { parseLesson } from "../lib/parse-lesson";
-import { buildMessagesSnapshots } from "../lib/messages-replay";
+import { buildRuns } from "../lib/messages-replay";
 
 const OTTER =
   "/Users/stringzhao/workspace_sync/personal_projects/Otter/tasks/01-minimal-agent-loop";
@@ -33,7 +33,9 @@ test("3 round blocks → 3 snapshots, lengths increase", async () => {
   );
   try {
     const blocks = await parseLesson(join(dir, "lesson.md"));
-    const snaps = buildMessagesSnapshots(blocks);
+    const runs = buildRuns(blocks);
+    expect(runs.length).toBe(1);
+    const snaps = runs[0].snapshots;
     expect(snaps.length).toBe(3);
     const lens = snaps.map((s) => s.messages.length);
     // initial user (1) + round1 assistant + round1 user[tool_result] = 3
@@ -54,7 +56,7 @@ test("snapshot[0].messages[0] is initial user prompt", async () => {
   );
   try {
     const blocks = await parseLesson(join(dir, "lesson.md"));
-    const snaps = buildMessagesSnapshots(blocks);
+    const snaps = buildRuns(blocks)[0].snapshots;
     expect(snaps[0].messages[0].role).toBe("user");
     expect(snaps[0].messages[0].content).toContain("23");
   } finally {
@@ -73,7 +75,7 @@ test("addedIndices marks the new entries each round", async () => {
   );
   try {
     const blocks = await parseLesson(join(dir, "lesson.md"));
-    const snaps = buildMessagesSnapshots(blocks);
+    const snaps = buildRuns(blocks)[0].snapshots;
     // round1: 初始 user + assistant + user[tool_result] 都算"新增"
     expect(snaps[0].addedIndices).toEqual([0, 1, 2]);
     expect(snaps[1].addedIndices).toEqual([3, 4]);
@@ -92,7 +94,7 @@ test("tool_result content uses real value from FINAL MESSAGES (not '<tool result
   );
   try {
     const blocks = await parseLesson(join(dir, "lesson.md"));
-    const snaps = buildMessagesSnapshots(blocks);
+    const snaps = buildRuns(blocks)[0].snapshots;
     const lastMsg = snaps[0].messages[snaps[0].messages.length - 1];
     expect(lastMsg.role).toBe("user");
     expect(lastMsg.content[0].type).toBe("tool_result");

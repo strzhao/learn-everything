@@ -2,7 +2,7 @@
 //
 // 覆盖：
 //   - GET /            → 200 text/html，含 <title> 与 messages 字样
-//   - GET /api/lesson  → 200 application/json，shape 含 task / blocks / messagesSnapshots
+//   - GET /api/lesson  → 200 application/json，shape 含 task / blocks / runs
 //   - GET /static/*    → 200，返回 app.js / style.css
 //   - 错误格式（type: 'error' 块）的 message 与 raw 字段
 //
@@ -42,7 +42,7 @@ describe("GET /", () => {
 });
 
 describe("GET /api/lesson", () => {
-  test("返回 200 + application/json，payload 含 task / blocks / messagesSnapshots 三字段（契约 6）", async () => {
+  test("返回 200 + application/json，payload 含 task / blocks / runs 三字段（契约 6）", async () => {
     const res = await fetch(`${handle!.baseUrl}/api/lesson`);
     expect(res.status).toBe(200);
 
@@ -52,11 +52,11 @@ describe("GET /api/lesson", () => {
     const json = (await res.json()) as Record<string, unknown>;
     expect(json).toHaveProperty("task");
     expect(json).toHaveProperty("blocks");
-    expect(json).toHaveProperty("messagesSnapshots");
+    expect(json).toHaveProperty("runs");
 
     expect(typeof json.task).toBe("string");
     expect(Array.isArray(json.blocks)).toBe(true);
-    expect(Array.isArray(json.messagesSnapshots)).toBe(true);
+    expect(Array.isArray(json.runs)).toBe(true);
   });
 
   test("task 字段等于 task-dir 末段 '01-minimal-agent-loop' 风格（来自 normal fixture 名）", async () => {

@@ -22,8 +22,8 @@ body.drawer-open{overflow:hidden;}
 .topbar-right button:hover{background:#f0f0f0;}
 .topbar-right button:disabled{opacity:0.4;cursor:not-allowed;}
 .step-indicator{font-size:13px;color:#555;min-width:110px;text-align:center;}
-.layout{display:grid;grid-template-columns:1fr 380px;gap:16px;padding:16px;max-width:1400px;margin:0 auto;}
-.lesson{background:#fff;border:1px solid #e6e6e6;border-radius:6px;padding:16px 24px;min-height:60vh;}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:16px;padding:16px;max-width:1400px;margin:0 auto;}
+.lesson{background:#fff;border:1px solid #e6e6e6;border-radius:6px;padding:16px 24px;min-height:60vh;min-width:0;}
 .lesson h1{margin-top:0;}
 .lesson pre{background:#f6f8fa;color:#24292f;padding:12px 14px;border-radius:4px;overflow:auto;font-size:12.5px;line-height:1.45;border:1px solid #d0d7de;}
 .lesson pre code{background:transparent;color:inherit;padding:0;}
@@ -36,6 +36,11 @@ body.drawer-open{overflow:hidden;}
 .lesson .block-log.collapsed .log-body{display:none;}
 .lesson .block-log .log-body pre{margin:0;border-radius:0;}
 .lesson .source-tag{display:inline-block;font-family:ui-monospace,monospace;font-size:11px;color:#888;background:#f5f5f5;padding:1px 6px;border-radius:2px;margin-bottom:4px;}
+/* GFM 表格（lesson markdown 块） */
+.lesson .md-table{border-collapse:collapse;margin:12px 0;font-size:13px;display:block;overflow-x:auto;max-width:100%;}
+.lesson .md-table th,.lesson .md-table td{border:1px solid #d0d7de;padding:6px 12px;text-align:left;vertical-align:top;}
+.lesson .md-table thead th{background:#f6f8fa;font-weight:600;}
+.lesson .md-table tbody tr:nth-child(even){background:#fafbfc;}
 .lesson-error{background:#fff2f0;border:1px solid #ff7875;border-radius:4px;padding:8px 12px;margin:12px 0;color:#a8071a;font-family:ui-monospace,monospace;font-size:13px;}
 /* 任务 6 主区跳转闪烁 */
 .flash-outline{outline:3px solid #ff9800!important;outline-offset:2px;animation:flashFade 1.5s ease-out forwards;}
@@ -44,6 +49,13 @@ body.drawer-open{overflow:hidden;}
 .sidebar{background:#fff;border:1px solid #e6e6e6;border-radius:6px;padding:12px 14px;position:sticky;top:64px;align-self:start;max-height:calc(100vh - 80px);overflow:auto;}
 .sidebar h2{margin-top:0;font-size:16px;}
 .sidebar .hint{font-size:12px;color:#888;}
+/* v1.4: run tabs（多 run 切换） */
+.run-tabs{display:flex;gap:4px;overflow-x:auto;padding-bottom:8px;margin:0 0 8px 0;border-bottom:1px solid #e6e6e6;scrollbar-width:thin;}
+.run-tabs::-webkit-scrollbar{height:4px;}
+.run-tabs::-webkit-scrollbar-thumb{background:#d0d7de;border-radius:2px;}
+.run-tab{flex:0 0 auto;font:inherit;font-size:11.5px;font-family:ui-monospace,monospace;background:#f6f8fa;border:1px solid #d0d7de;border-radius:4px;padding:3px 8px;cursor:pointer;color:#57606a;white-space:nowrap;transition:background 0.1s,color 0.1s,border-color 0.1s;}
+.run-tab:hover{background:#eaeef2;color:#24292f;}
+.run-tab.active{background:#dbeafe;border-color:#0969da;color:#0969da;font-weight:600;cursor:default;}
 .messages{list-style:none;padding:0;margin:0;}
 .messages .msg{border:1px solid #e3e3e3;border-radius:4px;padding:6px 8px;margin-bottom:8px;font-size:12px;font-family:ui-monospace,monospace;position:relative;cursor:pointer;transition:box-shadow 0.15s;}
 .messages .msg:hover{box-shadow:0 0 0 1px #6699cc;}

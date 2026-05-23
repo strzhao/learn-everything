@@ -4,7 +4,7 @@
 import { resolve, basename, dirname, join, extname } from "node:path";
 import { existsSync, statSync, readdirSync } from "node:fs";
 import { parseLesson } from "./lib/parse-lesson";
-import { buildMessagesSnapshots } from "./lib/messages-replay";
+import { buildRuns } from "./lib/messages-replay";
 import {
   validateFilePath,
   inferLang,
@@ -74,8 +74,8 @@ async function handleApiLesson(url: URL): Promise<Response> {
   if (!t) return jsonResp({ error: `task not found or missing lesson.md` }, 404);
   try {
     const blocks = await parseLesson(t.lessonPath);
-    const messagesSnapshots = buildMessagesSnapshots(blocks);
-    return jsonResp({ task: t.taskName, blocks, messagesSnapshots });
+    const runs = buildRuns(blocks);
+    return jsonResp({ task: t.taskName, blocks, runs });
   } catch (e: any) {
     return jsonResp({ error: String(e?.message ?? e) }, 500);
   }
