@@ -1,0 +1,181 @@
+tools/agent-notebook/public/style.css
+  0ddee575fecb3486 25-26,39-43,52-58
+tools/agent-notebook/lib/messages-replay.ts
+  0ddee575fecb3486 7-9,19-24,28-44,46-47,57,61,64-68,70-72,79-80,123,130,135,145-170
+tools/agent-notebook/server.ts
+  0ddee575fecb3486 7,77-78
+tools/agent-notebook/tests/blue-messages-replay.test.ts
+  0ddee575fecb3486 6,36-38,59,78,97
+tools/agent-notebook/tests/api.acceptance.test.ts
+  0ddee575fecb3486 5,45,55,59
+tools/agent-notebook/tests/messages-replay.acceptance.test.ts
+  0ddee575fecb3486 1,10-11,38-39,46,55-58,61-62,64-66,71,88,96-97,104-105,114,121,132-134,138,145-148,156,158-159,165-166,178,191,202
+tools/agent-notebook/public/index.html
+  0ddee575fecb3486 30
+tools/agent-notebook/public/app.js
+  0ddee575fecb3486 23-28,53,57-62,64-85,172-174,248-253,255,260-261,281-285,288-291,294-295,298-300,303-304,306-307,310-311
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.7",
+  "base_commit_sha": "c03cb334a3956e3bacb7c4a8ff68e3e747433ee1",
+  "prompts": {
+    "0ddee575fecb3486": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1935cee-7501-4e8c-9b3b-584a4c606156",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 254,
+      "total_deletions": 154,
+      "accepted_lines": 1087,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "tools/agent-notebook/server.ts": {
+          "additions": 3,
+          "deletions": 3,
+          "accepted_lines": 3
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/README.md": {
+          "accepted_lines": 82
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/agent.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/public/app.js": {
+          "additions": 67,
+          "deletions": 28,
+          "accepted_lines": 67
+        },
+        "tools/agent-notebook/lib/render-markdown.ts": {
+          "additions": 41,
+          "deletions": 7,
+          "accepted_lines": 41
+        },
+        "tools/agent-notebook/tests/fixtures/errors/run-log.txt": {
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/fixtures/errors/agent.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/messages-replay.acceptance.test.ts": {
+          "additions": 41,
+          "deletions": 31,
+          "accepted_lines": 41
+        },
+        "tools/agent-notebook/public/style.css": {
+          "additions": 14,
+          "deletions": 2,
+          "accepted_lines": 14
+        },
+        "tools/agent-notebook/tests/fixtures/normal/README.md": {
+          "accepted_lines": 82
+        },
+        "tools/agent-notebook/public/index.html": {
+          "additions": 1,
+          "accepted_lines": 1
+        },
+        "tools/agent-notebook/tests/api.acceptance.test.ts": {
+          "additions": 4,
+          "deletions": 4,
+          "accepted_lines": 4
+        },
+        "tools/agent-notebook/tests/fixtures/normal/run-log.txt": {
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/fixtures/normal/agent.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/lib/messages-replay.ts": {
+          "additions": 72,
+          "deletions": 70,
+          "accepted_lines": 71
+        },
+        "tools/agent-notebook/tests/blue-messages-replay.test.ts": {
+          "additions": 7,
+          "deletions": 5,
+          "accepted_lines": 7
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/run-log.txt": {
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/helpers/server.ts": {
+          "additions": 4,
+          "deletions": 4,
+          "accepted_lines": 2
+        }
+      }
+    },
+    "2c61a2575acdea39": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1f45a9d-e472-47f7-9724-97bfab125e86",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 115,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".claude/skills/learn/pedagogy/socratic-method.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/blooms-taxonomy.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/spaced-repetition.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/feynman-technique.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/gemini-learning-mode.md": {
+          "accepted_lines": 23
+        }
+      }
+    },
+    "9b09e84aa8bfdadc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "88ec1183-412e-4889-acc7-f08b95248d09",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".learn/active.md": {
+          "accepted_lines": 1
+        }
+      }
+    },
+    "d41c0410981b7f4c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d04a4fbe-9ad3-4fad-8d3d-6b5c6e497566",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 14,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "topics/_active": {
+          "accepted_lines": 1
+        },
+        "topics/INDEX.md": {
+          "accepted_lines": 13
+        }
+      }
+    }
+  }
+}
