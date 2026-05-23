@@ -25,8 +25,9 @@ async function waitForReady(baseUrl: string, timeoutMs = 8000): Promise<void> {
       const res = await fetch(baseUrl + "/api/lesson", {
         signal: AbortSignal.timeout(500),
       });
-      // 即便返回 500（lesson.md 解析问题）也算 server 已起来；只要有响应即可
-      if (res.status >= 200 && res.status < 600) {
+      // Bun fetch 对未绑定 localhost 端口会返回 502（不抛错），需排除掉避免把"还没起来"误判为"已起来"
+      // 即便 server 返回 500（lesson.md 解析问题）也算 ready
+      if (res.status >= 200 && res.status < 600 && res.status !== 502) {
         // 消费 body 以释放连接
         await res.text().catch(() => {});
         return;

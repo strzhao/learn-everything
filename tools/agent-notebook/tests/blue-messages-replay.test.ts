@@ -6,7 +6,7 @@ import { parseLesson } from "../lib/parse-lesson";
 import { buildRuns } from "../lib/messages-replay";
 
 const OTTER =
-  "/Users/stringzhao/workspace_sync/personal_projects/Otter/tasks/01-minimal-agent-loop";
+  "/Users/stringzhao/workspace_sync/personal_projects/learn-everything/topics/agent-harness-engineering/artifacts/01-minimal-agent-loop";
 
 async function setup(lesson: string): Promise<string> {
   const dir = mkdtempSync(join(tmpdir(), "msg-replay-"));

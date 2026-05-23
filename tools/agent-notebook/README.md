@@ -1,6 +1,6 @@
 # agent-notebook
 
-把 Otter task 的 `lesson.md` 渲染成一个单页 notebook 视图：左侧 lesson 流（讲解 + 代码片段 + 真实运行日志），右侧 messages 状态侧栏跟随单步推进同步更新。
+把 task artifact 的 `lesson.md` 渲染成一个单页 notebook 视图：左侧 lesson 流（讲解 + 代码片段 + 真实运行日志），右侧 messages 状态侧栏跟随单步推进同步更新。
 
 ## 用法
 
@@ -8,11 +8,11 @@
 # 进入工具目录
 cd learn-everything/tools/agent-notebook
 
-# 启动（参数：task 目录绝对路径或相对路径，必须含 lesson.md）
-bun run server.ts ../../../Otter/tasks/01-minimal-agent-loop/
+# 启动（参数：artifact 目录绝对路径或相对路径，必须含 lesson.md）
+bun run server.ts ../../topics/agent-harness-engineering/artifacts/01-minimal-agent-loop/
 
 # 自定义端口
-PORT=3737 bun run server.ts ../../../Otter/tasks/01-minimal-agent-loop/
+PORT=3737 bun run server.ts ../../topics/agent-harness-engineering/artifacts/01-minimal-agent-loop/
 ```
 
 打开 http://localhost:3737/ 即可。

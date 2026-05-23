@@ -33,7 +33,7 @@ artifact_count: 1
 - `01-minimal-agent-loop` —— 75 行最小 fetch agent loop（calculator 强制 2 轮 tool_use）
 
 **Task 02 下发**（等待交付）：
-- 工程位置：`Otter/tasks/02-permission-gate/`
+- 工程位置：`topics/agent-harness-engineering/artifacts/02-permission-gate/`（已物理迁移到位，等待 instructor 验收）
 - 三件交付物：`agent-v1-ask-tool.ts`（model 主动 ask 版）+ `agent-v2-harness-gate.ts`（dispatch 强制拦截版）+ `notes.md`（对比报告）
 - 安全约束：delete_file executor mock，不真删
 - 行数约束：每个 agent-vX.ts ≤ 100 行

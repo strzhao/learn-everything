@@ -1,0 +1,149 @@
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "我们分两步：\n1. 先算 23 * 47\n2. 再加 100\n\n让我们开始。",
+    "signature": "b30d1748-6a24-49d8-9e7e-fc902963b150"
+  },
+  {
+    "type": "text",
+    "text": "好的，我们先计算 23 × 47。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_DmcxLs9jQntHJToJtRC24385",
+    "name": "calculator",
+    "input": {
+      "a": 23,
+      "op": "*",
+      "b": 47
+    }
+  }
+]
+
+========== ROUND 2  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "23 * 47 = 1081。然后加100。",
+    "signature": "cbc65847-a8bd-4a86-abed-c9d2ceff0f5b"
+  },
+  {
+    "type": "text",
+    "text": "23 × 47 = **1081**，然后再加上 100。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_TKGDrBhOwMysqo3LMKXO1671",
+    "name": "calculator",
+    "input": {
+      "a": 1081,
+      "op": "+",
+      "b": 100
+    }
+  }
+]
+
+========== ROUND 3  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "最终结果 1181。",
+    "signature": "20c2e7d7-d5ff-427e-a061-35e828b1dc30"
+  },
+  {
+    "type": "text",
+    "text": "计算结果如下：\n\n1. **第一步**：23 × 47 = **1081**\n2. **第二步**：1081 + 100 = **1181**\n\n最终结果是 **1181** ✅"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "请帮我算 23 * 47 再加 100，每一步用 calculator 工具。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "我们分两步：\n1. 先算 23 * 47\n2. 再加 100\n\n让我们开始。",
+        "signature": "b30d1748-6a24-49d8-9e7e-fc902963b150"
+      },
+      {
+        "type": "text",
+        "text": "好的，我们先计算 23 × 47。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_DmcxLs9jQntHJToJtRC24385",
+        "name": "calculator",
+        "input": {
+          "a": 23,
+          "op": "*",
+          "b": 47
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_DmcxLs9jQntHJToJtRC24385",
+        "content": "1081"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "23 * 47 = 1081。然后加100。",
+        "signature": "cbc65847-a8bd-4a86-abed-c9d2ceff0f5b"
+      },
+      {
+        "type": "text",
+        "text": "23 × 47 = **1081**，然后再加上 100。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_TKGDrBhOwMysqo3LMKXO1671",
+        "name": "calculator",
+        "input": {
+          "a": 1081,
+          "op": "+",
+          "b": 100
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_TKGDrBhOwMysqo3LMKXO1671",
+        "content": "1181"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "最终结果 1181。",
+        "signature": "20c2e7d7-d5ff-427e-a061-35e828b1dc30"
+      },
+      {
+        "type": "text",
+        "text": "计算结果如下：\n\n1. **第一步**：23 × 47 = **1081**\n2. **第二步**：1081 + 100 = **1181**\n\n最终结果是 **1181** ✅"
+      }
+    ]
+  }
+]

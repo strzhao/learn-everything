@@ -26,6 +26,20 @@ learn-everything/
 
 ---
 
+## 实战代码归档约定（artifacts/）
+
+`topics/<slug>/artifacts/NN-name/` 不只是 instructor 写的文字 descriptor，也是学生实战代码的物理归宿：
+
+- **代码本体**直接放在该目录里：`agent.ts` / `run-log.txt` / `lesson.md` / `notes.md` / `spec.md` / `brainstorm.md` 等都是一等公民
+- **README.md** 既写学生角度的「学到了什么」，也写 instructor 角度的「与其他组件的关系 / 在课程中的位置」，合并为单一 README
+- **交互式阅读视图**：`bun run tools/agent-notebook/server.ts <artifact-abs-path>` 启动 HTML notebook，用 `lesson.md` 里的 `@include(./xxx.ts, section=N)` / `@include(./run-log.txt, round=N)` 把代码片段、运行日志、讲解编织起来
+
+**新任务交付约定**：instructor 下发新 task 时直接以 `topics/<slug>/artifacts/NN-name/` 为交付地址，**不再借助外部实战工程仓**。这避免了"半教学半工程"双重身份导致的归档割裂。lesson.md 里的所有 `@include` 用相对路径，artifact 目录可作原子单元搬运。
+
+**已有归档**：`topics/agent-harness-engineering/artifacts/01-minimal-agent-loop/` 与 `02-permission-gate/` 是这套约定的范例。
+
+---
+
 ## 如何修改 skill
 
 ### 修改 SKILL.md

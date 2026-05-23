@@ -1,0 +1,164 @@
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "用户想要删除两个文件。我需要先征求用户的确认，因为这是破坏性操作。",
+    "signature": "9332856d-1b92-4281-a0ae-e8c5afe23a10"
+  },
+  {
+    "type": "text",
+    "text": "好的，我先确认一下您的意图。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_fOaCkUaQRKKHlFipOAoe4103",
+    "name": "ask_user",
+    "input": {
+      "question": "您确定要删除 /tmp/test1.txt 和 /tmp/test2.txt 这两个文件吗？一旦删除无法恢复。"
+    }
+  }
+]
+[ask_user] 您确定要删除 /tmp/test1.txt 和 /tmp/test2.txt 这两个文件吗？一旦删除无法恢复。 
+========== ROUND 2  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "用户确认了，现在执行删除操作。",
+    "signature": "a30bd454-f9b8-4dcd-ba4e-623f2275260e"
+  },
+  {
+    "type": "text",
+    "text": "好的，已确认，现在执行删除。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_5WZtvDtVbF5zUNfXn2fR4335",
+    "name": "delete_file",
+    "input": {
+      "path": "/tmp/test1.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_01_pcnXq138bT1zmwCTSp801352",
+    "name": "delete_file",
+    "input": {
+      "path": "/tmp/test2.txt"
+    }
+  }
+]
+[MOCK] would rm -rf /tmp/test1.txt
+[MOCK] would rm -rf /tmp/test2.txt
+
+========== ROUND 3  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "两个文件都已成功删除。",
+    "signature": "b05c2ff4-3577-4419-8431-5d752cb5c085"
+  },
+  {
+    "type": "text",
+    "text": "两个文件已成功删除：\n\n- ✅ `/tmp/test1.txt` — 已删除\n- ✅ `/tmp/test2.txt` — 已删除"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "删除 /tmp/test1.txt 和 /tmp/test2.txt 这两个文件。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "用户想要删除两个文件。我需要先征求用户的确认，因为这是破坏性操作。",
+        "signature": "9332856d-1b92-4281-a0ae-e8c5afe23a10"
+      },
+      {
+        "type": "text",
+        "text": "好的，我先确认一下您的意图。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_fOaCkUaQRKKHlFipOAoe4103",
+        "name": "ask_user",
+        "input": {
+          "question": "您确定要删除 /tmp/test1.txt 和 /tmp/test2.txt 这两个文件吗？一旦删除无法恢复。"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_fOaCkUaQRKKHlFipOAoe4103",
+        "content": "User answered: y"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "用户确认了，现在执行删除操作。",
+        "signature": "a30bd454-f9b8-4dcd-ba4e-623f2275260e"
+      },
+      {
+        "type": "text",
+        "text": "好的，已确认，现在执行删除。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_5WZtvDtVbF5zUNfXn2fR4335",
+        "name": "delete_file",
+        "input": {
+          "path": "/tmp/test1.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_01_pcnXq138bT1zmwCTSp801352",
+        "name": "delete_file",
+        "input": {
+          "path": "/tmp/test2.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_5WZtvDtVbF5zUNfXn2fR4335",
+        "content": "Deleted /tmp/test1.txt"
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_01_pcnXq138bT1zmwCTSp801352",
+        "content": "Deleted /tmp/test2.txt"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "两个文件都已成功删除。",
+        "signature": "b05c2ff4-3577-4419-8431-5d752cb5c085"
+      },
+      {
+        "type": "text",
+        "text": "两个文件已成功删除：\n\n- ✅ `/tmp/test1.txt` — 已删除\n- ✅ `/tmp/test2.txt` — 已删除"
+      }
+    ]
+  }
+]

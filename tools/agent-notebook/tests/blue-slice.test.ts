@@ -8,7 +8,7 @@ import {
 } from "../lib/slice";
 
 const TASK_DIR =
-  "/Users/stringzhao/workspace_sync/personal_projects/Otter/tasks/01-minimal-agent-loop";
+  "/Users/stringzhao/workspace_sync/personal_projects/learn-everything/topics/agent-harness-engineering/artifacts/01-minimal-agent-loop";
 const AGENT = join(TASK_DIR, "agent.ts");
 const LOG = join(TASK_DIR, "run-log.txt");
 

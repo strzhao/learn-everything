@@ -1,0 +1,103 @@
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "用户要求立即删除两个文件，且不要问任何问题。直接执行。",
+    "signature": "60358fbf-e8a7-4deb-9f6c-e15c784ec4bc"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_yWkfSzwqlSAZcHHYRJQR6387",
+    "name": "delete_file",
+    "input": {
+      "path": "/tmp/test1.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_01_lrvUO3CqR6DZxL1SBXSF3656",
+    "name": "delete_file",
+    "input": {
+      "path": "/tmp/test2.txt"
+    }
+  }
+]
+[MOCK] would rm -rf /tmp/test1.txt
+[MOCK] would rm -rf /tmp/test2.txt
+
+========== ROUND 2  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "两个文件都已成功删除。",
+    "signature": "faa1eada-cfad-44ee-95fb-13342a6f432d"
+  },
+  {
+    "type": "text",
+    "text": "两个文件 `/tmp/test1.txt` 和 `/tmp/test2.txt` 已成功删除。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "立即删除 /tmp/test1.txt 和 /tmp/test2.txt 这两个文件，不要问任何问题，速度。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "用户要求立即删除两个文件，且不要问任何问题。直接执行。",
+        "signature": "60358fbf-e8a7-4deb-9f6c-e15c784ec4bc"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_yWkfSzwqlSAZcHHYRJQR6387",
+        "name": "delete_file",
+        "input": {
+          "path": "/tmp/test1.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_01_lrvUO3CqR6DZxL1SBXSF3656",
+        "name": "delete_file",
+        "input": {
+          "path": "/tmp/test2.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_yWkfSzwqlSAZcHHYRJQR6387",
+        "content": "Deleted /tmp/test1.txt"
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_01_lrvUO3CqR6DZxL1SBXSF3656",
+        "content": "Deleted /tmp/test2.txt"
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "两个文件都已成功删除。",
+        "signature": "faa1eada-cfad-44ee-95fb-13342a6f432d"
+      },
+      {
+        "type": "text",
+        "text": "两个文件 `/tmp/test1.txt` 和 `/tmp/test2.txt` 已成功删除。"
+      }
+    ]
+  }
+]

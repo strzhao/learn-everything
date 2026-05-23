@@ -5,7 +5,7 @@ import { tmpdir } from "node:os";
 import { parseLesson } from "../lib/parse-lesson";
 
 const OTTER_TASK_DIR =
-  "/Users/stringzhao/workspace_sync/personal_projects/Otter/tasks/01-minimal-agent-loop";
+  "/Users/stringzhao/workspace_sync/personal_projects/learn-everything/topics/agent-harness-engineering/artifacts/01-minimal-agent-loop";
 
 function mkLessonDir(content: string, files: Record<string, string> = {}): string {
   const dir = mkdtempSync(join(tmpdir(), "lesson-"));

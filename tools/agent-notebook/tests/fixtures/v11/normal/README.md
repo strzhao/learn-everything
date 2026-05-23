@@ -1,1 +1,1 @@
-/Users/stringzhao/workspace_sync/personal_projects/Otter/tasks/01-minimal-agent-loop/README.md
+/Users/stringzhao/workspace_sync/personal_projects/learn-everything/topics/agent-harness-engineering/artifacts/01-minimal-agent-loop/README.md
