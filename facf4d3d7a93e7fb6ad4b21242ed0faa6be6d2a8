@@ -1,0 +1,194 @@
+tools/agent-notebook/tests/fixtures/normal/run-log.txt
+  0ddee575fecb3486 1
+tools/agent-notebook/tests/blue-messages-replay.test.ts
+  0c2d8a5d15f111f9 9
+tools/agent-notebook/tests/fixtures/errors/run-log.txt
+  0ddee575fecb3486 1
+tools/agent-notebook/tests/fixtures/normal/agent.ts
+  0ddee575fecb3486 1
+tools/agent-notebook/tests/fixtures/errors/agent.ts
+  0ddee575fecb3486 1
+tools/agent-notebook/tests/fixtures/v11/normal/README.md
+  0ddee575fecb3486 1
+tools/agent-notebook/README.md
+  0c2d8a5d15f111f9 3,11-12,15
+topics/agent-harness-engineering/artifacts/01-minimal-agent-loop/README.md
+  0c2d8a5d15f111f9 1,3,5,7,9,11-12,14-17,19-24,27,30-44,47-55,57-59,61-62,64-70,72-74,76,78-80,82,84-88,92,94
+tools/agent-notebook/tests/fixtures/normal/README.md
+  0ddee575fecb3486 1
+tools/agent-notebook/tests/fixtures/v11/normal/run-log.txt
+  0ddee575fecb3486 1
+tools/agent-notebook/tests/helpers/server.ts
+  0c2d8a5d15f111f9 28-30
+tools/agent-notebook/tests/fixtures/v11/normal/agent.ts
+  0ddee575fecb3486 1
+tools/agent-notebook/tests/blue-slice.test.ts
+  0c2d8a5d15f111f9 11
+tools/agent-notebook/tests/blue-parse-lesson.test.ts
+  0c2d8a5d15f111f9 8
+topics/agent-harness-engineering/state.md
+  0c2d8a5d15f111f9 36
+CLAUDE.md
+  0c2d8a5d15f111f9 29-42
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.7",
+  "base_commit_sha": "facf4d3d7a93e7fb6ad4b21242ed0faa6be6d2a8",
+  "prompts": {
+    "0c2d8a5d15f111f9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d11bd4bc-ad7f-4b47-9c1b-92580a5b18aa",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 137,
+      "total_deletions": 44,
+      "accepted_lines": 137,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "tools/agent-notebook/tests/blue-slice.test.ts": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        },
+        "tools/agent-notebook/README.md": {
+          "additions": 4,
+          "deletions": 4,
+          "accepted_lines": 4
+        },
+        "tools/agent-notebook/tests/blue-parse-lesson.test.ts": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        },
+        "tools/agent-notebook/tests/helpers/server.ts": {
+          "additions": 3,
+          "deletions": 2,
+          "accepted_lines": 3
+        },
+        "topics/agent-harness-engineering/state.md": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/README.md": {
+          "additions": 18,
+          "deletions": 6,
+          "accepted_lines": 18
+        },
+        "tools/agent-notebook/tests/fixtures/normal/README.md": {
+          "additions": 18,
+          "deletions": 6,
+          "accepted_lines": 18
+        },
+        "CLAUDE.md": {
+          "additions": 14,
+          "accepted_lines": 14
+        },
+        "topics/agent-harness-engineering/artifacts/01-minimal-agent-loop/README.md": {
+          "additions": 76,
+          "deletions": 22,
+          "accepted_lines": 76
+        },
+        "tools/agent-notebook/tests/blue-messages-replay.test.ts": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        }
+      }
+    },
+    "0ddee575fecb3486": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1935cee-7501-4e8c-9b3b-584a4c606156",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 826,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "tools/agent-notebook/tests/fixtures/errors/run-log.txt": {
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/run-log.txt": {
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/helpers/server.ts": {
+          "accepted_lines": 2
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/agent.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/fixtures/normal/agent.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/fixtures/errors/agent.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/fixtures/normal/README.md": {
+          "accepted_lines": 76
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/README.md": {
+          "accepted_lines": 76
+        },
+        "tools/agent-notebook/tests/fixtures/normal/run-log.txt": {
+          "accepted_lines": 149
+        }
+      }
+    },
+    "2c61a2575acdea39": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1f45a9d-e472-47f7-9724-97bfab125e86",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 115,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".claude/skills/learn/pedagogy/feynman-technique.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/blooms-taxonomy.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/spaced-repetition.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/gemini-learning-mode.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/socratic-method.md": {
+          "accepted_lines": 23
+        }
+      }
+    },
+    "9b09e84aa8bfdadc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "88ec1183-412e-4889-acc7-f08b95248d09",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".learn/active.md": {
+          "accepted_lines": 1
+        }
+      }
+    }
+  }
+}
