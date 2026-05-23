@@ -1,0 +1,123 @@
+topics/INDEX.md
+  d41c0410981b7f4c 1-13
+topics/_active
+  d41c0410981b7f4c 1
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.7",
+  "base_commit_sha": "4031918f7cd218325b229aad8f9a04c515c22dce",
+  "prompts": {
+    "0ddee575fecb3486": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1935cee-7501-4e8c-9b3b-584a4c606156",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 838,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "tools/agent-notebook/tests/fixtures/normal/README.md": {
+          "accepted_lines": 82
+        },
+        "tools/agent-notebook/tests/fixtures/normal/run-log.txt": {
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/agent.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/helpers/server.ts": {
+          "accepted_lines": 2
+        },
+        "tools/agent-notebook/tests/fixtures/normal/agent.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/fixtures/errors/agent.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/README.md": {
+          "accepted_lines": 82
+        },
+        "tools/agent-notebook/tests/fixtures/errors/run-log.txt": {
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/run-log.txt": {
+          "accepted_lines": 149
+        }
+      }
+    },
+    "2c61a2575acdea39": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1f45a9d-e472-47f7-9724-97bfab125e86",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 115,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".claude/skills/learn/pedagogy/blooms-taxonomy.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/feynman-technique.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/gemini-learning-mode.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/spaced-repetition.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/socratic-method.md": {
+          "accepted_lines": 23
+        }
+      }
+    },
+    "9b09e84aa8bfdadc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "88ec1183-412e-4889-acc7-f08b95248d09",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".learn/active.md": {
+          "accepted_lines": 1
+        }
+      }
+    },
+    "d41c0410981b7f4c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d04a4fbe-9ad3-4fad-8d3d-6b5c6e497566",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 14,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "topics/INDEX.md": {
+          "accepted_lines": 13
+        },
+        "topics/_active": {
+          "accepted_lines": 1
+        }
+      }
+    }
+  }
+}
