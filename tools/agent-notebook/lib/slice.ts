@@ -55,7 +55,7 @@ export async function sliceCodeSection(
 export async function sliceLogRound(
   filePath: string,
   round: number,
-): Promise<{ content: string; stopReason: string }> {
+): Promise<{ content: string; stopReason: string; startLine: number; endLine: number; totalLines: number }> {
   const text = await Bun.file(filePath).text();
   const lines = text.split("\n");
   const roundRe = /^={5,}\s*ROUND\s+(\d+)\s+stop_reason=(\w+)\s*={5,}\s*$/;
@@ -83,7 +83,13 @@ export async function sliceLogRound(
   }
   let end = endIdx;
   while (end > startIdx + 1 && lines[end - 1].trim() === "") end--;
-  return { content: lines.slice(startIdx, end).join("\n"), stopReason };
+  return {
+    content: lines.slice(startIdx, end).join("\n"),
+    stopReason,
+    startLine: startIdx + 1,
+    endLine: end,
+    totalLines: lines.length,
+  };
 }
 
 /**
@@ -93,7 +99,7 @@ export async function sliceLogRound(
 export async function sliceLogSection(
   filePath: string,
   section: string,
-): Promise<string> {
+): Promise<{ content: string; startLine: number; endLine: number; totalLines: number }> {
   const text = await Bun.file(filePath).text();
   const lines = text.split("\n");
   const target = section.trim();
@@ -119,5 +125,10 @@ export async function sliceLogSection(
   }
   let end = endIdx;
   while (end > startIdx + 1 && lines[end - 1].trim() === "") end--;
-  return lines.slice(startIdx, end).join("\n");
+  return {
+    content: lines.slice(startIdx, end).join("\n"),
+    startLine: startIdx + 1,
+    endLine: end,
+    totalLines: lines.length,
+  };
 }

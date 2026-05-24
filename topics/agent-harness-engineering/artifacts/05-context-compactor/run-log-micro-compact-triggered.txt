@@ -1,0 +1,200 @@
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "The user wants me to read three files one by one: /tmp/a.txt, /tmp/b.txt, /tmp/c.txt. After each file, I should summarize it in one sentence before reading the next one. Let me start with the first file.",
+    "signature": "a3320110-d7b1-4d72-a3a4-44fca1fcbe17"
+  },
+  {
+    "type": "text",
+    "text": "好的，我先读取第一个文件。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_43l4FoCMqrT3H8CWEncU4146",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/a.txt"
+    }
+  }
+]
+
+========== ROUND 2  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "The file content seems to be a mocked placeholder content. Let me summarize it and proceed to the next file.",
+    "signature": "58da2b94-ba34-48d4-ad42-acf5dfd8171a"
+  },
+  {
+    "type": "text",
+    "text": "**文件 /tmp/a.txt** 大致内容：这是一个模拟的占位内容（约 500 字节），看起来是用于测试的文件内容占位符。\n\n接下来读取第二个文件："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_LosMzFWQH8kyNjk4tAR09035",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/b.txt"
+    }
+  }
+]
+
+========== ROUND 3  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "Similar mocked content. Let me summarize and proceed to the third file.",
+    "signature": "7e2ca0f8-3804-48a0-ac1d-51dec51e6689"
+  },
+  {
+    "type": "text",
+    "text": "**文件 /tmp/b.txt** 大致内容：同样是一个模拟的占位内容（约 500 字节），与 a.txt 类似但属于 b.txt 的独立测试数据。\n\n继续读取第三个文件："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_wsYGoSf80X4K9W5Llsz50542",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/c.txt"
+    }
+  }
+]
+
+========== COMPACT EVENT round=4 type=micro role=interactive before=2188 after=2094 ==========
+[AUDIT] COMPACT type=micro role=interactive cleared=1_tool_results freed=94b
+
+========== ROUND 4  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "All three files read. Let me summarize the last one.",
+    "signature": "7e46a12d-3025-4da1-b8ef-16e75f8c1834"
+  },
+  {
+    "type": "text",
+    "text": "**文件 /tmp/c.txt** 大致内容：也是一个约 500 字节的模拟占位内容，属于 c.txt 的独立测试数据。\n\n---\n\n**总结一下三个文件：**\n\n| 文件 | 一句话内容 |\n|------|-----------|\n| `/tmp/a.txt` | 模拟占位内容（约 500 字节），用于测试文件 a。 |\n| `/tmp/b.txt` | 模拟占位内容（约 500 字节），用于测试文件 b。 |\n| `/tmp/c.txt` | 模拟占位内容（约 500 字节），用于测试文件 c。 |\n\n三个文件都是 500 字节左右的模拟测试占位内容，各自独立，没有跨文件关联数据。✅ 全部读取完毕。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "请依次读取 /tmp/a.txt /tmp/b.txt /tmp/c.txt 这 3 个文件，每个读完用一句话告诉我大致内容再读下一个。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user wants me to read three files one by one: /tmp/a.txt, /tmp/b.txt, /tmp/c.txt. After each file, I should summarize it in one sentence before reading the next one. Let me start with the first file.",
+        "signature": "a3320110-d7b1-4d72-a3a4-44fca1fcbe17"
+      },
+      {
+        "type": "text",
+        "text": "好的，我先读取第一个文件。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_43l4FoCMqrT3H8CWEncU4146",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/a.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_43l4FoCMqrT3H8CWEncU4146",
+        "content": "[Old tool result content cleared]",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The file content seems to be a mocked placeholder content. Let me summarize it and proceed to the next file.",
+        "signature": "58da2b94-ba34-48d4-ad42-acf5dfd8171a"
+      },
+      {
+        "type": "text",
+        "text": "**文件 /tmp/a.txt** 大致内容：这是一个模拟的占位内容（约 500 字节），看起来是用于测试的文件内容占位符。\n\n接下来读取第二个文件："
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_LosMzFWQH8kyNjk4tAR09035",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/b.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_LosMzFWQH8kyNjk4tAR09035",
+        "content": "Read /tmp/b.txt: <mocked content of /tmp/b.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "Similar mocked content. Let me summarize and proceed to the third file.",
+        "signature": "7e2ca0f8-3804-48a0-ac1d-51dec51e6689"
+      },
+      {
+        "type": "text",
+        "text": "**文件 /tmp/b.txt** 大致内容：同样是一个模拟的占位内容（约 500 字节），与 a.txt 类似但属于 b.txt 的独立测试数据。\n\n继续读取第三个文件："
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_wsYGoSf80X4K9W5Llsz50542",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/c.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_wsYGoSf80X4K9W5Llsz50542",
+        "content": "Read /tmp/c.txt: <mocked content of /tmp/c.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "All three files read. Let me summarize the last one.",
+        "signature": "7e46a12d-3025-4da1-b8ef-16e75f8c1834"
+      },
+      {
+        "type": "text",
+        "text": "**文件 /tmp/c.txt** 大致内容：也是一个约 500 字节的模拟占位内容，属于 c.txt 的独立测试数据。\n\n---\n\n**总结一下三个文件：**\n\n| 文件 | 一句话内容 |\n|------|-----------|\n| `/tmp/a.txt` | 模拟占位内容（约 500 字节），用于测试文件 a。 |\n| `/tmp/b.txt` | 模拟占位内容（约 500 字节），用于测试文件 b。 |\n| `/tmp/c.txt` | 模拟占位内容（约 500 字节），用于测试文件 c。 |\n\n三个文件都是 500 字节左右的模拟测试占位内容，各自独立，没有跨文件关联数据。✅ 全部读取完毕。"
+      }
+    ]
+  }
+]

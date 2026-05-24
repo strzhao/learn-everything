@@ -1,0 +1,83 @@
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "The user wants me to delete the file /tmp/temp.log directly. Let me do that.",
+    "signature": "1ec53060-3eea-4572-ba93-a4e20c20974b"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_mzAs3OwRhApqEoyfP7Rt5606",
+    "name": "delete_file",
+    "input": {
+      "path": "/tmp/temp.log"
+    }
+  }
+]
+[AUDIT] role=coordinator auto-allow tool=delete_file mode=bypassPermissions input=/tmp/temp.log
+[MOCK] would rm -rf /tmp/temp.log
+
+========== ROUND 2  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "The file has been deleted successfully.",
+    "signature": "95d69540-4787-4e0f-8bcf-cc4fa8c3fa92"
+  },
+  {
+    "type": "text",
+    "text": "已完成，`/tmp/temp.log` 已被删除。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "请直接删除 /tmp/temp.log，不要派 swarm，自己干就行。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user wants me to delete the file /tmp/temp.log directly. Let me do that.",
+        "signature": "1ec53060-3eea-4572-ba93-a4e20c20974b"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_mzAs3OwRhApqEoyfP7Rt5606",
+        "name": "delete_file",
+        "input": {
+          "path": "/tmp/temp.log"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_mzAs3OwRhApqEoyfP7Rt5606",
+        "content": "Deleted /tmp/temp.log",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The file has been deleted successfully.",
+        "signature": "95d69540-4787-4e0f-8bcf-cc4fa8c3fa92"
+      },
+      {
+        "type": "text",
+        "text": "已完成，`/tmp/temp.log` 已被删除。"
+      }
+    ]
+  }
+]

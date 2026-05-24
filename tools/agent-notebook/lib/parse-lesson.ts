@@ -10,7 +10,8 @@ export type Block =
       source: { file: string; section: number | string;
         startLine: number; endLine: number; totalLines: number } }
   | { type: "log"; content: string;
-      source: { file: string; round?: number; section?: string };
+      source: { file: string; round?: number; section?: string;
+        startLine: number; endLine: number; totalLines: number };
       stopReason?: string }
   | { type: "error"; message: string; raw: string };
 
@@ -96,11 +97,12 @@ async function resolveInclude(
   const ext = extname(filePath).toLowerCase();
   try {
     if (arg.key === "round") {
-      const { content, stopReason } = await sliceLogRound(filePath, arg.value as number);
+      const { content, stopReason, startLine, endLine, totalLines } =
+        await sliceLogRound(filePath, arg.value as number);
       return {
         type: "log",
         content,
-        source: { file: relPath, round: arg.value as number },
+        source: { file: relPath, round: arg.value as number, startLine, endLine, totalLines },
         stopReason,
       };
     }
@@ -130,11 +132,12 @@ async function resolveInclude(
       };
     }
     // 引号 section: 字符串名 → 通常用于 log 命名段
-    const content = await sliceLogSection(filePath, arg.value as string);
+    const { content, startLine, endLine, totalLines } =
+      await sliceLogSection(filePath, arg.value as string);
     return {
       type: "log",
       content,
-      source: { file: relPath, section: arg.value as string },
+      source: { file: relPath, section: arg.value as string, startLine, endLine, totalLines },
     };
   } catch (e: any) {
     if (e instanceof SliceError) {

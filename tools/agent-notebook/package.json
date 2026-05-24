@@ -1,0 +1,9 @@
+{
+  "name": "agent-notebook",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "marked": "^14.1.3",
+    "isomorphic-dompurify": "^2.16.0"
+  }
+}

@@ -61,7 +61,31 @@ function onLessonLoaded(data){
   // 默认展开当前 run 的第一个 round 块
   const firstRoundBlockIdx=state.blocks.findIndex((b)=>b.type==="log"&&b.source&&b.source.file===state.currentRunId&&typeof b.source.round==="number");
   if(firstRoundBlockIdx>=0)state.expanded.add(firstRoundBlockIdx);
-  renderRunTabs();renderLesson();renderSidebar();renderStep();
+  renderRunTabs();renderSourceTabs();renderLesson();renderSidebar();renderStep();
+}
+// lesson 区顶部源码版本 tabs：按 lesson 中 code block 的 source.file 首次出现顺序去重，
+// 点击直接 openDrawer 看完整文件；≤1 个文件时整条 bar 隐藏。
+function renderSourceTabs(){
+  const nav=document.getElementById("source-tabs");if(!nav)return;
+  const seen=new Set();const fileOrder=[];
+  for(const b of state.blocks){
+    if(b.type!=="code")continue;
+    const f=b.source&&b.source.file;if(!f||seen.has(f))continue;
+    seen.add(f);fileOrder.push(f);
+  }
+  nav.innerHTML="";
+  if(fileOrder.length<=1){nav.style.display="none";return;}
+  nav.style.display="";
+  for(const f of fileOrder){
+    const btn=document.createElement("button");
+    btn.type="button";btn.className="source-tab";
+    btn.textContent=makeSourceLabel(f);btn.title=f;
+    btn.addEventListener("click",()=>openDrawer(f,1));
+    nav.appendChild(btn);
+  }
+}
+function makeSourceLabel(f){
+  return f.replace(/^\.\//,"").replace(/\.(ts|tsx|js|jsx)$/i,"");
 }
 // v1.4: 渲染 sidebar 顶部 run tabs
 function renderRunTabs(){
@@ -85,12 +109,23 @@ function switchRun(id){
   renderRunTabs();renderLesson();renderSidebar();renderStep();scrollToCurrentRound();
 }
 function renderLesson(){
-  const root=document.getElementById("lesson");root.innerHTML="";
+  const root=document.getElementById("lesson");
+  // 保留 source-tabs nav（写在 index.html 顶部，由 renderSourceTabs 单独填充）
+  const nav=root.querySelector("#source-tabs");
+  root.innerHTML="";
+  if(nav)root.appendChild(nav);
   state.blocks.forEach((b,idx)=>root.appendChild(renderBlock(b,idx)));
 }
 function renderBlock(b,idx){
   if(b.type==="markdown"){
-    const div=document.createElement("div");div.className="block-md";div.innerHTML=b.html;return div;
+    const div=document.createElement("div");div.className="block-md";div.innerHTML=b.html;
+    // fenced code 块（lesson.md 里的 ```lang ... ```）服务端只转义并占位，这里走 hljs 着色
+    div.querySelectorAll("pre.md-code").forEach((pre)=>{
+      const lang=pre.dataset.mdLang||"plaintext";
+      const code=pre.querySelector("code");
+      if(code)code.innerHTML=safeHighlight(code.textContent||"",langToHljs(lang));
+    });
+    return div;
   }
   if(b.type==="code"){
     const wrap=document.createElement("div");wrap.className="block-code";wrap.dataset.blockIdx=String(idx);
@@ -119,7 +154,18 @@ function renderBlock(b,idx){
     else left.textContent=b.source.file;
     const right=document.createElement("span");right.className="stop-reason";
     if(b.stopReason)right.textContent=`stop_reason=${b.stopReason}`;
-    head.appendChild(left);head.appendChild(right);
+    // 「查看源码 →」按钮：打开完整 run log 抽屉并聚焦当前 round/section 行范围
+    const viewSrcBtn=document.createElement("button");
+    viewSrcBtn.className="log-view-source";viewSrcBtn.type="button";
+    viewSrcBtn.textContent="查看源码 →";viewSrcBtn.title="打开完整 run log";
+    viewSrcBtn.addEventListener("click",(e)=>{
+      e.stopPropagation();
+      const sl=b.source.startLine,el=b.source.endLine;
+      openDrawer(b.source.file,sl||1,sl,el);
+    });
+    const rightWrap=document.createElement("span");rightWrap.className="log-head-right";
+    rightWrap.appendChild(right);rightWrap.appendChild(viewSrcBtn);
+    head.appendChild(left);head.appendChild(rightWrap);
     head.addEventListener("click",()=>{
       if(state.expanded.has(idx))state.expanded.delete(idx);else state.expanded.add(idx);
       wrap.classList.toggle("collapsed");
@@ -365,8 +411,6 @@ async function openDrawer(filePath,focusLine,startLine,endLine){
     const td1=document.createElement("td");td1.className="ln";td1.textContent=String(lineNo);
     const td2=document.createElement("td");td2.className="code";td2.innerHTML=htmlLines[i]||"&nbsp;";
     tr.appendChild(td1);tr.appendChild(td2);
-    // 任务 6: 抽屉行 click → closeDrawer + 主区高亮
-    tr.addEventListener("click",()=>{closeDrawer();jumpBackToCodeBlock(filePath,lineNo);});
     table.appendChild(tr);
   }
   body.appendChild(table);

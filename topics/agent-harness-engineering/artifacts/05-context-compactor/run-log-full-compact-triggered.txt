@@ -1,0 +1,216 @@
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "用户让我依次读取5个文件，每次只读一个，每读完一个用一句话告诉我大致内容再读下一个。让我开始读第一个文件。",
+    "signature": "38e5c7ab-c480-4d89-9424-382bdadd4d79"
+  },
+  {
+    "type": "text",
+    "text": "好的，我来依次读取这 5 个文件。先从第一个开始："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_3aYaxLguosy7rwGW3nth2432",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/a.txt"
+    }
+  }
+]
+
+========== ROUND 2  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "第一个文件读取完毕。虽然内容是 mock 的，但我还是按用户要求用一句话概括。内容看起来是模拟的文件内容。让我继续读下一个。",
+    "signature": "1d60963c-b670-4a7c-97d9-be92ef7a42d5"
+  },
+  {
+    "type": "text",
+    "text": "**文件 /tmp/a.txt** — 内容是一段模拟的文本数据（约 500 字节的占位内容）。\n\n接下来读第二个文件："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_UrIRD93aYT72q5gQLmUS7383",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/b.txt"
+    }
+  }
+]
+
+========== ROUND 3  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "第二个文件也是类似的 mock 内容。",
+    "signature": "7b544c34-79b0-43fe-9fc9-374121dfc04e"
+  },
+  {
+    "type": "text",
+    "text": "**文件 /tmp/b.txt** — 同样是一段模拟的文本数据（约 500 字节的占位内容）。\n\n继续读第三个："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_3Rpv2TYv3drj2IC3WkzT8604",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/c.txt"
+    }
+  }
+]
+
+========== COMPACT EVENT round=4 type=micro role=interactive before=1938 after=1844 ==========
+[AUDIT] COMPACT type=micro role=interactive cleared=1_tool_results freed=94b
+
+========== ROUND 4  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "第三个文件也是类似的 mock 内容。",
+    "signature": "c3935a6f-c55b-4514-8493-ceb3a19f14ee"
+  },
+  {
+    "type": "text",
+    "text": "**文件 /tmp/c.txt** — 也是模拟的文本数据（约 500 字节的占位内容）。\n\n继续读第四个："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_Mbwvse5dmN0jfkCdaEgK9614",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/d.txt"
+    }
+  }
+]
+
+========== COMPACT EVENT round=5 type=micro role=interactive before=2429 after=2335 ==========
+[AUDIT] COMPACT type=micro role=interactive cleared=1_tool_results freed=94b
+
+========== COMPACT EVENT round=5 type=full role=interactive before=2335 after=1854 ==========
+summary (first 600 chars): <analysis>
+The user's intent was to read five files sequentially (/tmp/a.txt through /tmp/e.txt), with the assistant reading one file at a time and providing a one-sentence summary before proceeding to the next. The tool used was `read_file`. The assistant executed this pattern successfully for the first three files (a.txt, b.txt, c.txt), each time stating it was moving to the next file. However, the conversation was cut off before files d.txt and e.txt were read. All three files that were read contained mock placeholder text (described as ~500 bytes of simulated content). No errors were encou
+
+========== ROUND 5  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "Same pattern – mock content. Let me summarize and move to the last file.",
+    "signature": "849aaf42-c375-4f66-aa97-c7cdf250a580"
+  },
+  {
+    "type": "text",
+    "text": "**文件 /tmp/d.txt** — 同样包含模拟的文本内容（约 500 字节）。\n\n现在读最后一个文件："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_8XtKqwBhmd220Ud8q6MX9585",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/e.txt"
+    }
+  }
+]
+
+========== ROUND 6  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "All five files have been read. Each contained mock placeholder text of approximately 500 bytes.",
+    "signature": "e9de8cbd-80ec-4d1e-a134-a66f852c558b"
+  },
+  {
+    "type": "text",
+    "text": "**文件 /tmp/e.txt** — 也是模拟的占位文本（约 500 字节）。\n\n---\n\n全部五个文件（`/tmp/a.txt` 到 `/tmp/e.txt`）已读取完成。每个文件的内容均为模拟的占位文本，大小约 500 字节，结构相同。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "[COMPACTED SUMMARY]\n<analysis>\nThe user's intent was to read five files sequentially (/tmp/a.txt through /tmp/e.txt), with the assistant reading one file at a time and providing a one-sentence summary before proceeding to the next. The tool used was `read_file`. The assistant executed this pattern successfully for the first three files (a.txt, b.txt, c.txt), each time stating it was moving to the next file. However, the conversation was cut off before files d.txt and e.txt were read. All three files that were read contained mock placeholder text (described as ~500 bytes of simulated content). No errors were encountered, but the task was incomplete due to conversation truncation. No code snippets, technical decisions, or file paths beyond the /tmp/ directory were involved.\n</analysis>\n\n<summary>\nUser requested sequential reading of 5 files (/tmp/a.txt to /tmp/e.txt), one at a time, with a one-sentence summary after each. Assistant read the first three files (a.txt, b.txt, c.txt) using the read_file tool. Each file contained mock placeholder text (~500 bytes). The conversation was cut off before the remaining two files (d.txt and e.txt) could be read. No errors occurred, but the task was left incomplete.\n</summary>"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "第三个文件也是类似的 mock 内容。",
+        "signature": "c3935a6f-c55b-4514-8493-ceb3a19f14ee"
+      },
+      {
+        "type": "text",
+        "text": "**文件 /tmp/c.txt** — 也是模拟的文本数据（约 500 字节的占位内容）。\n\n继续读第四个："
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_Mbwvse5dmN0jfkCdaEgK9614",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/d.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_Mbwvse5dmN0jfkCdaEgK9614",
+        "content": "Read /tmp/d.txt: <mocked content of /tmp/d.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "Same pattern – mock content. Let me summarize and move to the last file.",
+        "signature": "849aaf42-c375-4f66-aa97-c7cdf250a580"
+      },
+      {
+        "type": "text",
+        "text": "**文件 /tmp/d.txt** — 同样包含模拟的文本内容（约 500 字节）。\n\n现在读最后一个文件："
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_8XtKqwBhmd220Ud8q6MX9585",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/e.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_8XtKqwBhmd220Ud8q6MX9585",
+        "content": "Read /tmp/e.txt: <mocked content of /tmp/e.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "All five files have been read. Each contained mock placeholder text of approximately 500 bytes.",
+        "signature": "e9de8cbd-80ec-4d1e-a134-a66f852c558b"
+      },
+      {
+        "type": "text",
+        "text": "**文件 /tmp/e.txt** — 也是模拟的占位文本（约 500 字节）。\n\n---\n\n全部五个文件（`/tmp/a.txt` 到 `/tmp/e.txt`）已读取完成。每个文件的内容均为模拟的占位文本，大小约 500 字节，结构相同。"
+      }
+    ]
+  }
+]

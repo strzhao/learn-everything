@@ -1,6 +1,17 @@
-// 极简 markdown→HTML 渲染器
-// 仅支持: H1-H3 标题、段落、无序列表、`inline code`、**bold**、GFM 表格
-// 强制 HTML 实体转义防 XSS
+// markdown → HTML：marked (CommonMark + GFM) + DOMPurify XSS 净化
+//
+// 与原架构的契约约束（看 plan）：
+//   - parse-lesson.ts 仍调用 renderMarkdown(md) 拿 HTML 字符串
+//   - app.js 用 `pre.md-code[data-md-lang]` 找 fenced code，交给 hljs 着色
+//       → 重写 code renderer，输出 <pre class="md-code" data-md-lang="..."><code>...</code></pre>
+//   - style.css 用 .md-table 选择器
+//       → 重写 table renderer，输出 <table class="md-table">...
+//   - 契约 2 + 契约 11：lesson.md 里的 <script> 等 inline HTML 必须实体转义为 &lt;script&gt;
+//       → 重写 html renderer，对原始 HTML 字面 escapeHtml，源头切断
+//   - DOMPurify 兜底：剥离任何漏网的事件处理器 / 危险协议链接
+
+import { Marked } from "marked";
+import DOMPurify from "isomorphic-dompurify";
 
 export function escapeHtml(s: string): string {
   return s
@@ -11,102 +22,46 @@ export function escapeHtml(s: string): string {
     .replace(/'/g, "&#39;");
 }
 
-// 行内: 先转义所有字符，然后再把 **bold** / `code` 的占位回填为标签
-function renderInline(line: string): string {
-  // 先用占位符把语法包裹切走（避免转义破坏）
-  const codes: string[] = [];
-  let s = line.replace(/`([^`\n]+)`/g, (_, c) => {
-    codes.push(c);
-    return ` C${codes.length - 1} `;
-  });
-  const bolds: string[] = [];
-  s = s.replace(/\*\*([^*\n]+)\*\*/g, (_, c) => {
-    bolds.push(c);
-    return ` B${bolds.length - 1} `;
-  });
-  // 转义剩下的纯文本
-  s = escapeHtml(s);
-  // 回填（占位符里的内容也转义）
-  s = s.replace(/ C(\d+) /g, (_, i) => `<code>${escapeHtml(codes[Number(i)])}</code>`);
-  s = s.replace(/ B(\d+) /g, (_, i) => `<strong>${escapeHtml(bolds[Number(i)])}</strong>`);
-  return s;
-}
-
-// GFM 表格：head 行 + 分隔行 (|---|---|) + 后续 row 行
-// 返回 { html, consumed } 或 null 表示当前位置不是表格
-function tryParseTable(lines: string[], start: number): { html: string; consumed: number } | null {
-  const head = lines[start]?.trim();
-  const sep = lines[start + 1]?.trim();
-  if (!head || !sep) return null;
-  if (!/^\|.*\|$/.test(head)) return null;
-  if (!/^\|[\s\-:|]+\|$/.test(sep)) return null;
-  const split = (l: string) =>
-    l.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((s) => s.trim());
-  const headCells = split(head);
-  const rows: string[][] = [];
-  let j = start + 2;
-  while (j < lines.length && /^\|.*\|\s*$/.test(lines[j].trim())) {
-    rows.push(split(lines[j]));
-    j++;
-  }
-  const thead = `<thead><tr>${headCells.map((c) => `<th>${renderInline(c)}</th>`).join("")}</tr></thead>`;
-  const tbody = `<tbody>${rows
-    .map((r) => `<tr>${r.map((c) => `<td>${renderInline(c)}</td>`).join("")}</tr>`)
-    .join("")}</tbody>`;
-  return { html: `<table class="md-table">${thead}${tbody}</table>`, consumed: j - start };
-}
+const marked = new Marked({
+  gfm: true,
+  breaks: false,
+  renderer: {
+    code({ text, lang }) {
+      const langAttr = lang ? ` data-md-lang="${escapeHtml(lang)}"` : "";
+      return `<pre class="md-code"${langAttr}><code>${escapeHtml(text)}</code></pre>\n`;
+    },
+    // 表格：marked 默认 <table>，加 .md-table class 对齐 style.css
+    table(token) {
+      let header = "";
+      for (const cell of token.header) {
+        header += this.tablecell(cell);
+      }
+      const head = `<thead>\n<tr>\n${header}</tr>\n</thead>\n`;
+      let body = "";
+      for (const row of token.rows) {
+        let rowHtml = "";
+        for (const cell of row) {
+          rowHtml += this.tablecell(cell);
+        }
+        body += `<tr>\n${rowHtml}</tr>\n`;
+      }
+      if (body) body = `<tbody>${body}</tbody>`;
+      // wrapper 提供 overflow-x 兜底；table 自身保持正常 table 显示，宽度由 lesson 区决定
+      return `<div class="md-table-wrap"><table class="md-table">\n${head}${body}</table></div>\n`;
+    },
+    // 把 lesson.md 里的 inline / block HTML 字面实体转义掉（契约 2 + 11）
+    // text 可能是单个 token (Tag) 或整段 raw block；都按字面转义
+    html({ text }) {
+      return escapeHtml(text);
+    },
+  },
+});
 
 export function renderMarkdown(md: string): string {
-  const lines = md.split("\n");
-  const out: string[] = [];
-  let i = 0;
-  while (i < lines.length) {
-    const line = lines[i];
-    // H1-H3
-    const h = line.match(/^(#{1,3})\s+(.*)$/);
-    if (h) {
-      const lvl = h[1].length;
-      out.push(`<h${lvl}>${renderInline(h[2])}</h${lvl}>`);
-      i++;
-      continue;
-    }
-    // GFM 表格（先于段落识别，避免管道行被吞作段落）
-    const tbl = tryParseTable(lines, i);
-    if (tbl) {
-      out.push(tbl.html);
-      i += tbl.consumed;
-      continue;
-    }
-    // 无序列表（连续 `- ` / `* ` 行）
-    if (/^[-*]\s+/.test(line)) {
-      const items: string[] = [];
-      while (i < lines.length && /^[-*]\s+/.test(lines[i])) {
-        items.push(lines[i].replace(/^[-*]\s+/, ""));
-        i++;
-      }
-      out.push("<ul>" + items.map((t) => `<li>${renderInline(t)}</li>`).join("") + "</ul>");
-      continue;
-    }
-    // 空行 → 跳过
-    if (line.trim() === "") {
-      i++;
-      continue;
-    }
-    // 普通段落: 收集连续非空非语法行
-    const para: string[] = [];
-    while (
-      i < lines.length &&
-      lines[i].trim() !== "" &&
-      !/^(#{1,3})\s+/.test(lines[i]) &&
-      !/^[-*]\s+/.test(lines[i]) &&
-      !/^\|.*\|\s*$/.test(lines[i].trim())
-    ) {
-      para.push(lines[i]);
-      i++;
-    }
-    if (para.length > 0) {
-      out.push(`<p>${para.map(renderInline).join("<br>")}</p>`);
-    }
-  }
-  return out.join("\n");
+  const html = marked.parse(md, { async: false }) as string;
+  return DOMPurify.sanitize(html, {
+    ADD_ATTR: ["data-md-lang"],
+    // 默认白名单已包含 p/h1-6/ul/ol/li/blockquote/code/pre/table/thead/tbody/tr/th/td
+    // /a/img/strong/em/del/hr/br/input/span/div 等；javascript: / data: 等危险协议默认过滤
+  });
 }

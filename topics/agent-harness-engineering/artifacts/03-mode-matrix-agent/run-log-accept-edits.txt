@@ -1,0 +1,192 @@
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "用户要求：\n1. 把 /tmp/foo.txt 的内容改成 \"updated\"\n2. 删除 /tmp/old.txt 文件\n\n我需要先读取 /tmp/foo.txt 看看当前内容，然后修改它，再删除 /tmp/old.txt。让我先检查这两个文件是否存在。\n\n我可以先读取这两个文件来确认它们存在，然后执行修改和删除操作。由于 read_file 和 delete_file 之间没有依赖关系（除了先确认文件存在），我可以先读取两个文件。不过最好先读取看看情况。",
+    "signature": "0b0f3107-42b8-484a-9774-9ff79f44ad89"
+  },
+  {
+    "type": "text",
+    "text": "好的，我来执行这两个操作。先检查一下这两个文件的状态。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_BD6dU92gEBXKckiQwJ6c1905",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/foo.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_01_ZeKyheVcp3z2xEACtcSj2821",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/old.txt"
+    }
+  }
+]
+
+========== ROUND 2  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "两个文件都存在。现在：\n1. 将 /tmp/foo.txt 的内容改为 \"updated\"\n2. 删除 /tmp/old.txt\n\n这两个操作没有依赖关系，可以同时进行。",
+    "signature": "9279a54b-6582-408d-b15f-a1b380d0b37d"
+  },
+  {
+    "type": "text",
+    "text": "两个文件都存在。现在开始执行操作：修改 `/tmp/foo.txt` 的内容为 `\"updated\"`，并删除 `/tmp/old.txt`。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_wHnuss2g34N0lOqTpDrL0360",
+    "name": "edit_file",
+    "input": {
+      "path": "/tmp/foo.txt",
+      "content": "updated"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_01_zAuUEonjWCecWQIVdxfc8981",
+    "name": "delete_file",
+    "input": {
+      "path": "/tmp/old.txt"
+    }
+  }
+]
+[AUDIT] auto-allow tool=edit_file mode=acceptEdits input=/tmp/foo.txt
+[MOCK] would write /tmp/foo.txt <- "updated"
+[harness gate] mode=acceptEdits Allow delete_file on /tmp/old.txt? [y/N] [MOCK] would rm -rf /tmp/old.txt
+
+========== ROUND 3  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "两个操作都成功完成了。",
+    "signature": "b3b5725e-8580-4842-b4c0-58f3338354b2"
+  },
+  {
+    "type": "text",
+    "text": "全部完成 ✅\n\n1. **修改** `/tmp/foo.txt` → 内容已改为 `\"updated\"`\n2. **删除** `/tmp/old.txt` → 旧文件已删除\n\n如果你还需要其他操作，随时告诉我！"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "请把 /tmp/foo.txt 的内容改成 \"updated\"，然后删除 /tmp/old.txt 这个旧文件。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "用户要求：\n1. 把 /tmp/foo.txt 的内容改成 \"updated\"\n2. 删除 /tmp/old.txt 文件\n\n我需要先读取 /tmp/foo.txt 看看当前内容，然后修改它，再删除 /tmp/old.txt。让我先检查这两个文件是否存在。\n\n我可以先读取这两个文件来确认它们存在，然后执行修改和删除操作。由于 read_file 和 delete_file 之间没有依赖关系（除了先确认文件存在），我可以先读取两个文件。不过最好先读取看看情况。",
+        "signature": "0b0f3107-42b8-484a-9774-9ff79f44ad89"
+      },
+      {
+        "type": "text",
+        "text": "好的，我来执行这两个操作。先检查一下这两个文件的状态。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_BD6dU92gEBXKckiQwJ6c1905",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/foo.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_01_ZeKyheVcp3z2xEACtcSj2821",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/old.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_BD6dU92gEBXKckiQwJ6c1905",
+        "content": "Read /tmp/foo.txt: <mocked content>",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_01_ZeKyheVcp3z2xEACtcSj2821",
+        "content": "Read /tmp/old.txt: <mocked content>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "两个文件都存在。现在：\n1. 将 /tmp/foo.txt 的内容改为 \"updated\"\n2. 删除 /tmp/old.txt\n\n这两个操作没有依赖关系，可以同时进行。",
+        "signature": "9279a54b-6582-408d-b15f-a1b380d0b37d"
+      },
+      {
+        "type": "text",
+        "text": "两个文件都存在。现在开始执行操作：修改 `/tmp/foo.txt` 的内容为 `\"updated\"`，并删除 `/tmp/old.txt`。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_wHnuss2g34N0lOqTpDrL0360",
+        "name": "edit_file",
+        "input": {
+          "path": "/tmp/foo.txt",
+          "content": "updated"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_01_zAuUEonjWCecWQIVdxfc8981",
+        "name": "delete_file",
+        "input": {
+          "path": "/tmp/old.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_wHnuss2g34N0lOqTpDrL0360",
+        "content": "Edited /tmp/foo.txt",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_01_zAuUEonjWCecWQIVdxfc8981",
+        "content": "Deleted /tmp/old.txt",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "两个操作都成功完成了。",
+        "signature": "b3b5725e-8580-4842-b4c0-58f3338354b2"
+      },
+      {
+        "type": "text",
+        "text": "全部完成 ✅\n\n1. **修改** `/tmp/foo.txt` → 内容已改为 `\"updated\"`\n2. **删除** `/tmp/old.txt` → 旧文件已删除\n\n如果你还需要其他操作，随时告诉我！"
+      }
+    ]
+  }
+]

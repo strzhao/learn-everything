@@ -1,0 +1,81 @@
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "用户让我读取 /tmp/a.txt 文件并总结内容。我来读取这个文件。",
+    "signature": "085cf837-4432-46e0-b60e-4dc5605330c5"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_cJomIxHCKBplI2bZ8Z0A5227",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/a.txt"
+    }
+  }
+]
+
+========== ROUND 2  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "文件内容显示为模拟数据，实际上是一个模拟的文件内容。让我看看实际的内容是什么...看起来这个输出是模拟的，并没有真实的文件内容。让我根据实际读取到的内容来总结。\n\n实际上，读取结果显示的是 `<mocked content of /tmp/a.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>`，这是一个模拟的占位内容，并不是真实的文件内容。\n\n不过我可以根据这个向用户报告情况。",
+    "signature": "c9f68fd0-b213-43b6-9e60-530d3c7bb718"
+  },
+  {
+    "type": "text",
+    "text": "已读取 `/tmp/a.txt` 文件。不过，该文件的内容是一个模拟占位内容（mocked content），内容如下：\n\n> **文件内容摘要（模拟数据）：**\n> 这是一个约 500 字节的模拟文件内容块，供模型分析使用。\n\n**总结：** 该文件似乎是一个测试或示例用的占位文件，没有包含真正的业务数据或有意义的信息。如果您希望我分析一个真实文件，请提供具体的文件路径或真实内容。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "请读取 /tmp/a.txt 这个文件并总结。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "用户让我读取 /tmp/a.txt 文件并总结内容。我来读取这个文件。",
+        "signature": "085cf837-4432-46e0-b60e-4dc5605330c5"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_cJomIxHCKBplI2bZ8Z0A5227",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/a.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_cJomIxHCKBplI2bZ8Z0A5227",
+        "content": "Read /tmp/a.txt: <mocked content of /tmp/a.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "文件内容显示为模拟数据，实际上是一个模拟的文件内容。让我看看实际的内容是什么...看起来这个输出是模拟的，并没有真实的文件内容。让我根据实际读取到的内容来总结。\n\n实际上，读取结果显示的是 `<mocked content of /tmp/a.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>`，这是一个模拟的占位内容，并不是真实的文件内容。\n\n不过我可以根据这个向用户报告情况。",
+        "signature": "c9f68fd0-b213-43b6-9e60-530d3c7bb718"
+      },
+      {
+        "type": "text",
+        "text": "已读取 `/tmp/a.txt` 文件。不过，该文件的内容是一个模拟占位内容（mocked content），内容如下：\n\n> **文件内容摘要（模拟数据）：**\n> 这是一个约 500 字节的模拟文件内容块，供模型分析使用。\n\n**总结：** 该文件似乎是一个测试或示例用的占位文件，没有包含真正的业务数据或有意义的信息。如果您希望我分析一个真实文件，请提供具体的文件路径或真实内容。"
+      }
+    ]
+  }
+]

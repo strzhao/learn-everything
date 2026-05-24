@@ -1,0 +1,191 @@
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "用户要求删除两个文件。我需要先确认它们是否存在，然后再删除。让我先读取一下。",
+    "signature": "3c185376-221e-4c27-b72d-4909bf8311b9"
+  },
+  {
+    "type": "text",
+    "text": "好的，我先检查这两个文件是否存在，然后再删除。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_QpVehHOQ8xvDzfAizzeD5737",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/test1.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_01_Ssj7NscvLdGiffCoVvDw1380",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/test2.txt"
+    }
+  }
+]
+
+========== ROUND 2  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "两个文件都存在，现在删除它们。",
+    "signature": "cc0b3b38-4107-4ba5-a527-6426d469fdc5"
+  },
+  {
+    "type": "text",
+    "text": "两个文件都存在，现在执行删除操作。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_vBLRlXaUYgfG6Nc7EESQ8193",
+    "name": "delete_file",
+    "input": {
+      "path": "/tmp/test1.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_01_Iu1t9KeDIC21f70VwnxE4799",
+    "name": "delete_file",
+    "input": {
+      "path": "/tmp/test2.txt"
+    }
+  }
+]
+[AUDIT] auto-allow tool=delete_file mode=bypassPermissions input=/tmp/test1.txt
+[MOCK] would rm -rf /tmp/test1.txt
+[AUDIT] auto-allow tool=delete_file mode=bypassPermissions input=/tmp/test2.txt
+[MOCK] would rm -rf /tmp/test2.txt
+
+========== ROUND 3  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "两个文件都成功删除了。",
+    "signature": "09aa104b-5ba8-4b3a-b9e5-3123332de6f8"
+  },
+  {
+    "type": "text",
+    "text": "两个文件已成功删除：\n\n- ✅ `/tmp/test1.txt` — 已删除\n- ✅ `/tmp/test2.txt` — 已删除\n\n如果还有其他需要，请随时告诉我。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "请删除 /tmp/test1.txt 和 /tmp/test2.txt 两个文件。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "用户要求删除两个文件。我需要先确认它们是否存在，然后再删除。让我先读取一下。",
+        "signature": "3c185376-221e-4c27-b72d-4909bf8311b9"
+      },
+      {
+        "type": "text",
+        "text": "好的，我先检查这两个文件是否存在，然后再删除。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_QpVehHOQ8xvDzfAizzeD5737",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/test1.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_01_Ssj7NscvLdGiffCoVvDw1380",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/test2.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_QpVehHOQ8xvDzfAizzeD5737",
+        "content": "Read /tmp/test1.txt: <mocked content>",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_01_Ssj7NscvLdGiffCoVvDw1380",
+        "content": "Read /tmp/test2.txt: <mocked content>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "两个文件都存在，现在删除它们。",
+        "signature": "cc0b3b38-4107-4ba5-a527-6426d469fdc5"
+      },
+      {
+        "type": "text",
+        "text": "两个文件都存在，现在执行删除操作。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_vBLRlXaUYgfG6Nc7EESQ8193",
+        "name": "delete_file",
+        "input": {
+          "path": "/tmp/test1.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_01_Iu1t9KeDIC21f70VwnxE4799",
+        "name": "delete_file",
+        "input": {
+          "path": "/tmp/test2.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_vBLRlXaUYgfG6Nc7EESQ8193",
+        "content": "Deleted /tmp/test1.txt",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_01_Iu1t9KeDIC21f70VwnxE4799",
+        "content": "Deleted /tmp/test2.txt",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "两个文件都成功删除了。",
+        "signature": "09aa104b-5ba8-4b3a-b9e5-3123332de6f8"
+      },
+      {
+        "type": "text",
+        "text": "两个文件已成功删除：\n\n- ✅ `/tmp/test1.txt` — 已删除\n- ✅ `/tmp/test2.txt` — 已删除\n\n如果还有其他需要，请随时告诉我。"
+      }
+    ]
+  }
+]

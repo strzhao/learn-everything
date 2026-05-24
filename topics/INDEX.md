@@ -6,7 +6,7 @@
 
 | slug | 主题 | status | bloom | artifacts | updated_at | 路径 |
 |------|------|--------|-------|-----------|-----------|------|
-| `agent-harness-engineering` | 构建 AI Agent Harness（以 Claude Code 为参照系，从 0 到 1） | active | apply | 1 | 2026-05-21T10:30:00+00:00 | `topics/agent-harness-engineering/` |
+| `agent-harness-engineering` | 构建 AI Agent Harness（以 Claude Code 为参照系，从 0 到 1） | active | create | 5 | 2026-05-25T05:00:00+00:00 | `topics/agent-harness-engineering/` |
 
 ## 归档区
 
