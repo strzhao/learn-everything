@@ -1,0 +1,159 @@
+CLAUDE.md
+  084c9e81886b2092 43-60
+topics/agent-harness-engineering/artifacts/05-context-compactor/compact-deep-dive.html
+  6c4f61071fab5a87 1-1215
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.8",
+  "base_commit_sha": "f4e15eb88120e5c623ee9f56eed044aea7544447",
+  "prompts": {
+    "084c9e81886b2092": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "c4ecb70a-8e2e-4313-ab8d-8cbc170d1736",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 18,
+      "total_deletions": 0,
+      "accepted_lines": 18,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "CLAUDE.md": {
+          "additions": 18,
+          "accepted_lines": 18
+        }
+      }
+    },
+    "0c2d8a5d15f111f9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d11bd4bc-ad7f-4b47-9c1b-92580a5b18aa",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 36,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "tools/agent-notebook/tests/fixtures/v11/normal/README.md": {
+          "accepted_lines": 18
+        },
+        "tools/agent-notebook/tests/fixtures/normal/README.md": {
+          "accepted_lines": 18
+        }
+      }
+    },
+    "0ddee575fecb3486": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1935cee-7501-4e8c-9b3b-584a4c606156",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 824,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "tools/agent-notebook/tests/fixtures/v11/normal/run-log.txt": {
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/fixtures/normal/run-log.txt": {
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/README.md": {
+          "accepted_lines": 76
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/agent.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/fixtures/errors/agent.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/fixtures/errors/run-log.txt": {
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/fixtures/normal/README.md": {
+          "accepted_lines": 76
+        },
+        "tools/agent-notebook/tests/fixtures/normal/agent.ts": {
+          "accepted_lines": 75
+        }
+      }
+    },
+    "2c61a2575acdea39": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1f45a9d-e472-47f7-9724-97bfab125e86",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 115,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".claude/skills/learn/pedagogy/spaced-repetition.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/gemini-learning-mode.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/socratic-method.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/feynman-technique.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/blooms-taxonomy.md": {
+          "accepted_lines": 23
+        }
+      }
+    },
+    "6c4f61071fab5a87": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dd81c55c-38a1-4ab7-857f-b2f55162bd37",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 1778,
+      "total_deletions": 563,
+      "accepted_lines": 1215,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "topics/agent-harness-engineering/artifacts/05-context-compactor/compact-deep-dive.html": {
+          "additions": 1778,
+          "deletions": 563,
+          "accepted_lines": 1215
+        }
+      }
+    },
+    "9b09e84aa8bfdadc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "88ec1183-412e-4889-acc7-f08b95248d09",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".learn/active.md": {
+          "accepted_lines": 1
+        }
+      }
+    }
+  }
+}
