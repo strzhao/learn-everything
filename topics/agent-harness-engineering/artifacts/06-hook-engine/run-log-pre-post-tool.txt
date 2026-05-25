@@ -1,0 +1,148 @@
+[AUDIT] [BOOT] role=interactive mode=bypassPermissions hooks=tool
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "用户让我依次读取两个文件，然后每个文件用一句话总结。我先读取第一个文件。",
+    "signature": "99f57d42-2a65-4622-a958-6528ba57f0c1"
+  },
+  {
+    "type": "text",
+    "text": "好的，我先读取第一个文件。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_nw7hPdTq1w4hoDQATwvu6664",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/a.txt"
+    }
+  }
+]
+[AUDIT] [HOOK event=PreToolUse handler=log-pre-tool kind=function outcome=success ok=true reason=pre tool=read_file input={"path":"/tmp/a.txt"}]
+[AUDIT] [HOOK event=PostToolUse handler=log-post-tool kind=function outcome=success ok=true reason=post tool=read_file is_error=false]
+
+========== ROUND 2  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "第一个文件 /tmp/a.txt 的内容是模拟内容，看起来是一个测试文件。接下来读取第二个文件。",
+    "signature": "dfccf3a0-7f43-403f-8735-fd536b3aba12"
+  },
+  {
+    "type": "text",
+    "text": "第一个文件内容已读取。现在读取第二个文件。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_udyLo1qoCEE7D1omU15u4002",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/b.txt"
+    }
+  }
+]
+[AUDIT] [HOOK event=PreToolUse handler=log-pre-tool kind=function outcome=success ok=true reason=pre tool=read_file input={"path":"/tmp/b.txt"}]
+[AUDIT] [HOOK event=PostToolUse handler=log-post-tool kind=function outcome=success ok=true reason=post tool=read_file is_error=false]
+
+========== ROUND 3  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "两个文件都已读取完毕。现在用一句话总结每个文件的内容。两个文件的内容都是模拟的测试数据。",
+    "signature": "134f1e88-3be8-4ac6-8885-7c53c1f3034a"
+  },
+  {
+    "type": "text",
+    "text": "两个文件均已读取完毕。以下是总结：\n\n1. **/tmp/a.txt**：该文件包含一段模拟的测试内容（约 500 字节），作为示例数据供分析使用。\n2. **/tmp/b.txt**：该文件同样包含一段模拟的测试内容（约 500 字节），与 /tmp/a.txt 结构类似，也是用于演示或测试目的。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "请依次读取 /tmp/a.txt /tmp/b.txt 这 2 个文件，每个读完用一句话总结。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "用户让我依次读取两个文件，然后每个文件用一句话总结。我先读取第一个文件。",
+        "signature": "99f57d42-2a65-4622-a958-6528ba57f0c1"
+      },
+      {
+        "type": "text",
+        "text": "好的，我先读取第一个文件。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_nw7hPdTq1w4hoDQATwvu6664",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/a.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_nw7hPdTq1w4hoDQATwvu6664",
+        "content": "Read /tmp/a.txt: <mocked content of /tmp/a.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "第一个文件 /tmp/a.txt 的内容是模拟内容，看起来是一个测试文件。接下来读取第二个文件。",
+        "signature": "dfccf3a0-7f43-403f-8735-fd536b3aba12"
+      },
+      {
+        "type": "text",
+        "text": "第一个文件内容已读取。现在读取第二个文件。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_udyLo1qoCEE7D1omU15u4002",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/b.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_udyLo1qoCEE7D1omU15u4002",
+        "content": "Read /tmp/b.txt: <mocked content of /tmp/b.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "两个文件都已读取完毕。现在用一句话总结每个文件的内容。两个文件的内容都是模拟的测试数据。",
+        "signature": "134f1e88-3be8-4ac6-8885-7c53c1f3034a"
+      },
+      {
+        "type": "text",
+        "text": "两个文件均已读取完毕。以下是总结：\n\n1. **/tmp/a.txt**：该文件包含一段模拟的测试内容（约 500 字节），作为示例数据供分析使用。\n2. **/tmp/b.txt**：该文件同样包含一段模拟的测试内容（约 500 字节），与 /tmp/a.txt 结构类似，也是用于演示或测试目的。"
+      }
+    ]
+  }
+]

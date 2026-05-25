@@ -1,0 +1,156 @@
+[AUDIT] [BOOT] role=interactive mode=bypassPermissions hooks=fail
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "The user wants me to read two files sequentially: /tmp/a.txt and /tmp/b.txt, and summarize each with one sentence after reading. Let me start by reading both files. They asked to read them in order, so I'll read a.txt first, then b.txt.",
+    "signature": "026c8366-d002-4c06-b453-c70f2906c1ab"
+  },
+  {
+    "type": "text",
+    "text": "好的，我先来读取第一个文件。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_Ijb0VczdLr3qjpwK3JS06155",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/a.txt"
+    }
+  }
+]
+[AUDIT] [HOOK event=PreToolUse handler=log-pre-tool kind=function outcome=success ok=true reason=pre tool=read_file input={"path":"/tmp/a.txt"}]
+[AUDIT] [HOOK event=PreToolUse handler=still-running kind=function outcome=success ok=true reason=peer hooks failed but I still ran for tool=read_file]
+[AUDIT] [HOOK event=PreToolUse handler=throws-immediately kind=function outcome=non_blocking_error error=intentional hook failure]
+[AUDIT] [HOOK event=PreToolUse handler=slow-loris kind=function outcome=non_blocking_error error=timeout after 300ms]
+[AUDIT] [HOOK event=PostToolUse handler=log-post-tool kind=function outcome=success ok=true reason=post tool=read_file is_error=false]
+
+========== ROUND 2  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "The first file has been read. The content is a mocked 500-byte chunk. Let me now read the second file.",
+    "signature": "370c9a78-d40a-4912-8a78-33df566c9ba0"
+  },
+  {
+    "type": "text",
+    "text": "已读取 `/tmp/a.txt`，内容是一段约 500 字节的模拟文件数据。接下来读取第二个文件。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_49otmKSW2h1l1uGtGCIa1467",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/b.txt"
+    }
+  }
+]
+[AUDIT] [HOOK event=PreToolUse handler=log-pre-tool kind=function outcome=success ok=true reason=pre tool=read_file input={"path":"/tmp/b.txt"}]
+[AUDIT] [HOOK event=PreToolUse handler=still-running kind=function outcome=success ok=true reason=peer hooks failed but I still ran for tool=read_file]
+[AUDIT] [HOOK event=PreToolUse handler=throws-immediately kind=function outcome=non_blocking_error error=intentional hook failure]
+[AUDIT] [HOOK event=PreToolUse handler=slow-loris kind=function outcome=non_blocking_error error=timeout after 300ms]
+[AUDIT] [HOOK event=PostToolUse handler=log-post-tool kind=function outcome=success ok=true reason=post tool=read_file is_error=false]
+
+========== ROUND 3  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "Both files have been read. Let me summarize each with one sentence.",
+    "signature": "17e884c3-cfda-4d64-bcba-3e976b66a161"
+  },
+  {
+    "type": "text",
+    "text": "两个文件都已读取完毕，下面用一句话总结每个文件：\n\n- **/tmp/a.txt**：包含一段约 500 字节的模拟文件内容（mocked content），供模型分析使用。\n- **/tmp/b.txt**：同样包含一段约 500 字节的模拟文件内容（mocked content），结构与 a.txt 类似，也是供模型分析使用。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "请依次读取 /tmp/a.txt /tmp/b.txt 这 2 个文件，每个读完用一句话总结。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user wants me to read two files sequentially: /tmp/a.txt and /tmp/b.txt, and summarize each with one sentence after reading. Let me start by reading both files. They asked to read them in order, so I'll read a.txt first, then b.txt.",
+        "signature": "026c8366-d002-4c06-b453-c70f2906c1ab"
+      },
+      {
+        "type": "text",
+        "text": "好的，我先来读取第一个文件。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_Ijb0VczdLr3qjpwK3JS06155",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/a.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_Ijb0VczdLr3qjpwK3JS06155",
+        "content": "Read /tmp/a.txt: <mocked content of /tmp/a.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The first file has been read. The content is a mocked 500-byte chunk. Let me now read the second file.",
+        "signature": "370c9a78-d40a-4912-8a78-33df566c9ba0"
+      },
+      {
+        "type": "text",
+        "text": "已读取 `/tmp/a.txt`，内容是一段约 500 字节的模拟文件数据。接下来读取第二个文件。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_49otmKSW2h1l1uGtGCIa1467",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/b.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_49otmKSW2h1l1uGtGCIa1467",
+        "content": "Read /tmp/b.txt: <mocked content of /tmp/b.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "Both files have been read. Let me summarize each with one sentence.",
+        "signature": "17e884c3-cfda-4d64-bcba-3e976b66a161"
+      },
+      {
+        "type": "text",
+        "text": "两个文件都已读取完毕，下面用一句话总结每个文件：\n\n- **/tmp/a.txt**：包含一段约 500 字节的模拟文件内容（mocked content），供模型分析使用。\n- **/tmp/b.txt**：同样包含一段约 500 字节的模拟文件内容（mocked content），结构与 a.txt 类似，也是供模型分析使用。"
+      }
+    ]
+  }
+]
+[AUDIT] [HOOK event=PreToolUse handler=slow-loris kind=function outcome=success ok=true]
+[AUDIT] [HOOK event=PreToolUse handler=slow-loris kind=function outcome=success ok=true]

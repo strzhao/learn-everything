@@ -1,0 +1,84 @@
+[AUDIT] [BOOT] role=interactive mode=bypassPermissions hooks=none
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "The user wants to delete a file at /tmp/test.txt. Let me use the delete_file tool.",
+    "signature": "85f359fd-e15e-4425-a667-05456b110c6e"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_zCMEsSSQDMrwdhSHSVqm9849",
+    "name": "delete_file",
+    "input": {
+      "path": "/tmp/test.txt"
+    }
+  }
+]
+[AUDIT] role=interactive auto-allow tool=delete_file mode=bypassPermissions input=/tmp/test.txt
+[MOCK] would rm -rf /tmp/test.txt
+
+========== ROUND 2  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "The file has been deleted successfully.",
+    "signature": "592caeef-6ce1-4d65-9695-d384e772605f"
+  },
+  {
+    "type": "text",
+    "text": "文件 `/tmp/test.txt` 已成功删除。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "请删除 /tmp/test.txt。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The user wants to delete a file at /tmp/test.txt. Let me use the delete_file tool.",
+        "signature": "85f359fd-e15e-4425-a667-05456b110c6e"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_zCMEsSSQDMrwdhSHSVqm9849",
+        "name": "delete_file",
+        "input": {
+          "path": "/tmp/test.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_zCMEsSSQDMrwdhSHSVqm9849",
+        "content": "Deleted /tmp/test.txt",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "The file has been deleted successfully.",
+        "signature": "592caeef-6ce1-4d65-9695-d384e772605f"
+      },
+      {
+        "type": "text",
+        "text": "文件 `/tmp/test.txt` 已成功删除。"
+      }
+    ]
+  }
+]

@@ -1,0 +1,339 @@
+Run 1: default redact
+=================================
+[AUDIT] [BOOT] role=interactive mode=bypassPermissions hooks=obs OTEL_LOG_USER_PROMPTS=(unset, redacting)
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "用户要求把 /tmp/foo.txt 的内容改成 \"我的秘密密码 secret-token-12345 confidential\"，使用 edit_file 工具。我需要先查看当前文件内容，然后用 edit_file 覆盖它。不过用户明确说用 edit_file，我可以直接操作。先看看文件是否存在吧。",
+    "signature": "1bc061b2-41be-4e32-851c-8e532301c61a"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_YI5zUg2dUZT6QDIhgoxR8584",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/foo.txt"
+    }
+  }
+]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file count=1]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779726850486]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file count=1]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177972685048]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+
+========== ROUND 2  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "好的，文件存在。现在用 edit_file 来覆盖它的内容。",
+    "signature": "c63c71c6-d2ee-4a90-b195-dca89203a1b3"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_FJKXbz00b3UuBJVbSeGN7028",
+    "name": "edit_file",
+    "input": {
+      "path": "/tmp/foo.txt",
+      "content": "我的秘密密码 secret-token-12345 confidential"
+    }
+  }
+]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"edit_file","role":"interactive","mode":"bypas]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=edit_file count=1]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779726851583]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] role=interactive auto-allow tool=edit_file mode=bypassPermissions input=/tmp/foo.txt
+[MOCK] would write /tmp/foo.txt <- "我的秘密密码 secret-token-12345 confidential"
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"edit_file","role":"interactive","mode":"bypa]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=edit_file count=1]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177972685158]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+
+========== ROUND 3  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "文件已成功修改。让我确认一下内容是否正确。",
+    "signature": "71ef8532-eb32-439d-9a9b-c1d2e0fc1088"
+  },
+  {
+    "type": "text",
+    "text": "已成功将 `/tmp/foo.txt` 的内容改为：\n\n```\n我的秘密密码 secret-token-12345 confidential\n```\n\n如果您需要进一步验证，可以让我再读取一次文件内容。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "请把 /tmp/foo.txt 内容改成 \"我的秘密密码 secret-token-12345 confidential\"，用 edit_file。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "用户要求把 /tmp/foo.txt 的内容改成 \"我的秘密密码 secret-token-12345 confidential\"，使用 edit_file 工具。我需要先查看当前文件内容，然后用 edit_file 覆盖它。不过用户明确说用 edit_file，我可以直接操作。先看看文件是否存在吧。",
+        "signature": "1bc061b2-41be-4e32-851c-8e532301c61a"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_YI5zUg2dUZT6QDIhgoxR8584",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/foo.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_YI5zUg2dUZT6QDIhgoxR8584",
+        "content": "Read /tmp/foo.txt: <mocked content of /tmp/foo.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "好的，文件存在。现在用 edit_file 来覆盖它的内容。",
+        "signature": "c63c71c6-d2ee-4a90-b195-dca89203a1b3"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_FJKXbz00b3UuBJVbSeGN7028",
+        "name": "edit_file",
+        "input": {
+          "path": "/tmp/foo.txt",
+          "content": "我的秘密密码 secret-token-12345 confidential"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_FJKXbz00b3UuBJVbSeGN7028",
+        "content": "Edited /tmp/foo.txt",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "文件已成功修改。让我确认一下内容是否正确。",
+        "signature": "71ef8532-eb32-439d-9a9b-c1d2e0fc1088"
+      },
+      {
+        "type": "text",
+        "text": "已成功将 `/tmp/foo.txt` 的内容改为：\n\n```\n我的秘密密码 secret-token-12345 confidential\n```\n\n如果您需要进一步验证，可以让我再读取一次文件内容。"
+      }
+    ]
+  }
+]
+
+========== OBS METRIC counter dump ==========
+  harness.PreToolUse{event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file} = 1
+  harness.PreToolUse{event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=edit_file} = 1
+  harness.PostToolUse{event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file} = 1
+  harness.PostToolUse{event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=edit_file} = 1
+
+========== OBS CONTEXT MAP dump ==========
+  PreToolUse-1779726850486 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas
+  PostToolUse-1779726850487 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa
+  PreToolUse-1779726851583 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"edit_file","role":"interactive","mode":"bypas
+  PostToolUse-1779726851584 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"edit_file","role":"interactive","mode":"bypa
+
+=== logs JSONL after Run 1 (default redact) ===
+{"timestamp":"2026-05-25T16:34:10.486Z","event_name":"PreToolUse","attributes":{"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypassPermissions","file_path":"/tmp/foo.txt"}}
+{"timestamp":"2026-05-25T16:34:10.487Z","event_name":"PostToolUse","attributes":{"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypassPermissions","is_error":"false","file_path":"/tmp/foo.txt"}}
+{"timestamp":"2026-05-25T16:34:11.584Z","event_name":"PreToolUse","attributes":{"event":"PreToolUse","tool_name":"edit_file","role":"interactive","mode":"bypassPermissions","file_path":"/tmp/foo.txt","edit_content":"<REDACTED>"}}
+{"timestamp":"2026-05-25T16:34:11.584Z","event_name":"PostToolUse","attributes":{"event":"PostToolUse","tool_name":"edit_file","role":"interactive","mode":"bypassPermissions","is_error":"false","file_path":"/tmp/foo.txt","edit_content":"<REDACTED>"}}
+
+
+=================================
+Run 2: OTEL_LOG_USER_PROMPTS=1 (original)
+=================================
+[AUDIT] [BOOT] role=interactive mode=bypassPermissions hooks=obs OTEL_LOG_USER_PROMPTS=1
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "用户要求把 /tmp/foo.txt 的内容改成 \"我的秘密密码 secret-token-12345 confidential\"。让我先用 read_file 看看当前内容，然后用 edit_file 来修改。",
+    "signature": "6655e92a-d01c-49e8-9ff1-b67b297f9aec"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_3DShZfhpIQF8uRvl3uuW0084",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/foo.txt"
+    }
+  }
+]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file count=1]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779726882889]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file count=1]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177972688289]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+
+========== ROUND 2  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "现在我用 edit_file 来覆盖文件内容。",
+    "signature": "9c060851-da30-4a75-8463-3e5b04fbb4aa"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_22GHP6NzMZuDUcIMp7hh8993",
+    "name": "edit_file",
+    "input": {
+      "path": "/tmp/foo.txt",
+      "content": "我的秘密密码 secret-token-12345 confidential"
+    }
+  }
+]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"edit_file","role":"interactive","mode":"bypas]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=edit_file count=1]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779726883935]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] role=interactive auto-allow tool=edit_file mode=bypassPermissions input=/tmp/foo.txt
+[MOCK] would write /tmp/foo.txt <- "我的秘密密码 secret-token-12345 confidential"
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"edit_file","role":"interactive","mode":"bypa]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=edit_file count=1]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177972688393]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+
+========== ROUND 3  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "文件已成功修改。让我验证一下。",
+    "signature": "a2f16986-a96f-4609-8c5c-124eed5552f4"
+  },
+  {
+    "type": "text",
+    "text": "已完成！`/tmp/foo.txt` 的内容已成功改为：\n\n```\n我的秘密密码 secret-token-12345 confidential\n```\n\n如果需要进一步修改，请随时告诉我。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "请把 /tmp/foo.txt 内容改成 \"我的秘密密码 secret-token-12345 confidential\"，用 edit_file。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "用户要求把 /tmp/foo.txt 的内容改成 \"我的秘密密码 secret-token-12345 confidential\"。让我先用 read_file 看看当前内容，然后用 edit_file 来修改。",
+        "signature": "6655e92a-d01c-49e8-9ff1-b67b297f9aec"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_3DShZfhpIQF8uRvl3uuW0084",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/foo.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_3DShZfhpIQF8uRvl3uuW0084",
+        "content": "Read /tmp/foo.txt: <mocked content of /tmp/foo.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "现在我用 edit_file 来覆盖文件内容。",
+        "signature": "9c060851-da30-4a75-8463-3e5b04fbb4aa"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_22GHP6NzMZuDUcIMp7hh8993",
+        "name": "edit_file",
+        "input": {
+          "path": "/tmp/foo.txt",
+          "content": "我的秘密密码 secret-token-12345 confidential"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_22GHP6NzMZuDUcIMp7hh8993",
+        "content": "Edited /tmp/foo.txt",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "文件已成功修改。让我验证一下。",
+        "signature": "a2f16986-a96f-4609-8c5c-124eed5552f4"
+      },
+      {
+        "type": "text",
+        "text": "已完成！`/tmp/foo.txt` 的内容已成功改为：\n\n```\n我的秘密密码 secret-token-12345 confidential\n```\n\n如果需要进一步修改，请随时告诉我。"
+      }
+    ]
+  }
+]
+
+========== OBS METRIC counter dump ==========
+  harness.PreToolUse{event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file} = 1
+  harness.PreToolUse{event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=edit_file} = 1
+  harness.PostToolUse{event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file} = 1
+  harness.PostToolUse{event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=edit_file} = 1
+
+========== OBS CONTEXT MAP dump ==========
+  PreToolUse-1779726882889 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas
+  PostToolUse-1779726882891 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa
+  PreToolUse-1779726883935 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"edit_file","role":"interactive","mode":"bypas
+  PostToolUse-1779726883936 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"edit_file","role":"interactive","mode":"bypa
+
+=== logs JSONL after Run 2 (with OTEL_LOG_USER_PROMPTS=1) ===
+{"timestamp":"2026-05-25T16:34:42.889Z","event_name":"PreToolUse","attributes":{"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypassPermissions","file_path":"/tmp/foo.txt"}}
+{"timestamp":"2026-05-25T16:34:42.891Z","event_name":"PostToolUse","attributes":{"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypassPermissions","is_error":"false","file_path":"/tmp/foo.txt"}}
+{"timestamp":"2026-05-25T16:34:43.935Z","event_name":"PreToolUse","attributes":{"event":"PreToolUse","tool_name":"edit_file","role":"interactive","mode":"bypassPermissions","file_path":"/tmp/foo.txt","edit_content":"我的秘密密码 secret-token-12345 confidential"}}
+{"timestamp":"2026-05-25T16:34:43.936Z","event_name":"PostToolUse","attributes":{"event":"PostToolUse","tool_name":"edit_file","role":"interactive","mode":"bypassPermissions","is_error":"false","file_path":"/tmp/foo.txt","edit_content":"我的秘密密码 secret-token-12345 confidential"}}

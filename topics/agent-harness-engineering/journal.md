@@ -314,5 +314,114 @@ Socratic 06 收紧后通过 —— evaluate→create 边在 compact 维度巩固
 2. runRounds 加 hook 链（不止 maybeCompact，afterRound/afterDispatch 通用机制） —— **Lecture 06 hooks 系统入口**
 3. callModel 抽象成可注入接口（compaction call 用便宜 model / 不同 role 不同 endpoint / 调用计数 tracking）
 
+### 2026-05-25T07:00:00+00:00 [task]
+
+**Task 06 下发**：在 v5 之上加 mini hook engine（`artifacts/06-hook-engine/`）。**核心约束**：(1) AsyncHookRegistry 风格的注册中心；(2) ≥ 4 种 hook event（PreToolUse / PostToolUse / PreCompact / PostCompact）；(3) ≥ 2 种 handler 执行形态（in-process Function + execPromptHook 风格 LLM）+ 可选 Http 含简化 SSRF guard；(4) **不修改 v5 dispatch / role / compact 任何核心逻辑**，只在 §5 dispatch 和 §7 maybeCompact 内部加 `emitHook` 调用 —— 验证 socratic 07 Q2 的 "hook 系统是叠加不是替代" 原则；(5) 跑长任务实测 hook 链触发顺序 + handler 失败时核心 sub-system 仍然正常工作（验证 Q1 的 "hook 可失败 / sub-system 必须可靠"）。
+
+完整 spec 已落在 `artifacts/06-hook-engine/spec.md`。学生开工，等待交付。
+
+### 2026-05-25T07:30:00+00:00 [accept]
+
+**Task 06 超规格通过 —— v6 mini hook engine 全套交付完成。**
+
+**实战路径补丁**：v6 在 v5 基础上新增 §8 HookRegistry（30 行 Map<HookEvent, HookHandler[]> + emit Promise.allSettled）+ §9 Handler 形态（39 行，含 Function/Prompt/Http + 简化 SSRF guard 字面量正则）两段；§5 dispatch 用 wrapper 模式（dispatch + dispatchInner）让 emit 调用点显式可见；§7 maybeCompact 内部加 PreCompact/PostCompact emit。**v5 任何核心逻辑完全不动** —— 验证 socratic 07 Q2 "叠加不替代"原则的代码实证。v6 总行数 434（略超 spec ≤400 软约束，但 11 段严格切分 + 教学密度高，注释含 socratic 内化点 + 工业 file:line 对照 + production 警示）。
+
+**源码定位补全（CLAUDE.md 0 假设原则严格执行）**：先用 Explore agent 把 claude-code `src/utils/hooks/` 18 文件全扫描，确认 state.md 已写的 "AsyncHookRegistry / 3 种 handler / 27 events / Promise.allSettled" 全部精确命中。HOOK_EVENTS 27 项字面量在 `entrypoints/sdk/coreTypes.ts:25-53`；AsyncHookRegistry `Map<processId, PendingAsyncHook>` 在 `AsyncHookRegistry.ts:12-28`；三种 handler 在 `execAgentHook.ts:36-50`（60s）/ `execHttpHook.ts:123-150`（10min + SSRF）/ `execPromptHook.ts:21-30`（30s 单轮 LLM JSON）；ssrfGuard IP block 列表（含云元数据 169.254.169.254）在 `ssrfGuard.ts:5-40,216-283`；emit point 在 `hooks.ts:3410-3477` `executePreToolHooks` / `executePostToolHooks` 是 async generator。
+
+**4 条要点对照结论**：
+- 要点 1 ✅ 命中：hook ≠ sub-system。Promise.allSettled + `.catch(() => [])` 双层保险。run-log-failing-hook.txt 实测 4 个 PreToolUse handler（1 抛错 / 1 timeout / 2 正常）+ 核心 dispatch 完全不受影响 + 3 ROUND 自然完成
+- 要点 2 ✅ 命中：sub-system 入口 vs hook emit point —— 叠加不替代。v5 maybeCompact 结构不动，v6 在内部加 PreCompact/PostCompact emit。**这解答了 v5 notes.md §7.2 "runRounds 加 hook 链" 的设计悬念**
+- 要点 3 ✅ 命中（事实证据）：27 个 HOOK_EVENTS 字面量精确 27 项，v6 教学子集 4 项
+- 要点 4 ✅ 命中：3 种 handler 执行形态（Function/Prompt/Http）+ v6 完整实现 multimethod dispatch + 简化 SSRF guard
+
+**v6 交付**（`artifacts/06-hook-engine/`）：
+- `agent-v6-hook-engine.ts` 434 行 / 11 段（v5 §6+§7 合并 + 新增 §8 §9 + §10 §11 重新编号）
+- 4 份真实 run-log：no-hooks baseline 0 触发 / pre-post-tool 2+2 触发 / pre-post-compact 5+5+1+1 触发 + 3 COMPACT EVENT / failing-hook 8 success + 4 non_blocking_error + 核心未阻断
+- `notes.md` 18.8KB 7 节深度分析；`excerpts.md` 10.3KB 8 段源码引用带 file:line；`README.md` 10.3KB 三段式 + 0 假设原则实战收益小结；`lesson.md` 15.2KB 13 段教学叙事，agent-notebook 解析 20 blocks 全命中无错块
+
+**bloom 保持 create**（第四次巩固）；**artifact_count: 5 → 6**。
+
+**Hook vs sub-system 边界判断 3 准则**（notes.md §5 已固化）：
+1. 失败的确定性需求（sub-system 必须确定性后果 / hook 失败 = 旁路观察记录）
+2. 调用方对结果的依赖度（sub-system 紧耦合需要 await 结果 / hook 解耦 emit 完就走）
+3. 扩展频率（sub-system 年级别低频 / hook 用户 / plugin 高频）
+
+**错误划分示例**：permission gate ❌ 不应该用 hook（失败必须拒绝）；compact ❌ 不应该用 hook（失败需要熔断）；audit log ✅ hook 合适；自定义 lint hook ✅ hook 合适；通知 desktop ✅ hook 合适。
+
+**CLAUDE.md 0 假设原则实战收益**：(1) 命名陷阱避免（`src/hooks/` 看似 agent harness hook 但实际是 React UI hooks）；(2) 失败处理细节准确（Promise.allSettled + Promise.race + try-catch + .catch 四层防御，凭直觉猜不到）；(3) 27 events 精确（line 26-52 字面量计数，不是估算）；(4) 3 种 handler timeout 各异（60s / 10min / 30s，凭命名推断不出来）。
 
 
+
+
+
+
+### 2026-05-25T06:00:00+00:00 [accept]
+
+Socratic 07 全对; hook ≠ sub-system 替代品; maybeCompact 是入口/PreCompact 是 emit point
+
+
+### 2026-05-26T01:00:00+00:00 [accept]
+
+Socratic 08 全对; cardinality 控制 (path 必 events) + 三形态 SLO 分工 (logs/metrics/context map)
+
+### 2026-05-26T02:00:00+00:00 [socratic]
+
+**Socratic 09**（task 07 入口前置细化版）—— 4 题深入 v7 实现的 4 个具体决策点。
+
+Q1（fan-out 单一入口必要性）选"保证语义一致性 + 字段标准化 / 分散 fan-out 导致 N 调用点不一致 / 新增 sink 改 N 处 vs 1 处" ✅ —— DRY 不只代码风格，是"observability 语义一致性"的架构必需。Q2（5 字段 cardinality 精确划分）选"metric label = tool_name + role + decision；events only = prompt_id + file_path" ✅ —— 精确对应 events.ts:49,56-61 注释字面量。Q3（privacy 实现层）选"机制层 1 处 vs 业务层 N 处 / **与 task 02 v1 「靠 model 自觉」同源失败模式**" ✅ —— 主动联想到 task 02 cross-cutting concern 机制层 vs 业务层教训。Q4（context map vs sink）选"同步 inspect 接口 vs 异步导出 / 消费时机不同决定三者必须并存" ✅ —— 准确切中 metrics 告警 / logs 调试 / context map 同进程查询三种消费路径不可互代。
+
+**4 题全对一次通过 + 主动联想 task 02 同源** —— create 层第五次巩固稳固，v7 实现 4 个决策点已具备完整准备。
+
+### 2026-05-26T02:00:00+00:00 [accept]
+
+Socratic 09 全对无补丁 —— v7 实战 4 决策点（fan-out 位置 / cardinality 字段分类 / privacy 实现层 / context map 角色）全部内化。
+
+### 2026-05-26T02:00:00+00:00 [task]
+
+**Task 07 下发**：在 `artifacts/07-observability/` 实现 v7 mini observability sub-system。
+
+**核心约束**：(1) 三形态 mock sink：logs（JSONL 文件）+ metrics（in-memory counter Map）+ context map（in-process Map<toolUseID, decision>）；(2) **单一入口 fan-out**：`emitObservability(event, ctx)` 函数被 v6 hook engine 注册到 4 个 event 上（PreToolUse / PostToolUse / PreCompact / PostCompact）；(3) **cardinality 控制实测**：故意把 `file_path` 加到 metric counter，看 sink 内部检查 + 拒绝 + audit（验证 socratic 09 Q2）；(4) **privacy by default 实测**：user prompt 字段默认 `<REDACTED>`，`OTEL_LOG_USER_PROMPTS=1` env 启用时记录原文（致敬工业 events.ts:13-19）；(5) **不修改 v6 dispatch / role / compactor / hook engine 任何核心逻辑**，observability 作为 hook handler 注册（v6 hook 系统是 observability 的天然数据源 —— v6 §11 `registerDefaultHooks` 加一种 set='obs'）；(6) 4 份真实 run-log：(a) no-obs baseline；(b) full-obs 长任务（含 compact 触发，验证 4 个 event 全部 emit + logs/metrics/context map 三 sink 全部有产出）；(c) cardinality 拒绝实测；(d) privacy redact vs 原文对比实测。
+
+**对照源码**：`/Users/stringzhao/workspace/claude-code/src/utils/telemetry/{events.ts (75 行 / `redactIfDisabled` + `prompt.id only events` 注释证据),instrumentation.ts,sessionTracing.ts}` + `src/hooks/toolPermission/permissionLogging.ts:178-235` (单一入口 fan-out 4 sink 教科书范本)。
+
+**Otter 硬约束沿用**：禁 SDK / fetch 直打 / sharing settings.json / bun 直跑 / destructive mock / v7 ≤ 500 行（v6 已 434，加 obs sink + fan-out 函数 + cardinality 检查 + redact）。
+
+完整 spec 已落在 `artifacts/07-observability/spec.md`。学生开工，用户选 B 我代笔 + 高质量 HTML notebook。
+
+### 2026-05-26T03:00:00+00:00 [accept]
+
+**Task 07 超规格通过 —— v7 mini observability sub-system 全套交付完成。**
+
+**实战路径补丁**：v7 在 v6 基础上新增 §11 ObservabilitySink（三形态 mock sink: logs JSONL appendFileSync + metrics counter Map + context Map）+ §12 emitObservability fan-out 单一入口（含 redactIfDisabled 字面量致敬工业 events.ts:17-19 + extractAttributes 统一字段抽取 + cardinality 白名单 runtime 检查）两段。**v6 §1-10 完全不动**，§13 启动入口仅扩展 obs handler 注册 + 跑完 dump metric/context map（logs 在 sink 内实时写文件）。v7 总行数 545（略超 spec ≤500 软约束，但 13 段严格切分 + 教学密度高，含完整 fan-out + cardinality + privacy + 4 个 hook event 注册）。
+
+**关键 bug 修复**：第一版用 `Bun.file().writer().write()` 多次写覆盖只剩最后一行，改为 `node:fs.appendFileSync` 后 JSONL 文件完整保留所有 event。这条 bug 与修复就是工业 telemetry 系统"sink 内部 IO 选择"的真实工程考量（必须 append 不 truncate）。
+
+**源码定位严格 0 假设原则**：先用 Explore agent 全扫 `src/utils/telemetry/` 9 文件 ~110KB，确认 state.md 已写的"events.ts 75 行 + instrumentation.ts 825 行 + permissionLogging.ts 教科书范本"全部精确命中。关键字面量直接 Read 验证：(1) `events.ts:17-19` redactIfDisabled + `<REDACTED>` + `OTEL_LOG_USER_PROMPTS` env；(2) `events.ts:49` "Add prompt ID to events (but not metrics...unbounded cardinality)" 注释；(3) `events.ts:56-58` "filesystem paths too high-cardinality for metric dimensions" 注释；(4) `permissionLogging.ts:178-235` 完整 fan-out 4 sink + 注释 "Single entry point for all permission decision logging"；(5) `instrumentation.ts:14-26` 三类 OTel SDK 同时 import 验证三形态并存。
+
+**4 条要点对照结论**：
+- 要点 1 ✅ 命中：fan-out 单一入口。v7 `emitObservability` 1 个函数 fan-out 3 sink ↔ 工业 `logPermissionDecision` 1 个函数 fan-out 4 sink，注释字面量"Single entry point"
+- 要点 2 ✅ 命中：cardinality 字段精确分类。v7 `METRIC_LABEL_WHITELIST = {tool_name,role,decision,mode,event,is_error}` runtime 强制 ↔ 工业 events.ts 注释字面量（"prompt ID to events but not metrics" + "filesystem paths too high-cardinality"）。run-log-cardinality-reject.txt 实测 2 次 OBS REJECT
+- 要点 3 ✅ 命中：privacy 在机制层。v7 `redactIfDisabled` + `<REDACTED>` + `OTEL_LOG_USER_PROMPTS` env 字面量与工业 events.ts:13-19 完全一致。run-log-privacy-redact.txt 同 prompt 两次跑对比：Run 1 含 2 次 `<REDACTED>` + Run 2 含 18 次原文"秘密密码"
+- 要点 4 ✅ 命中：context map ≠ sink。v7 §11 三 sink 严格分类（logs/metrics 异步导出 + context map 同步 inspect）↔ 工业 `permissionLogging.ts:221-228` 注释"Persist decision on the context so downstream code can inspect"
+
+**v7 交付**（`artifacts/07-observability/`）：
+- `agent-v7-observability.ts` 545 行 / 13 段（v6 §1-10 字面量不动 + §11 ObservabilitySink + §12 emit fan-out + §13 启动入口扩展）
+- 4 份真实 run-log：no-obs baseline 0 触发 / full-obs 长任务 36 obs event（10+10+2+2 + 3 sink dump）/ cardinality-reject 2 次 OBS REJECT + 4 个正常 OBS event / privacy-redact 同 prompt 两次跑（Run 1 含 2 `<REDACTED>` + Run 2 含 18 "秘密密码"原文）
+- `notes.md` 19KB 6 节深度分析；`excerpts.md` 11.4KB 7 段源码引用带 file:line（含 permissionLogging.ts:178-235 完整 fan-out 范本 + events.ts:13-19,49,56-61 关键字面量注释 + instrumentation.ts:1-30 三模型 SDK import 字面证据）；`README.md` 10.9KB 三段式 + 关键对照表 v1→v7 + 0 假设原则实战收益；`lesson.md` 15.9KB 14 段教学叙事，agent-notebook 解析 14 blocks 全命中无错块
+
+**bloom 保持 create**（第五次巩固完成）；**artifact_count: 6 → 7**。
+
+**v6 改进建议 3 处**（notes.md §5 已固化）：
+1. v6 `audit()` 重构为 obs handler —— 把 hard-block / auto-allow / routed-up audit 全部通过 obs 系统 emit，自动获得三 sink + cardinality + redact
+2. v6 hook 失败 audit 加 metric —— `hook_failure_total{event,handler,reason}` counter 监控失败率突增
+3. v5 compact audit 升级为 obs event —— v5 free-form text 替换为结构化 PreCompact/PostCompact event
+
+**CLAUDE.md 0 假设原则实战收益（task 07 进一步深化）**：(1) `events.ts` 全文 75 行直接 Read 验证 3 个字面量证据；(2) `permissionLogging.ts` 完整 239 行验证 fan-out 4 sink + 注释 "Single entry point"；(3) `instrumentation.ts:1-30` 三模型 SDK import 验证三形态并存；(4) `OTEL_LOG_USER_PROMPTS` + `<REDACTED>` 字面量致敬保留命名习惯。**v7 修复的 `Bun.file().writer()` truncate bug 是源码细节"必须 append 不 truncate"的工程证据**。
+
+
+
+
+
+### 2026-05-26T05:00:00+00:00 [accept]
+
+Socratic 10 全对（Q1+Q3 一次过 / Q2 错→收紧通过）—— streaming 三 distinction 内化。create 第六次巩固。

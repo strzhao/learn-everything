@@ -1,0 +1,229 @@
+[AUDIT] [BOOT] role=interactive mode=bypassPermissions hooks=all
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "The user wants me to read 5 files one by one in order, and after each one, I should tell them the general content in one sentence before reading the next one. Let me start with the first file.",
+    "signature": "5c3a8ae2-8dc5-4576-a87b-1ae03bcc8112"
+  },
+  {
+    "type": "text",
+    "text": "好的，我来依次读取这 5 个文件。\n\n首先读取第一个：`/tmp/a.txt`"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_PJBMaNJQoecVJ1qq2F517980",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/a.txt"
+    }
+  }
+]
+[AUDIT] [HOOK event=PreToolUse handler=log-pre-tool kind=function outcome=success ok=true reason=pre tool=read_file input={"path":"/tmp/a.txt"}]
+[AUDIT] [HOOK event=PostToolUse handler=log-post-tool kind=function outcome=success ok=true reason=post tool=read_file is_error=false]
+
+========== ROUND 2  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "The file contains some mocked content that is about 500 bytes. Let me summarize it in one sentence.",
+    "signature": "ba11adbc-1203-4209-b178-7ae1030e5d85"
+  },
+  {
+    "type": "text",
+    "text": "**文件 a.txt** 的内容是一段约 500 字节的模拟数据（mocked content），看起来是占位测试文本。\n\n接下来读取第二个：`/tmp/b.txt`"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_K2Z79SphvLeeSXyaltfw9920",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/b.txt"
+    }
+  }
+]
+[AUDIT] [HOOK event=PreToolUse handler=log-pre-tool kind=function outcome=success ok=true reason=pre tool=read_file input={"path":"/tmp/b.txt"}]
+[AUDIT] [HOOK event=PostToolUse handler=log-post-tool kind=function outcome=success ok=true reason=post tool=read_file is_error=false]
+
+========== ROUND 3  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "Same type of content but different file.",
+    "signature": "c1c96083-94cb-4ec9-a742-1446da15fb23"
+  },
+  {
+    "type": "text",
+    "text": "**文件 b.txt** 同样是一段约 500 字节的模拟数据（mocked content），与 a.txt 类似但内容不同。\n\n接下来读取第三个：`/tmp/c.txt`"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_ZkE5LzxWMpW6J2czRDyk8460",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/c.txt"
+    }
+  }
+]
+[AUDIT] [HOOK event=PreToolUse handler=log-pre-tool kind=function outcome=success ok=true reason=pre tool=read_file input={"path":"/tmp/c.txt"}]
+[AUDIT] [HOOK event=PostToolUse handler=log-post-tool kind=function outcome=success ok=true reason=post tool=read_file is_error=false]
+
+========== COMPACT EVENT round=4 type=micro role=interactive before=2204 after=2110 ==========
+[AUDIT] COMPACT type=micro role=interactive cleared=1_tool_results freed=94b
+
+========== ROUND 4  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "Same pattern, 500-byte mocked content.",
+    "signature": "2cc43a2c-b007-4518-b4a2-18f30de4ddd4"
+  },
+  {
+    "type": "text",
+    "text": "**文件 c.txt** 同样包含约 500 字节的模拟测试数据（mocked content）。\n\n接下来读取第四个：`/tmp/d.txt`"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_pEFgzLS1KX70rcYFnZjV1813",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/d.txt"
+    }
+  }
+]
+[AUDIT] [HOOK event=PreToolUse handler=log-pre-tool kind=function outcome=success ok=true reason=pre tool=read_file input={"path":"/tmp/d.txt"}]
+[AUDIT] [HOOK event=PostToolUse handler=log-post-tool kind=function outcome=success ok=true reason=post tool=read_file is_error=false]
+
+========== COMPACT EVENT round=5 type=micro role=interactive before=2732 after=2638 ==========
+[AUDIT] COMPACT type=micro role=interactive cleared=1_tool_results freed=94b
+[AUDIT] [HOOK event=PreCompact handler=log-pre-compact kind=function outcome=success ok=true reason=role=interactive rounds=5 bytes=2638]
+
+========== COMPACT EVENT round=5 type=full role=interactive before=2638 after=1699 ==========
+summary (first 600 chars): <analysis>
+The user requested sequential reading of five files: /tmp/a.txt, /tmp/b.txt, /tmp/c.txt, /tmp/d.txt, and /tmp/e.txt. The instruction was to read one file at a time and provide a one-sentence summary before proceeding to the next. The assistant used the `read_file` tool for each file. In the provided history, only the first three files were read successfully: a.txt (mocked content, ~500 bytes), b.txt (similar mocked content), and c.txt (also mocked content). No errors were encountered. The intent was strictly sequential processing with per-file summaries. The remaining two files (d.t
+[AUDIT] [HOOK event=PostCompact handler=log-post-compact kind=function outcome=success ok=true reason=role=interactive before=2638 after=1699]
+
+========== ROUND 5  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "d.txt also has mocked 500-byte content. One file left.",
+    "signature": "6c067c24-0612-44c0-a6d6-9fd223343013"
+  },
+  {
+    "type": "text",
+    "text": "**文件 d.txt** 同样包含约 500 字节的模拟测试数据。\n\n最后读取第五个：`/tmp/e.txt`"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_XfsrEy7ggmnzs2psYo9w2722",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/e.txt"
+    }
+  }
+]
+[AUDIT] [HOOK event=PreToolUse handler=log-pre-tool kind=function outcome=success ok=true reason=pre tool=read_file input={"path":"/tmp/e.txt"}]
+[AUDIT] [HOOK event=PostToolUse handler=log-post-tool kind=function outcome=success ok=true reason=post tool=read_file is_error=false]
+
+========== ROUND 6  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "All five files read successfully. Each had ~500 bytes of mocked test content. No errors.",
+    "signature": "a77aeb4a-07ee-4f6c-aa24-3d23b7f7e5bd"
+  },
+  {
+    "type": "text",
+    "text": "**文件 e.txt** 同样包含约 500 字节的模拟测试数据。\n\n---\n\n**全部五个文件已按顺序读取完成，无任何错误：**\n\n| 文件 | 大小（约） | 状态 |\n|------|-----------|------|\n| `/tmp/a.txt` | 500 字节 | ✅ 读取成功 |\n| `/tmp/b.txt` | 500 字节 | ✅ 读取成功 |\n| `/tmp/c.txt` | 500 字节 | ✅ 读取成功 |\n| `/tmp/d.txt` | 500 字节 | ✅ 读取成功 |\n| `/tmp/e.txt` | 500 字节 | ✅ 读取成功 |\n\n所有文件内容均为模拟测试数据（mocked content），结构一致，没有异常或错误信息。请问还有其他需要处理的内容吗？"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "[COMPACTED SUMMARY]\n<analysis>\nThe user requested sequential reading of five files: /tmp/a.txt, /tmp/b.txt, /tmp/c.txt, /tmp/d.txt, and /tmp/e.txt. The instruction was to read one file at a time and provide a one-sentence summary before proceeding to the next. The assistant used the `read_file` tool for each file. In the provided history, only the first three files were read successfully: a.txt (mocked content, ~500 bytes), b.txt (similar mocked content), and c.txt (also mocked content). No errors were encountered. The intent was strictly sequential processing with per-file summaries. The remaining two files (d.txt, e.txt) were not read in the truncated log.\n</analysis>\n<summary>\nThe user wanted to read five files (/tmp/a.txt through /tmp/e.txt) one by one, with a one-sentence summary after each. The assistant used the `read_file` tool for each, reading a.txt, b.txt, and c.txt in sequence—all contained mocked 500-byte test content. No errors occurred. The conversation was truncated before d.txt and e.txt were read.\n</summary>"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "Same pattern, 500-byte mocked content.",
+        "signature": "2cc43a2c-b007-4518-b4a2-18f30de4ddd4"
+      },
+      {
+        "type": "text",
+        "text": "**文件 c.txt** 同样包含约 500 字节的模拟测试数据（mocked content）。\n\n接下来读取第四个：`/tmp/d.txt`"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_pEFgzLS1KX70rcYFnZjV1813",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/d.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_pEFgzLS1KX70rcYFnZjV1813",
+        "content": "Read /tmp/d.txt: <mocked content of /tmp/d.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "d.txt also has mocked 500-byte content. One file left.",
+        "signature": "6c067c24-0612-44c0-a6d6-9fd223343013"
+      },
+      {
+        "type": "text",
+        "text": "**文件 d.txt** 同样包含约 500 字节的模拟测试数据。\n\n最后读取第五个：`/tmp/e.txt`"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_XfsrEy7ggmnzs2psYo9w2722",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/e.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_XfsrEy7ggmnzs2psYo9w2722",
+        "content": "Read /tmp/e.txt: <mocked content of /tmp/e.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "All five files read successfully. Each had ~500 bytes of mocked test content. No errors.",
+        "signature": "a77aeb4a-07ee-4f6c-aa24-3d23b7f7e5bd"
+      },
+      {
+        "type": "text",
+        "text": "**文件 e.txt** 同样包含约 500 字节的模拟测试数据。\n\n---\n\n**全部五个文件已按顺序读取完成，无任何错误：**\n\n| 文件 | 大小（约） | 状态 |\n|------|-----------|------|\n| `/tmp/a.txt` | 500 字节 | ✅ 读取成功 |\n| `/tmp/b.txt` | 500 字节 | ✅ 读取成功 |\n| `/tmp/c.txt` | 500 字节 | ✅ 读取成功 |\n| `/tmp/d.txt` | 500 字节 | ✅ 读取成功 |\n| `/tmp/e.txt` | 500 字节 | ✅ 读取成功 |\n\n所有文件内容均为模拟测试数据（mocked content），结构一致，没有异常或错误信息。请问还有其他需要处理的内容吗？"
+      }
+    ]
+  }
+]

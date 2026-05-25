@@ -53,7 +53,15 @@ allowed-tools:
 三种核心动作模式的详细规范：
 
 **lecture（讲解模式）**：
-AI 主动介绍新概念（new concept introduction），使用类比（analogy）和具体例子（concrete examples），控制在 200-400 字，不求一次覆盖所有内容（no information overload）。讲解完成后必须等待用户反应（wait for response），不允许连续两轮讲解（no consecutive lectures）。参考 `pedagogy/socratic-method.md` 中关于"在对话中引入信息"的建议——lecture 并非单向传授，而是在讲解中埋下后续反问的种子（seeds for questioning）。
+AI 主动介绍新概念（new concept introduction），控制在 **400-800 字**（既允许充分展开，又避免信息瀑布——learning 不是接收信息，是建构理解）。每个 lecture **必须包含三个教学维度**：
+
+1. **动机叙事**（motivation narrative / "why now"）：为什么这一节存在？它从上一节或上一个 task 暴露的什么问题/钩子自然演化而来？给学生一个"我需要学这个"的内生动机，而不是"老师又开始讲新东西了"。**没有动机叙事的 lecture = 概念清单堆砌，学生会偏累**
+2. **跨领域类比**（cross-domain analogy）：用学生已有的非技术领域经验作比（参考 lecture 04 的"项目经理+实习生"对应 coordinator/worker；或物流/制造/法律/医学/建筑等领域的同构模式）。抽象概念必须先具象化才能被吸收——**没有类比的 lecture = 学生只能死记，无法迁移**
+3. **概念地图**（concept map）：列出本节涉及的核心概念 + **跟已学概念的物理连接**——不是泛泛"承上启下"，而是精确说出"本节的 X 是上节 Y 的特定形式 / 本节的 A 跟之前的 B 在某个路径上叠加 / 本节解决的问题是上节没解决的子集"。**没有概念地图的 lecture = 知识孤岛，学生跟不上脉络**
+
+可选但鼓励的第 4-5 维度：**理论锚点**（业内成熟概念名 / 设计模式 / 工业历史演化路径，让学生能去外部资料延伸阅读）+ **预备知识检查**（适合在哪个阶段读这个 lecture / 缺哪块前置知识会读不动）。
+
+讲解完成后必须等待用户反应（wait for response），不允许连续两轮讲解（no consecutive lectures）。参考 `pedagogy/socratic-method.md` 中关于"在对话中引入信息"的建议——lecture 并非单向传授，而是在讲解中埋下后续反问的种子（seeds for questioning）。
 
 **socratic（苏格拉底反问模式）**：
 讲解后必须出反问验证理解（verify comprehension through questioning），**必须通过 `AskUserQuestion` 工具发起**（而非纯文本提问），原因详见下方"交互机制"章节。问题类型参考 `pedagogy/socratic-method.md` 中的六种：澄清性（clarification）、假设性探究（probing assumptions）、证据追问（probing evidence）、反例构建（counter-examples）、元认知（meta-cognitive）。每轮 socratic 出 1-3 个问题（不要同时问太多），问题类型应轮换，避免学习者产生"问题模式识别"而非真正思考（pattern recognition vs. genuine thinking）。

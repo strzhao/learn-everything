@@ -1,0 +1,84 @@
+[AUDIT] [BOOT] role=interactive mode=bypassPermissions hooks=none OTEL_LOG_USER_PROMPTS=(unset, redacting)
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "用户想删除 /tmp/test.txt 文件。让我先检查一下这个文件是否存在，然后删除它。",
+    "signature": "85748ac4-2028-4e65-ad59-347a8d60dba3"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_Put3VvdOfBXGGgCCFiUS7475",
+    "name": "delete_file",
+    "input": {
+      "path": "/tmp/test.txt"
+    }
+  }
+]
+[AUDIT] role=interactive auto-allow tool=delete_file mode=bypassPermissions input=/tmp/test.txt
+[MOCK] would rm -rf /tmp/test.txt
+
+========== ROUND 2  stop_reason=end_turn ==========
+[
+  {
+    "type": "thinking",
+    "thinking": "文件已成功删除。",
+    "signature": "3011b498-89a5-4314-9ba4-254b23389601"
+  },
+  {
+    "type": "text",
+    "text": "文件 `/tmp/test.txt` 已成功删除。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "请删除 /tmp/test.txt。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "用户想删除 /tmp/test.txt 文件。让我先检查一下这个文件是否存在，然后删除它。",
+        "signature": "85748ac4-2028-4e65-ad59-347a8d60dba3"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_Put3VvdOfBXGGgCCFiUS7475",
+        "name": "delete_file",
+        "input": {
+          "path": "/tmp/test.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_Put3VvdOfBXGGgCCFiUS7475",
+        "content": "Deleted /tmp/test.txt",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "文件已成功删除。",
+        "signature": "3011b498-89a5-4314-9ba4-254b23389601"
+      },
+      {
+        "type": "text",
+        "text": "文件 `/tmp/test.txt` 已成功删除。"
+      }
+    ]
+  }
+]
