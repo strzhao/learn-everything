@@ -1,0 +1,228 @@
+[AUDIT] [BOOT] role=interactive mode=bypassPermissions hooks=obs stream=streaming OTEL_LOG_USER_PROMPTS=(unset, redacting)
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file count=1]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779765521268]
+[AUDIT] [STREAM tool_use_id=call_00_bTKHLQ6ZU1y1LzTBVUzz7991 name=read_file enqueued at t=1591 ms]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file count=1]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177976552127]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file count=2]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779765521373]
+[AUDIT] [STREAM tool_use_id=call_01_JORckEtorudEfpG4Pp2O5267 name=read_file enqueued at t=1699 ms]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file count=2]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177976552137]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file count=3]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779765521476]
+[AUDIT] [STREAM tool_use_id=call_02_HR46DEMv3bYvsy1tFxKf8476 name=read_file enqueued at t=1802 ms]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file count=3]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177976552147]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file count=4]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779765521579]
+[AUDIT] [STREAM tool_use_id=call_03_4YSvf41PZB8NWbbx8i5P1271 name=read_file enqueued at t=1905 ms]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file count=4]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177976552158]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file count=5]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779765521681]
+[AUDIT] [STREAM tool_use_id=call_04_OQ1pDqEFey5pQ8JH6dao4908 name=read_file enqueued at t=2006 ms]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file count=5]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177976552168]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "tool_use",
+    "id": "call_00_bTKHLQ6ZU1y1LzTBVUzz7991",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/a.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_01_JORckEtorudEfpG4Pp2O5267",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/b.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_02_HR46DEMv3bYvsy1tFxKf8476",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/c.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_03_4YSvf41PZB8NWbbx8i5P1271",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/d.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_04_OQ1pDqEFey5pQ8JH6dao4908",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/e.txt"
+    }
+  }
+]
+[AUDIT] [STREAM tool_use_id=call_00_bTKHLQ6ZU1y1LzTBVUzz7991 name=read_file completed at t=2119 ms duration=528 ms]
+[AUDIT] [STREAM tool_use_id=call_01_JORckEtorudEfpG4Pp2O5267 name=read_file completed at t=2121 ms duration=422 ms]
+[AUDIT] [STREAM tool_use_id=call_02_HR46DEMv3bYvsy1tFxKf8476 name=read_file completed at t=2121 ms duration=319 ms]
+[AUDIT] [STREAM tool_use_id=call_03_4YSvf41PZB8NWbbx8i5P1271 name=read_file completed at t=2121 ms duration=216 ms]
+[AUDIT] [STREAM tool_use_id=call_04_OQ1pDqEFey5pQ8JH6dao4908 name=read_file completed at t=2121 ms duration=115 ms]
+
+========== WALLCLOCK SUMMARY ==========
+  total: 2052 ms
+  model_streaming: 2042 ms
+  tool_execution: 9 ms
+  tool_execution_overlap: 0 ms
+  pipelining_savings: -1 ms
+
+========== ROUND 2  stop_reason=end_turn ==========
+[
+  {
+    "type": "text",
+    "text": "已成功在**一个回合内并行读取**了全部 5 个文件：\n\n| 文件 | 读取结果 |\n|------|---------|\n| `/tmp/a.txt` | ✅ 已读取 |\n| `/tmp/b.txt` | ✅ 已读取 |\n| `/tmp/c.txt` | ✅ 已读取 |\n| `/tmp/d.txt` | ✅ 已读取 |\n| `/tmp/e.txt` | ✅ 已读取 |\n\n所有文件均成功读取，没有报错。由于这是 mock 环境，每个文件的内容都是模拟的占位文本（约 500 字节）。如果你需要进一步对这些文件进行编辑、删除或其他操作，请告诉我！"
+  }
+]
+
+========== WALLCLOCK SUMMARY ==========
+  total: 2004 ms
+  model_streaming: 2002 ms
+  tool_execution_overlap: 0 ms (no tools this round)
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "同时读取这 5 个文件: /tmp/a.txt, /tmp/b.txt, /tmp/c.txt, /tmp/d.txt, /tmp/e.txt（请在一个回合内并行调用 5 次 read_file）"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "call_00_bTKHLQ6ZU1y1LzTBVUzz7991",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/a.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_01_JORckEtorudEfpG4Pp2O5267",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/b.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_02_HR46DEMv3bYvsy1tFxKf8476",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/c.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_03_4YSvf41PZB8NWbbx8i5P1271",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/d.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_04_OQ1pDqEFey5pQ8JH6dao4908",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/e.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_bTKHLQ6ZU1y1LzTBVUzz7991",
+        "content": "Read /tmp/a.txt: <mocked content of /tmp/a.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_01_JORckEtorudEfpG4Pp2O5267",
+        "content": "Read /tmp/b.txt: <mocked content of /tmp/b.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_02_HR46DEMv3bYvsy1tFxKf8476",
+        "content": "Read /tmp/c.txt: <mocked content of /tmp/c.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_03_4YSvf41PZB8NWbbx8i5P1271",
+        "content": "Read /tmp/d.txt: <mocked content of /tmp/d.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_04_OQ1pDqEFey5pQ8JH6dao4908",
+        "content": "Read /tmp/e.txt: <mocked content of /tmp/e.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "已成功在**一个回合内并行读取**了全部 5 个文件：\n\n| 文件 | 读取结果 |\n|------|---------|\n| `/tmp/a.txt` | ✅ 已读取 |\n| `/tmp/b.txt` | ✅ 已读取 |\n| `/tmp/c.txt` | ✅ 已读取 |\n| `/tmp/d.txt` | ✅ 已读取 |\n| `/tmp/e.txt` | ✅ 已读取 |\n\n所有文件均成功读取，没有报错。由于这是 mock 环境，每个文件的内容都是模拟的占位文本（约 500 字节）。如果你需要进一步对这些文件进行编辑、删除或其他操作，请告诉我！"
+      }
+    ]
+  }
+]
+
+========== OBS METRIC counter dump ==========
+  harness.PreToolUse{event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file} = 5
+  harness.PostToolUse{event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file} = 5
+
+========== OBS CONTEXT MAP dump ==========
+  PreToolUse-1779765521268 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas
+  PostToolUse-1779765521272 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa
+  PreToolUse-1779765521373 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas
+  PostToolUse-1779765521374 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa
+  PreToolUse-1779765521476 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas
+  PostToolUse-1779765521477 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa
+  PreToolUse-1779765521579 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas
+  PostToolUse-1779765521580 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa
+  PreToolUse-1779765521681 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas
+  PostToolUse-1779765521682 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa

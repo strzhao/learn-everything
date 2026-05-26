@@ -425,3 +425,9 @@ Socratic 09 全对无补丁 —— v7 实战 4 决策点（fan-out 位置 / card
 ### 2026-05-26T05:00:00+00:00 [accept]
 
 Socratic 10 全对（Q1+Q3 一次过 / Q2 错→收紧通过）—— streaming 三 distinction 内化。create 第六次巩固。
+
+### 2026-05-26T11:25:00+08:00 [accept] task-08 → artifacts/08-streaming; bloom create (第六次巩固); artifact_count 7→8
+
+### 2026-05-26T12:00:00+08:00 [accept] socratic 11 全对（MCP=工具定义权外移 + 同权=复用 dispatch pipeline）；create 第七次巩固；MCP 3 层架构内化
+
+### 2026-05-26T12:15:00+08:00 [task] Task 09 下发: v9 MCP mini client (stdio JSON-RPC + mock server + 同权验证); 2 run-logs; ≤800 行

@@ -1,0 +1,321 @@
+========== BATCH MODE (--stream=false --sim-delay) ==========
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "text",
+    "text": "当然，我将在同一回合内并行读取这 5 个文件。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_ASNOyqzC4UZQno5YSt7T6418",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/a.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_01_rlh0rVAFaKkfQfX1XXU49174",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/b.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_02_2FbjMd0bFSsFWCmPzEGd3356",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/c.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_03_xqBwX5hUn5mJB5n9nziS2134",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/d.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_04_jrq8F0VEZpnJZjQMfbb03627",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/e.txt"
+    }
+  }
+]
+
+========== ROUND 2  stop_reason=end_turn ==========
+[
+  {
+    "type": "text",
+    "text": "5 个文件已在同一回合内并行读取成功，结果如下：\n\n| 文件 | 内容 |\n|------|------|\n| `/tmp/a.txt` | `<mocked ~500ms latency content>` |\n| `/tmp/b.txt` | `<mocked ~100ms latency content>` |\n| `/tmp/c.txt` | `<mocked ~300ms latency content>` |\n| `/tmp/d.txt` | `<mocked ~50ms latency content>` |\n| `/tmp/e.txt` | `<mocked ~200ms latency content>` |\n\n所有文件均已成功读取，没有任何错误。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "同时读取这 5 个文件: /tmp/a.txt, /tmp/b.txt, /tmp/c.txt, /tmp/d.txt, /tmp/e.txt（请在一个回合内并行调用 5 次 read_file）"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "当然，我将在同一回合内并行读取这 5 个文件。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_ASNOyqzC4UZQno5YSt7T6418",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/a.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_01_rlh0rVAFaKkfQfX1XXU49174",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/b.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_02_2FbjMd0bFSsFWCmPzEGd3356",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/c.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_03_xqBwX5hUn5mJB5n9nziS2134",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/d.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_04_jrq8F0VEZpnJZjQMfbb03627",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/e.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_ASNOyqzC4UZQno5YSt7T6418",
+        "content": "Read /tmp/a.txt: <mocked ~500ms latency content>",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_01_rlh0rVAFaKkfQfX1XXU49174",
+        "content": "Read /tmp/b.txt: <mocked ~100ms latency content>",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_02_2FbjMd0bFSsFWCmPzEGd3356",
+        "content": "Read /tmp/c.txt: <mocked ~300ms latency content>",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_03_xqBwX5hUn5mJB5n9nziS2134",
+        "content": "Read /tmp/d.txt: <mocked ~50ms latency content>",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_04_jrq8F0VEZpnJZjQMfbb03627",
+        "content": "Read /tmp/e.txt: <mocked ~200ms latency content>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "5 个文件已在同一回合内并行读取成功，结果如下：\n\n| 文件 | 内容 |\n|------|------|\n| `/tmp/a.txt` | `<mocked ~500ms latency content>` |\n| `/tmp/b.txt` | `<mocked ~100ms latency content>` |\n| `/tmp/c.txt` | `<mocked ~300ms latency content>` |\n| `/tmp/d.txt` | `<mocked ~50ms latency content>` |\n| `/tmp/e.txt` | `<mocked ~200ms latency content>` |\n\n所有文件均已成功读取，没有任何错误。"
+      }
+    ]
+  }
+]
+
+========== STREAMING MODE (--stream=true --sim-delay) ==========
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "tool_use",
+    "id": "call_00_7l328bJFJP7ZOa19Npa39774",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/a.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_01_Vv9Mjmfd5gHibaVML4i74605",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/b.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_02_xQJ2AFIkmDLc2reCq5vl0049",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/c.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_03_OXXvWkg16zZbAABYbaXl2387",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/d.txt"
+    }
+  },
+  {
+    "type": "tool_use",
+    "id": "call_04_IHYX4s6LjAHAeW6t61Su4483",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/e.txt"
+    }
+  }
+]
+
+========== WALLCLOCK SUMMARY ==========
+  total: 2263 ms
+  model_streaming: 2159 ms
+  tool_execution: 103 ms
+  tool_execution_overlap: 0 ms
+  pipelining_savings: 0 ms
+
+========== ROUND 2  stop_reason=end_turn ==========
+[
+  {
+    "type": "text",
+    "text": "5 个文件已并行读取成功！以下是各文件的内容：\n\n| 文件 | 内容 |\n|------|------|\n| `/tmp/a.txt` | `<mocked ~500ms latency content>` |\n| `/tmp/b.txt` | `<mocked ~100ms latency content>` |\n| `/tmp/c.txt` | `<mocked ~300ms latency content>` |\n| `/tmp/d.txt` | `<mocked ~50ms latency content>` |\n| `/tmp/e.txt` | `<mocked ~200ms latency content>` |\n\n所有 5 次 `read_file` 调用在同一回合内并行完成，总耗时约等于最慢的那个文件（`a.txt`，约 500ms 延迟）。✅"
+  }
+]
+
+========== WALLCLOCK SUMMARY ==========
+  total: 1729 ms
+  model_streaming: 1727 ms
+  tool_execution_overlap: 0 ms (no tools this round)
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "同时读取这 5 个文件: /tmp/a.txt, /tmp/b.txt, /tmp/c.txt, /tmp/d.txt, /tmp/e.txt（请在一个回合内并行调用 5 次 read_file）"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "call_00_7l328bJFJP7ZOa19Npa39774",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/a.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_01_Vv9Mjmfd5gHibaVML4i74605",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/b.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_02_xQJ2AFIkmDLc2reCq5vl0049",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/c.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_03_OXXvWkg16zZbAABYbaXl2387",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/d.txt"
+        }
+      },
+      {
+        "type": "tool_use",
+        "id": "call_04_IHYX4s6LjAHAeW6t61Su4483",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/e.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_7l328bJFJP7ZOa19Npa39774",
+        "content": "Read /tmp/a.txt: <mocked ~500ms latency content>",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_01_Vv9Mjmfd5gHibaVML4i74605",
+        "content": "Read /tmp/b.txt: <mocked ~100ms latency content>",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_02_xQJ2AFIkmDLc2reCq5vl0049",
+        "content": "Read /tmp/c.txt: <mocked ~300ms latency content>",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_03_OXXvWkg16zZbAABYbaXl2387",
+        "content": "Read /tmp/d.txt: <mocked ~50ms latency content>",
+        "is_error": false
+      },
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_04_IHYX4s6LjAHAeW6t61Su4483",
+        "content": "Read /tmp/e.txt: <mocked ~200ms latency content>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "5 个文件已并行读取成功！以下是各文件的内容：\n\n| 文件 | 内容 |\n|------|------|\n| `/tmp/a.txt` | `<mocked ~500ms latency content>` |\n| `/tmp/b.txt` | `<mocked ~100ms latency content>` |\n| `/tmp/c.txt` | `<mocked ~300ms latency content>` |\n| `/tmp/d.txt` | `<mocked ~50ms latency content>` |\n| `/tmp/e.txt` | `<mocked ~200ms latency content>` |\n\n所有 5 次 `read_file` 调用在同一回合内并行完成，总耗时约等于最慢的那个文件（`a.txt`，约 500ms 延迟）。✅"
+      }
+    ]
+  }
+]

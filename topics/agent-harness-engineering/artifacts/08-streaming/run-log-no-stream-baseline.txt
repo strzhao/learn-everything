@@ -1,0 +1,240 @@
+[AUDIT] [BOOT] role=interactive mode=bypassPermissions hooks=obs stream=batch OTEL_LOG_USER_PROMPTS=(unset, redacting)
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "text",
+    "text": "好的，我来依次读取这 5 个文件。\n\n首先读取第一个文件："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_RaOsxBniOvYWiROjt6tV1066",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/a.txt"
+    }
+  }
+]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file count=1]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779765469607]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file count=1]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177976546962]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+
+========== ROUND 2  stop_reason=tool_use ==========
+[
+  {
+    "type": "text",
+    "text": "**总结 /tmp/a.txt**：这是一个模拟的文件内容块，大约 500 字节，包含了一些占位文本数据。\n\n接下来读取第二个文件："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_F7MOXvk04v3FmS2pglhL6714",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/b.txt"
+    }
+  }
+]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file count=2]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779765470713]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file count=2]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177976547071]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+
+========== ROUND 3  stop_reason=tool_use ==========
+[
+  {
+    "type": "text",
+    "text": "**总结 /tmp/b.txt**：与 /tmp/a.txt 类似，这也是一个约 500 字节的模拟文件内容块。\n\n继续读取第三个文件："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_TodeFjvgBSEXzMctA96N3314",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/c.txt"
+    }
+  }
+]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file count=3]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779765472031]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file count=3]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177976547203]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+
+========== COMPACT EVENT round=4 type=micro role=interactive before=1568 after=1474 ==========
+[AUDIT] COMPACT type=micro role=interactive cleared=1_tool_results freed=94b
+
+========== ROUND 4  stop_reason=tool_use ==========
+[
+  {
+    "type": "text",
+    "text": "**总结 /tmp/c.txt**：这同样是约 500 字节的模拟文件内容块，与前两个文件结构相似。\n\n读取第四个文件："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_E1ZCGx2o3LGI3gqr90dK1587",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/d.txt"
+    }
+  }
+]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file count=4]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779765473165]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file count=4]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177976547316]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+
+========== COMPACT EVENT round=5 type=micro role=interactive before=1961 after=1867 ==========
+[AUDIT] COMPACT type=micro role=interactive cleared=1_tool_results freed=94b
+[AUDIT] [OBS event=PreCompact sink=logs attrs={"event":"PreCompact","role":"interactive","rounds":5}]
+[AUDIT] [OBS event=harness.PreCompact sink=metrics labels=event=PreCompact,role=interactive count=1]
+[AUDIT] [OBS event=PreCompact sink=contextMap toolUseId=PreCompact-1779765473166]
+[AUDIT] [HOOK event=PreCompact handler=obs-PreCompact kind=function outcome=success ok=true reason=obs emitted]
+
+========== COMPACT EVENT round=5 type=full role=interactive before=1867 after=1799 ==========
+summary (first 600 chars): <analysis>
+The user asked to sequentially read five files (/tmp/a.txt through /tmp/e.txt), one at a time, and to summarize each file in one sentence before proceeding to the next. The assistant began executing this task. The first file (/tmp/a.txt) was read, and the assistant gave a summary describing it as a ~500-byte simulated file content block containing placeholder text data. The second file (/tmp/b.txt) was also read and summarized as another ~500-byte simulated file content block. The assistant then started reading the third file (/tmp/c.txt). The tool results were cleared by the system
+[AUDIT] [OBS event=PostCompact sink=logs attrs={"event":"PostCompact","role":"interactive","rounds":5,"bytes_before":1867,"byte]
+[AUDIT] [OBS event=harness.PostCompact sink=metrics labels=event=PostCompact,role=interactive count=1]
+[AUDIT] [OBS event=PostCompact sink=contextMap toolUseId=PostCompact-177976547695]
+[AUDIT] [HOOK event=PostCompact handler=obs-PostCompact kind=function outcome=success ok=true reason=obs emitted]
+
+========== ROUND 5  stop_reason=tool_use ==========
+[
+  {
+    "type": "text",
+    "text": "**总结 /tmp/d.txt**：又一个约 500 字节的模拟文件内容块，与前几个文件结构一致。\n\n读取最后一个文件："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_umaKGtgXwn7O1XLjwrgQ9290",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/e.txt"
+    }
+  }
+]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file count=5]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779765478073]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file count=5]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177976547807]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+
+========== ROUND 6  stop_reason=end_turn ==========
+[
+  {
+    "type": "text",
+    "text": "**总结 /tmp/e.txt**：最后一个文件，同样是约 500 字节的模拟占位符内容块。\n\n---\n\n**全部五个文件已读取完毕。最终汇总如下：**\n\n| 文件名 | 一句话总结 |\n|--------|-----------|\n| `/tmp/a.txt` | 约 500 字节的模拟文件内容块，包含占位符文本数据。 |\n| `/tmp/b.txt` | 同样约 500 字节的模拟文件内容块，结构与前一个类似。 |\n| `/tmp/c.txt` | 约 500 字节的模拟内容块，与前两个文件结构一致。 |\n| `/tmp/d.txt` | 又一个约 500 字节的模拟文件内容块，结构相同。 |\n| `/tmp/e.txt` | 最后一个文件，同样是约 500 字节的模拟占位符内容块。 |\n\n所有文件大小相似（~500 字节），内容均为模拟的占位符文本数据。任务完成。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "[COMPACTED SUMMARY]\n<analysis>\nThe user asked to sequentially read five files (/tmp/a.txt through /tmp/e.txt), one at a time, and to summarize each file in one sentence before proceeding to the next. The assistant began executing this task. The first file (/tmp/a.txt) was read, and the assistant gave a summary describing it as a ~500-byte simulated file content block containing placeholder text data. The second file (/tmp/b.txt) was also read and summarized as another ~500-byte simulated file content block. The assistant then started reading the third file (/tmp/c.txt). The tool results were cleared by the system, so actual file contents are not visible. No errors were encountered. The task is partially complete, with three files read so far and two remaining.\n</analysis>\n<summary>\nThe user asked to read five files (/tmp/a.txt through /tmp/e.txt) one at a time, summarizing each before moving on. The assistant read the first two files (/tmp/a.txt and /tmp/b.txt), summarizing both as ~500-byte simulated placeholder content blocks, and was about to read the third file (/tmp/c.txt) when the conversation was cut off. No errors occurred, but tool results were cleared, so file contents are not shown. Two files (/tmp/d.txt and /tmp/e.txt) remain unread.\n</summary>"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "**总结 /tmp/c.txt**：这同样是约 500 字节的模拟文件内容块，与前两个文件结构相似。\n\n读取第四个文件："
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_E1ZCGx2o3LGI3gqr90dK1587",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/d.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_E1ZCGx2o3LGI3gqr90dK1587",
+        "content": "Read /tmp/d.txt: <mocked content of /tmp/d.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "**总结 /tmp/d.txt**：又一个约 500 字节的模拟文件内容块，与前几个文件结构一致。\n\n读取最后一个文件："
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_umaKGtgXwn7O1XLjwrgQ9290",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/e.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_umaKGtgXwn7O1XLjwrgQ9290",
+        "content": "Read /tmp/e.txt: <mocked content of /tmp/e.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "**总结 /tmp/e.txt**：最后一个文件，同样是约 500 字节的模拟占位符内容块。\n\n---\n\n**全部五个文件已读取完毕。最终汇总如下：**\n\n| 文件名 | 一句话总结 |\n|--------|-----------|\n| `/tmp/a.txt` | 约 500 字节的模拟文件内容块，包含占位符文本数据。 |\n| `/tmp/b.txt` | 同样约 500 字节的模拟文件内容块，结构与前一个类似。 |\n| `/tmp/c.txt` | 约 500 字节的模拟内容块，与前两个文件结构一致。 |\n| `/tmp/d.txt` | 又一个约 500 字节的模拟文件内容块，结构相同。 |\n| `/tmp/e.txt` | 最后一个文件，同样是约 500 字节的模拟占位符内容块。 |\n\n所有文件大小相似（~500 字节），内容均为模拟的占位符文本数据。任务完成。"
+      }
+    ]
+  }
+]
+
+========== OBS METRIC counter dump ==========
+  harness.PreToolUse{event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=read_file} = 5
+  harness.PostToolUse{event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=read_file} = 5
+  harness.PreCompact{event=PreCompact,role=interactive} = 1
+  harness.PostCompact{event=PostCompact,role=interactive} = 1
+
+========== OBS CONTEXT MAP dump ==========
+  PreToolUse-1779765469607 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas
+  PostToolUse-1779765469622 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa
+  PreToolUse-1779765470713 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas
+  PostToolUse-1779765470715 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa
+  PreToolUse-1779765472031 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas
+  PostToolUse-1779765472034 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa
+  PreToolUse-1779765473165 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas
+  PostToolUse-1779765473166 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa
+  PreCompact-1779765473166 → event=PreCompact attrs={"event":"PreCompact","role":"interactive","rounds":5}
+  PostCompact-1779765476950 → event=PostCompact attrs={"event":"PostCompact","role":"interactive","rounds":5,"bytes_before":1867,"byte
+  PreToolUse-1779765478073 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"read_file","role":"interactive","mode":"bypas
+  PostToolUse-1779765478073 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"read_file","role":"interactive","mode":"bypa
