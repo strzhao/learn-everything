@@ -1,0 +1,137 @@
+topics/agent-harness-engineering/artifacts/08-streaming/run-log-yield-order-proof.txt
+  5241912d40775af6 1-228
+topics/agent-harness-engineering/artifacts/08-streaming/run-log-stream-5-tools.txt
+  5241912d40775af6 1-228
+topics/agent-harness-engineering/artifacts/08-streaming/notes.md
+  5241912d40775af6 1-97
+topics/agent-harness-engineering/artifacts/08-streaming/run-log-batch-vs-stream-wallclock.txt
+  5241912d40775af6 1-321
+topics/agent-harness-engineering/artifacts/08-streaming/lesson.md
+  5241912d40775af6 1-161
+topics/agent-harness-engineering/artifacts/09-mcp-client/spec.md
+  310fe6c3486cae39 1-101
+topics/agent-harness-engineering/artifacts/08-streaming/run-log-no-stream-baseline.txt
+  5241912d40775af6 1-240
+topics/agent-harness-engineering/artifacts/08-streaming/excerpts.md
+  5241912d40775af6 1-131
+topics/agent-harness-engineering/artifacts/08-streaming/README.md
+  5241912d40775af6 1-47
+topics/agent-harness-engineering/journal.md
+  310fe6c3486cae39 430-433
+  5241912d40775af6 428-429
+topics/agent-harness-engineering/artifacts/08-streaming/agent-v8-streaming.ts
+  5241912d40775af6 1-593
+topics/agent-harness-engineering/state.md
+  310fe6c3486cae39 7,14,46
+  5241912d40775af6 9,44-45
+topics/agent-harness-engineering/artifacts/08-streaming/.api-config.json
+  5241912d40775af6 1-5
+topics/INDEX.md
+  5241912d40775af6 9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.8",
+  "base_commit_sha": "7b1f1d328659c3f85843dcbf57d9096964ad4636",
+  "prompts": {
+    "310fe6c3486cae39": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a65776f0-1f82-4474-ab16-9f3307d1d6fd",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 108,
+      "total_deletions": 3,
+      "accepted_lines": 108,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "topics/agent-harness-engineering/journal.md": {
+          "additions": 4,
+          "accepted_lines": 4
+        },
+        "topics/agent-harness-engineering/state.md": {
+          "additions": 3,
+          "deletions": 3,
+          "accepted_lines": 3
+        },
+        "topics/agent-harness-engineering/artifacts/09-mcp-client/spec.md": {
+          "additions": 101,
+          "accepted_lines": 101
+        }
+      }
+    },
+    "5241912d40775af6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "05123b5a-ad74-47ae-b53a-d60d77c74008",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 2225,
+      "total_deletions": 170,
+      "accepted_lines": 2057,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "topics/agent-harness-engineering/artifacts/08-streaming/README.md": {
+          "additions": 47,
+          "accepted_lines": 47
+        },
+        "topics/agent-harness-engineering/artifacts/08-streaming/excerpts.md": {
+          "additions": 131,
+          "accepted_lines": 131
+        },
+        "topics/agent-harness-engineering/artifacts/08-streaming/agent-v8-streaming.ts": {
+          "additions": 744,
+          "deletions": 151,
+          "accepted_lines": 593
+        },
+        "topics/INDEX.md": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        },
+        "topics/agent-harness-engineering/artifacts/08-streaming/.api-config.json": {
+          "additions": 5,
+          "accepted_lines": 5
+        },
+        "topics/agent-harness-engineering/artifacts/08-streaming/notes.md": {
+          "additions": 97,
+          "accepted_lines": 97
+        },
+        "topics/agent-harness-engineering/artifacts/08-streaming/lesson.md": {
+          "additions": 161,
+          "accepted_lines": 161
+        },
+        "topics/agent-harness-engineering/journal.md": {
+          "additions": 2,
+          "accepted_lines": 2
+        },
+        "topics/agent-harness-engineering/artifacts/08-streaming/run-log-yield-order-proof.txt": {
+          "additions": 228,
+          "accepted_lines": 228
+        },
+        "topics/agent-harness-engineering/artifacts/08-streaming/run-log-stream-5-tools.txt": {
+          "additions": 228,
+          "accepted_lines": 228
+        },
+        "topics/agent-harness-engineering/artifacts/08-streaming/run-log-batch-vs-stream-wallclock.txt": {
+          "additions": 321,
+          "accepted_lines": 321
+        },
+        "topics/agent-harness-engineering/artifacts/08-streaming/run-log-no-stream-baseline.txt": {
+          "additions": 254,
+          "deletions": 14,
+          "accepted_lines": 240
+        },
+        "topics/agent-harness-engineering/state.md": {
+          "additions": 6,
+          "deletions": 4,
+          "accepted_lines": 3
+        }
+      }
+    }
+  }
+}
