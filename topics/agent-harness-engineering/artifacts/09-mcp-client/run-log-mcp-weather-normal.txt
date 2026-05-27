@@ -1,0 +1,90 @@
+[AUDIT] [BOOT] role=interactive mode=bypassPermissions hooks=obs stream=batch mcp=/Users/stringzhao/.bun/bin/bun run mcp-mock-server.ts OTEL_LOG_USER_PROMPTS=(unset, redacting)
+[AUDIT] [MCP spawn cmd=/Users/stringzhao/.bun/bin/bun run mcp-mock-server.ts]
+[AUDIT] [MCP server-stderr] [mock-mcp 2026-05-26T13:10:33.955Z] mock-mcp server started, waiting for JSON-RPC over stdin
+[AUDIT] [MCP server-stderr] [mock-mcp 2026-05-26T13:10:33.957Z] recv method=initialize id=1
+[AUDIT] [MCP initialize → {"protocolVersion":"2024-11-05","capabilities":{"tools":{}},"serverInfo":{"name":"mock-mcp","version":"0.1.0"}}]
+[AUDIT] [MCP server-stderr] [mock-mcp 2026-05-26T13:10:33.957Z] recv method=notifications/initialized id=(notif)
+[AUDIT] [MCP server-stderr] [mock-mcp 2026-05-26T13:10:33.957Z] client ready (notifications/initialized)
+[AUDIT] [MCP server-stderr] [mock-mcp 2026-05-26T13:10:33.957Z] recv method=tools/list id=2
+[AUDIT] [MCP tools/list → 2 tools: weather_lookup,calculator]
+[AUDIT] [MCP merged 2 tools into registry: mcp__mock__weather_lookup,mcp__mock__calculator]
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "tool_use",
+    "id": "call_00_jI4nm7SCE8CTqs0nNa452188",
+    "name": "mcp__mock__weather_lookup",
+    "input": {
+      "city": "北京"
+    }
+  }
+]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"mcp__mock__weather_lookup","role":"interactiv]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=mcp__mock__weather_lookup count=1]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779801035674]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+[AUDIT] role=interactive auto-allow tool=mcp__mock__weather_lookup mode=bypassPermissions input={"city":"北京"}
+[AUDIT] [MCP server-stderr] [mock-mcp 2026-05-26T13:10:35.676Z] recv method=tools/call id=3
+[AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"mcp__mock__weather_lookup","role":"interacti]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=mcp__mock__weather_lookup count=1]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177980103567]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+
+========== ROUND 2  stop_reason=end_turn ==========
+[
+  {
+    "type": "text",
+    "text": "北京的天气情况如下：\n\n- **天气状况**：☀️ 晴\n- **气温**：22°C\n- **风向风力**：东南风 3 级\n- **湿度**：55%\n\n是个不错的晴天！适合外出活动。请问还有其他需要帮忙的吗？"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "查一下北京的天气。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "call_00_jI4nm7SCE8CTqs0nNa452188",
+        "name": "mcp__mock__weather_lookup",
+        "input": {
+          "city": "北京"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_jI4nm7SCE8CTqs0nNa452188",
+        "content": "北京 今天晴 22°C，东南风 3 级，湿度 55%。(mocked)",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "北京的天气情况如下：\n\n- **天气状况**：☀️ 晴\n- **气温**：22°C\n- **风向风力**：东南风 3 级\n- **湿度**：55%\n\n是个不错的晴天！适合外出活动。请问还有其他需要帮忙的吗？"
+      }
+    ]
+  }
+]
+
+========== OBS METRIC counter dump ==========
+  harness.PreToolUse{event=PreToolUse,mode=bypassPermissions,role=interactive,tool_name=mcp__mock__weather_lookup} = 1
+  harness.PostToolUse{event=PostToolUse,is_error=false,mode=bypassPermissions,role=interactive,tool_name=mcp__mock__weather_lookup} = 1
+
+========== OBS CONTEXT MAP dump ==========
+  PreToolUse-1779801035674 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"mcp__mock__weather_lookup","role":"interactiv
+  PostToolUse-1779801035677 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"mcp__mock__weather_lookup","role":"interacti
+[AUDIT] [MCP shutting down]

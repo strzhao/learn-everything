@@ -1,0 +1,92 @@
+[AUDIT] [BOOT] role=interactive mode=default hooks=obs stream=batch mcp=/Users/stringzhao/.bun/bin/bun run mcp-mock-server.ts OTEL_LOG_USER_PROMPTS=(unset, redacting)
+[AUDIT] [MCP spawn cmd=/Users/stringzhao/.bun/bin/bun run mcp-mock-server.ts]
+[AUDIT] [MCP server-stderr] [mock-mcp 2026-05-26T13:11:25.908Z] mock-mcp server started, waiting for JSON-RPC over stdin
+[AUDIT] [MCP server-stderr] [mock-mcp 2026-05-26T13:11:25.910Z] recv method=initialize id=1
+[AUDIT] [MCP initialize → {"protocolVersion":"2024-11-05","capabilities":{"tools":{}},"serverInfo":{"name":"mock-mcp","version":"0.1.0"}}]
+[AUDIT] [MCP server-stderr] [mock-mcp 2026-05-26T13:11:25.911Z] recv method=notifications/initialized id=(notif)
+[AUDIT] [MCP server-stderr] [mock-mcp 2026-05-26T13:11:25.911Z] client ready (notifications/initialized)
+[AUDIT] [MCP server-stderr] [mock-mcp 2026-05-26T13:11:25.911Z] recv method=tools/list id=2
+[AUDIT] [MCP tools/list → 2 tools: weather_lookup,calculator]
+[AUDIT] [MCP merged 2 tools into registry: mcp__mock__weather_lookup,mcp__mock__calculator]
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "tool_use",
+    "id": "call_00_sLbnhLCc8tJX21m2KDRv4115",
+    "name": "mcp__mock__calculator",
+    "input": {
+      "a": 12345,
+      "b": 67890,
+      "op": "mul"
+    }
+  }
+]
+[AUDIT] [OBS event=PreToolUse sink=logs attrs={"event":"PreToolUse","tool_name":"mcp__mock__calculator","role":"interactive","]
+[AUDIT] [OBS event=harness.PreToolUse sink=metrics labels=event=PreToolUse,mode=default,role=interactive,tool_name=mcp__mock__calculator count=1]
+[AUDIT] [OBS event=PreToolUse sink=contextMap toolUseId=PreToolUse-1779801086949]
+[AUDIT] [HOOK event=PreToolUse handler=obs-PreToolUse kind=function outcome=success ok=true reason=obs emitted]
+mode=default Allow mcp__mock__calculator on {"a":12345,"b":67890,"op":"mul"}? [y/N] [AUDIT] [OBS event=PostToolUse sink=logs attrs={"event":"PostToolUse","tool_name":"mcp__mock__calculator","role":"interactive",]
+[AUDIT] [OBS event=harness.PostToolUse sink=metrics labels=event=PostToolUse,is_error=true,mode=default,role=interactive,tool_name=mcp__mock__calculator count=1]
+[AUDIT] [OBS event=PostToolUse sink=contextMap toolUseId=PostToolUse-177980108695]
+[AUDIT] [HOOK event=PostToolUse handler=obs-PostToolUse kind=function outcome=success ok=true reason=obs emitted]
+
+========== ROUND 2  stop_reason=end_turn ==========
+[
+  {
+    "type": "text",
+    "text": "看起来计算器工具被拒绝了。让我换个方式试试：\n\n**12345 × 67890 = 838,102,050**\n\n计算过程：\n- 12345 × 60000 = 740,700,000\n- 12345 × 7000 = 86,415,000\n- 12345 × 800 = 9,876,000\n- 12345 × 90 = 1,111,050\n\n总和：740,700,000 + 86,415,000 + 9,876,000 + 1,111,050 = **838,102,050**\n\n所以答案是 **838,102,050**。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "帮我算 12345 乘 67890。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "tool_use",
+        "id": "call_00_sLbnhLCc8tJX21m2KDRv4115",
+        "name": "mcp__mock__calculator",
+        "input": {
+          "a": 12345,
+          "b": 67890,
+          "op": "mul"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_sLbnhLCc8tJX21m2KDRv4115",
+        "content": "User denied mcp__mock__calculator: {\"a\":12345,\"b\":67890,\"op\":\"mul\"}",
+        "is_error": true
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "看起来计算器工具被拒绝了。让我换个方式试试：\n\n**12345 × 67890 = 838,102,050**\n\n计算过程：\n- 12345 × 60000 = 740,700,000\n- 12345 × 7000 = 86,415,000\n- 12345 × 800 = 9,876,000\n- 12345 × 90 = 1,111,050\n\n总和：740,700,000 + 86,415,000 + 9,876,000 + 1,111,050 = **838,102,050**\n\n所以答案是 **838,102,050**。"
+      }
+    ]
+  }
+]
+
+========== OBS METRIC counter dump ==========
+  harness.PreToolUse{event=PreToolUse,mode=default,role=interactive,tool_name=mcp__mock__calculator} = 1
+  harness.PostToolUse{event=PostToolUse,is_error=true,mode=default,role=interactive,tool_name=mcp__mock__calculator} = 1
+
+========== OBS CONTEXT MAP dump ==========
+  PreToolUse-1779801086949 → event=PreToolUse attrs={"event":"PreToolUse","tool_name":"mcp__mock__calculator","role":"interactive","
+  PostToolUse-1779801086951 → event=PostToolUse attrs={"event":"PostToolUse","tool_name":"mcp__mock__calculator","role":"interactive",
+[AUDIT] [MCP shutting down]

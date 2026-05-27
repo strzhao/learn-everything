@@ -1,0 +1,156 @@
+# ---------- round 1 ----------
+# Scenario: cache-warm —— 验证 memoization 默认开 + DANGEROUS 跳读但仍写 cache + sectionCache 跨轮持久
+# Command:
+#   ~/.bun/bin/bun run agent-v10-system-prompt.ts --role=interactive --mode=bypassPermissions \
+#     --hooks=none --stream=false --cache-audit \
+#     '--prompt=请依次读取 /tmp/x.txt 和 /tmp/y.txt 两个文件，每读完一个先用一句话总结再读下一个。'
+#
+# 字面证据（4 论断全 ✅）：
+#   1) memoization 默认开:    bootstrap miss=6/6 → Round1 miss=1/6 → Round2 miss=1/6 (5 段全 hit)
+#   2) DANGEROUS opt-out:     mcp_instructions 在 R1/R2 始终在 miss-sections 列表 (cacheBreak: true 跳读)
+#   3) sectionCache 写副本:   bootstrap 后 cache_size 立刻 = 6 (DANGEROUS 也写)
+#   4) BOUNDARY 切分可见:     prefix=743 chars / suffix=98 chars 跨轮稳定
+#
+# 注意：v10 教学版偏离工业 prompts.ts:560-576 的 BOUNDARY 安排——
+#   工业 BEFORE_BOUNDARY = 静态字符串函数 (不进 sectionCache), AFTER_BOUNDARY = dynamicSections (含 mcp_instructions)
+#   v10 为让 cache 命中可视化，把 5 个 dynamic section 放 BEFORE_BOUNDARY 区
+#   实际工业 mcp_instructions 在 BOUNDARY 之后 cacheScope:null (每轮 API 重传)——sectionCache 内部命中规则相同
+
+[AUDIT] [BOOT] role=interactive mode=bypassPermissions hooks=none stream=batch mcp=(disabled) cache-audit=true OTEL_LOG_USER_PROMPTS=(unset, redacting)
+[AUDIT] [CACHE bootstrap] sectionCache initial size=0 (expected 0)
+[AUDIT] [CACHE bootstrap] registered sections: core_instruction, tool_list_hint, env_info, mcp_instructions[DANGEROUS], memory, session_context
+[AUDIT] [CACHE hit=0/6 miss=6/6 cache_size=6]
+[AUDIT] [CACHE hit-sections=(none)]
+[AUDIT] [CACHE miss-sections=core_instruction,tool_list_hint,env_info,mcp_instructions,memory,session_context]
+[AUDIT] [BOUNDARY prefix=743_chars (cacheable scope:global in industry) / suffix=98_chars (per-session scope:null)]
+[AUDIT] [BOUNDARY sentinel='__SYSTEM_PROMPT_DYNAMIC_BOUNDARY__' (教学版不真插入，由 assemble 拆分内置)]
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "text",
+    "text": "好的，我先读取第一个文件。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_KHIGfSN5Jl9WR3T1g5vE9068",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/x.txt"
+    }
+  }
+]
+# ---------- round 2 ----------
+# 关键变化：cache_size 仍 = 6（持久），hit=5/6 包括 env_info+session_context+memory（per-session 但仍命中）
+# miss=1/6 是 mcp_instructions（DANGEROUS 始终重算）—— 即使 activeMCPClient = null 也每次跑一遍 compute fn
+[AUDIT] [CACHE hit=5/6 miss=1/6 cache_size=6]
+[AUDIT] [CACHE hit-sections=core_instruction,tool_list_hint,env_info,memory,session_context]
+[AUDIT] [CACHE miss-sections=mcp_instructions]
+[AUDIT] [BOUNDARY prefix=743_chars (cacheable scope:global in industry) / suffix=98_chars (per-session scope:null)]
+[AUDIT] [BOUNDARY sentinel='__SYSTEM_PROMPT_DYNAMIC_BOUNDARY__' (教学版不真插入，由 assemble 拆分内置)]
+
+========== ROUND 2  stop_reason=tool_use ==========
+[
+  {
+    "type": "text",
+    "text": "**/tmp/x.txt 一句话总结：** 这是一个约 500 字节的模拟文件内容块，供模型分析使用。\n\n接下来读取第二个文件。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_3Np5q9oOnHLSxR33BEhk8868",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/y.txt"
+    }
+  }
+]
+# ---------- round 3 ----------
+# Round 2 同 Round 1 cache pattern：5 hit + 1 miss，物理证明 sectionCache 跨多轮稳定持久
+# 后续 Round 3 stop_reason=end_turn 是 model 收尾，不再 assemble system prompt（runRounds 在 end_turn 后 break）
+[AUDIT] [CACHE hit=5/6 miss=1/6 cache_size=6]
+[AUDIT] [CACHE hit-sections=core_instruction,tool_list_hint,env_info,memory,session_context]
+[AUDIT] [CACHE miss-sections=mcp_instructions]
+[AUDIT] [BOUNDARY prefix=743_chars (cacheable scope:global in industry) / suffix=98_chars (per-session scope:null)]
+[AUDIT] [BOUNDARY sentinel='__SYSTEM_PROMPT_DYNAMIC_BOUNDARY__' (教学版不真插入，由 assemble 拆分内置)]
+
+========== ROUND 3  stop_reason=end_turn ==========
+[
+  {
+    "type": "text",
+    "text": "**/tmp/y.txt 一句话总结：** 这也是一个约 500 字节的模拟文件内容块，供模型分析使用。\n\n---\n\n两个文件都读完了。它们都是 mock 出来的示例内容，大小接近（各约 500 字节），类型一致。如果需要做进一步比较、提取或分析，请告诉我。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "请依次读取 /tmp/x.txt 和 /tmp/y.txt 两个文件，每读完一个先用一句话总结再读下一个。"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "好的，我先读取第一个文件。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_KHIGfSN5Jl9WR3T1g5vE9068",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/x.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_KHIGfSN5Jl9WR3T1g5vE9068",
+        "content": "Read /tmp/x.txt: <mocked content of /tmp/x.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "**/tmp/x.txt 一句话总结：** 这是一个约 500 字节的模拟文件内容块，供模型分析使用。\n\n接下来读取第二个文件。"
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_3Np5q9oOnHLSxR33BEhk8868",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/y.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_3Np5q9oOnHLSxR33BEhk8868",
+        "content": "Read /tmp/y.txt: <mocked content of /tmp/y.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "**/tmp/y.txt 一句话总结：** 这也是一个约 500 字节的模拟文件内容块，供模型分析使用。\n\n---\n\n两个文件都读完了。它们都是 mock 出来的示例内容，大小接近（各约 500 字节），类型一致。如果需要做进一步比较、提取或分析，请告诉我。"
+      }
+    ]
+  }
+]
+[AUDIT] [CACHE final] sectionCache final size=6 (entries kept across rounds = warm cache value)

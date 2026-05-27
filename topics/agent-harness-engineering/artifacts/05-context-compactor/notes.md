@@ -312,6 +312,94 @@ v5 callModel 是顶层 const + 全局共享。fullCompact 用同一个 callModel
 
 ---
 
+## §7.5. Retrospective（2026-05-27 / 学完 v10 后补的 cache 经济关系）
+
+v5 写这份 notes 时，cache 经济还不在主线讨论范围。完成 v10 task 10（system prompt 子系统化）后，学生在 v10 lesson 讨论中反问"microCompact 改 message 不也炸 cache prefix 吗"——揭示 v5 设计的一个未在原 notes 展开的关键真相。这一节补上。
+
+### 7.5.1 v5 microCompact 与 Anthropic prompt cache 的真实关系
+
+v5 `microCompact()` 修改 client 端 `messages` 数组里 tool_result 的内容（替换为 `CLEARED_MARKER`）。Anthropic prompt cache 是 **byte-level prefix 哈希**——任何字节变化都让从该位置开始的 cache prefix 全部失效。
+
+第一次触发时（`rounds.length=5 / KEEP_RECENT_ROUNDS=2`），v5 会动 round 1/2/3 全部符合条件的 tool_result。**从 round 1 开始的 cache prefix 全炸**。
+
+### 7.5.2 v5 的真实 trade-off
+
+v5 microCompact 的设计动机不是"减小 cache 破坏"（那是不可能的，公开 API 用户改 messages 必炸 cache），是**"接受一次性 cache 大损失，换长期 messages 数组不膨胀"**：
+
+| 不做 microCompact | 做 microCompact |
+|---|---|
+| messages 累积到 80K tokens | 砍后变 30K tokens |
+| 每轮 cache hit 但每轮按 0.1× 付 80K | 触发那轮 cache miss 按 1.25× 写 20K |
+| 长期单轮成本线性增长 | 下一轮起单轮成本降一半 |
+| —— | ~5 轮后摊薄初始 cache miss 损失 |
+
+`KEEP_RECENT_ROUNDS=2` + `MIN_TOOL_RESULT_BYTES_TO_CLEAR=30` 不是为了"保 cache"，是 **throttle 触发频率**——别为几百字节去炸 80K cache，账算不回来。
+
+### 7.5.3 工业 cached microcompact 怎么真正"既省 token 又保 cache"
+
+源码字面证据：`src/services/compact/microCompact.ts:295-303`
+
+```
+/**
+ * Cached microcompact path - uses cache editing API to remove tool results
+ * without invalidating the cached prefix.
+ *
+ * Key differences from regular microcompact:
+ * - Does NOT modify local message content (cache_reference and cache_edits
+ *   are added at API layer)
+ */
+```
+
+两条 microCompact 路径对照：
+
+| 路径 | 修改 messages | cache 影响 | 启用条件 |
+|---|---|---|---|
+| **Legacy**（v5 教学版同款）| 直接改 client `messages[].content` | ❌ 炸 cache prefix | 任何 client 默认 |
+| **Cached microcompact** | 不动 client messages，请求加 `cache_edits` 块 | ✅ cache prefix 字面保住 | `feature('CACHED_MICROCOMPACT')` flag |
+
+**`cache_edits` 协议工作流**（基于 `microCompact.ts:334-339` + `claude.ts:3164-3188` 源码推断）：
+
+```
+1. Client 端 messages 数组字面不变 (Round 1-3 的 tool_result 仍在原位)
+2. 请求体追加 cache_edits 块:
+   { type: "cache_edits",
+     edits: [
+       { cache_reference: "ref_round1_tr_abc", action: "delete" },
+       { cache_reference: "ref_round2_tr_def", action: "delete" }, ... ] }
+3. Anthropic 服务器:
+   - 哈希 client messages prefix → cache 命中 (字面没变)
+   - 处理 cache_edits 指令: server 端按 reference 删除对应 tool_result 的 KV
+   - 实际推理见到精简后的 KV 序列
+4. 结果: 省 token (input 减少) + 保 cache prefix (字面没变)
+```
+
+关键创新：把"修改 messages"的语义从 client 端搬到 server 端，绕过 byte-level prefix 哈希约束。
+
+### 7.5.4 v5 教学版选 legacy path 的 inherent 原因
+
+不是 v5 设计差，是教学版在公开 API 范围内**只能用 legacy path**：
+
+1. `cache_edits` + `cache_reference` 是 Anthropic 内部协议（gated by `CACHED_MICROCOMPACT` feature flag）
+2. 公开 SDK / DeepSeek Anthropic 兼容端点都不支持
+3. 教学版要单文件可跑、依赖最小 → 必然选公开 API → 必然选 legacy
+
+这跟 v10 不真发 `cache_control` 到 API 是同款决策——教学版以"概念清晰"换"工业 cache 真实命中率"。
+
+### 7.5.5 衔接 v10 的两个正交体系
+
+- **v10 sectionCache** → 让 system prompt prefix 跨 turn 字面稳定 → 服务端 system 部分 cache 命中
+- **cached microcompact** → 让 messages prefix 跨 turn 字面稳定 → 服务端 messages 部分 cache 命中
+
+两者在 Anthropic API 的 cache_control breakpoint 体系里是不同字段、不同 marker（参考 task 10 notes / lesson），互不替代。完整的"cache 经济同权"图景需要两者协同：v10 解决 system 字段的 cache，cached microcompact 解决 messages 字段的 cache。
+
+### 7.5.6 启示：教学版 disclaimer 的必要性
+
+v5 写 notes 时 cache 经济还不在主线（task 10 才正式登场）。学完 v10 回看 v5 才发现"事实≠原文"这条要点的 cache 代价从未量化。这条 retrospective 把账补上。
+
+更一般的 CLAUDE.md 0 假设原则启示：**notes.md/lesson.md 是某次对话的产出，论断可能漂移；学生学完更新版课程后可能发现旧 notes 的盲区**。修正机制是显式追加 retrospective 而非悄悄改——让学习路径本身可被审计。
+
+---
+
 ## §8. 一句话总结
 
 4 条 Lecture 05 + Socratic 06 要点全部命中工业实现。最大学习：

@@ -431,3 +431,11 @@ Socratic 10 全对（Q1+Q3 一次过 / Q2 错→收紧通过）—— streaming 
 ### 2026-05-26T12:00:00+08:00 [accept] socratic 11 全对（MCP=工具定义权外移 + 同权=复用 dispatch pipeline）；create 第七次巩固；MCP 3 层架构内化
 
 ### 2026-05-26T12:15:00+08:00 [task] Task 09 下发: v9 MCP mini client (stdio JSON-RPC + mock server + 同权验证); 2 run-logs; ≤800 行
+
+### 2026-05-26T14:30:00+00:00 [accept] task-09 → artifacts/09-mcp-client; bloom create (第七次巩固); artifact_count 8→9; MCP 同权 4 论断全 ✅
+
+### 2026-05-26T15:00:00+00:00 [accept] socratic 12 全 4 题一次过 + 主动联想 v6/v9; create 第八次巩固; system prompt 装配 + cache 边界 + DANGEROUS reason + compact 副作用 + MCP cache-break 全部内化
+
+### 2026-05-26T15:05:00+00:00 [task] Task 10 下发: v10 System Prompt Assembly Engine (memoization + DANGEROUS_uncached + BOUNDARY 切分 + compact 副作用 clear cache + 2 run-logs cache-warm/compact-clear); ~150 新增行
+
+### 2026-05-27T01:00:00+08:00 [accept] task-10 → artifacts/10-system-prompt-assembly; bloom create (9th); 4 论断 ✅

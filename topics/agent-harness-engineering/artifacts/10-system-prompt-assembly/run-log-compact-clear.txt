@@ -1,0 +1,241 @@
+# ---------- round 1 ----------
+# Scenario: compact-clear —— 验证 maybeCompact 末尾的 clearSystemPromptSections 调用 (v9 同权债的字面还账)
+# Command:
+#   ~/.bun/bin/bun run agent-v10-system-prompt.ts --role=interactive --mode=bypassPermissions \
+#     --hooks=compact --stream=false --cache-audit \
+#     '--prompt=请依次读取 /tmp/a.txt /tmp/b.txt /tmp/c.txt /tmp/d.txt /tmp/e.txt 这 5 个文件。每次只读一个，每读完一个就用一句话总结再读下一个。'
+#
+# 字面证据链 (核心论断 4：clearSystemPromptSections 是语义因果链)：
+#   1) Round 1-4: warm cache (hit=5/6 miss=1/6, mcp_instructions DANGEROUS 始终 miss)
+#   2) Round 4 末尾 maybeCompact 检测 rounds.length=5 > MAX_ROUNDS_BEFORE_FULL_COMPACT=4 → fullCompact 触发
+#   3) fullCompact 完成后立刻字面 audit: "[CACHE cleared by compact: 6 entries dropped]"
+#   4) Round 5 开始重新 assemble: [CACHE hit=0/6 miss=6/6] —— 字面 cold restart 证据
+#   5) Round 6 又恢复 warm: hit=5/6 (compact 后第 2 次 assemble 立刻命中)
+#
+# 衔接 v9: 同权论断 (dispatch 路径无 isMcp 分支) 已在 v9 验证；v10 还的是 cache 经济同权债——
+#   v9 的 mcp_instructions 在工业里是 DANGEROUS_uncached (reason: "MCP servers connect/disconnect between turns")
+#   v9 教学版没有 cache 系统所以看不到这条债；v10 引入 sectionCache 后债面化:
+#   每轮 mcp_instructions 都 miss + compact 后所有 6 段全 invalidate
+
+[AUDIT] [BOOT] role=interactive mode=bypassPermissions hooks=compact stream=batch mcp=(disabled) cache-audit=true OTEL_LOG_USER_PROMPTS=(unset, redacting)
+[AUDIT] [CACHE bootstrap] sectionCache initial size=0 (expected 0)
+[AUDIT] [CACHE bootstrap] registered sections: core_instruction, tool_list_hint, env_info, mcp_instructions[DANGEROUS], memory, session_context
+[AUDIT] [CACHE hit=0/6 miss=6/6 cache_size=6]
+[AUDIT] [CACHE hit-sections=(none)]
+[AUDIT] [CACHE miss-sections=core_instruction,tool_list_hint,env_info,mcp_instructions,memory,session_context]
+[AUDIT] [BOUNDARY prefix=743_chars (cacheable scope:global in industry) / suffix=98_chars (per-session scope:null)]
+[AUDIT] [BOUNDARY sentinel='__SYSTEM_PROMPT_DYNAMIC_BOUNDARY__' (教学版不真插入，由 assemble 拆分内置)]
+
+========== ROUND 1  stop_reason=tool_use ==========
+[
+  {
+    "type": "text",
+    "text": "好的，我来依次读取这 5 个文件。"
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_v1txisAxslXrXF8dfPRk2892",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/a.txt"
+    }
+  }
+]
+[AUDIT] [CACHE hit=5/6 miss=1/6 cache_size=6]
+[AUDIT] [CACHE hit-sections=core_instruction,tool_list_hint,env_info,memory,session_context]
+[AUDIT] [CACHE miss-sections=mcp_instructions]
+[AUDIT] [BOUNDARY prefix=743_chars (cacheable scope:global in industry) / suffix=98_chars (per-session scope:null)]
+[AUDIT] [BOUNDARY sentinel='__SYSTEM_PROMPT_DYNAMIC_BOUNDARY__' (教学版不真插入，由 assemble 拆分内置)]
+
+========== ROUND 2  stop_reason=tool_use ==========
+[
+  {
+    "type": "text",
+    "text": "**文件 a.txt 总结：** 这是一个模拟的 500 字节文件内容块，供模型分析用。\n\n接下来读 /tmp/b.txt："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_yKn1T3odMFlMwzJeF4nB3786",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/b.txt"
+    }
+  }
+]
+[AUDIT] [CACHE hit=5/6 miss=1/6 cache_size=6]
+[AUDIT] [CACHE hit-sections=core_instruction,tool_list_hint,env_info,memory,session_context]
+[AUDIT] [CACHE miss-sections=mcp_instructions]
+[AUDIT] [BOUNDARY prefix=743_chars (cacheable scope:global in industry) / suffix=98_chars (per-session scope:null)]
+[AUDIT] [BOUNDARY sentinel='__SYSTEM_PROMPT_DYNAMIC_BOUNDARY__' (教学版不真插入，由 assemble 拆分内置)]
+
+========== ROUND 3  stop_reason=tool_use ==========
+[
+  {
+    "type": "text",
+    "text": "**文件 b.txt 总结：** 同样是 500 字节的模拟内容块，与 a.txt 结构相似，供模型分析。\n\n接下来读 /tmp/c.txt："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_PSIh82BF9ffK8mFPjESk6016",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/c.txt"
+    }
+  }
+]
+
+========== COMPACT EVENT round=4 type=micro role=interactive before=1581 after=1487 ==========
+[AUDIT] COMPACT type=micro role=interactive cleared=1_tool_results freed=94b
+[AUDIT] [CACHE hit=5/6 miss=1/6 cache_size=6]
+[AUDIT] [CACHE hit-sections=core_instruction,tool_list_hint,env_info,memory,session_context]
+[AUDIT] [CACHE miss-sections=mcp_instructions]
+[AUDIT] [BOUNDARY prefix=743_chars (cacheable scope:global in industry) / suffix=98_chars (per-session scope:null)]
+[AUDIT] [BOUNDARY sentinel='__SYSTEM_PROMPT_DYNAMIC_BOUNDARY__' (教学版不真插入，由 assemble 拆分内置)]
+
+========== ROUND 4  stop_reason=tool_use ==========
+[
+  {
+    "type": "text",
+    "text": "**文件 c.txt 总结：** 依然是 500 字节的模拟内容块，延续一致的格式。\n\n接下来读 /tmp/d.txt："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_zF3mk93pYMRPnQg6O7TH4430",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/d.txt"
+    }
+  }
+]
+
+========== COMPACT EVENT round=5 type=micro role=interactive before=1974 after=1880 ==========
+[AUDIT] COMPACT type=micro role=interactive cleared=1_tool_results freed=94b
+[AUDIT] [HOOK event=PreCompact handler=log-pre-compact kind=function outcome=success ok=true reason=role=interactive rounds=5 bytes=1880]
+
+========== COMPACT EVENT round=5 type=full role=interactive before=1880 after=1850 ==========
+summary (first 600 chars): <analysis>
+User intent: Read five files sequentially (/tmp/a.txt through /tmp/e.txt), summarizing each file in one sentence before reading the next.
+
+Key decisions: The assistant agreed to read files one at a time, using one read_file call per file, and provide a one-sentence summary after each read before proceeding.
+
+Files mentioned: /tmp/a.txt, /tmp/b.txt, /tmp/c.txt (plus /tmp/d.txt and /tmp/e.txt still pending in the sequence).
+
+Code: The assistant used the `read_file` tool with the `path` parameter for each file (e.g., `read_file({ "path": "/tmp/a.txt" })`).
+
+Errors encountered: None so 
+[AUDIT] [HOOK event=PostCompact handler=log-post-compact kind=function outcome=success ok=true reason=role=interactive before=1880 after=1850]
+# ---------- round 5 ----------
+# ★ 核心证据 ★ —— 紧跟 PostCompact hook 之后 (因果链字面):
+# (1) [CACHE cleared by compact: 6 entries dropped] —— maybeCompact 末尾的 clearSystemPromptSections 字面命中
+# (2) 紧跟下一次 assemble: hit=0/6 miss=6/6 全 cold start —— 证明 clear 真把 cache 砍光
+# (3) 工业对照: src/services/compact/postCompactCleanup.ts:62 clearSystemPromptSections() 字面 1:1
+# 时序: maybeCompact → fullCompact (砍 messages) → PostCompact hook → clearSystemPromptSections → 下一轮 assemble = cold
+[AUDIT] [CACHE cleared by compact: 6 entries dropped]
+[AUDIT] [CACHE hit=0/6 miss=6/6 cache_size=6]
+[AUDIT] [CACHE hit-sections=(none)]
+[AUDIT] [CACHE miss-sections=core_instruction,tool_list_hint,env_info,mcp_instructions,memory,session_context]
+[AUDIT] [BOUNDARY prefix=743_chars (cacheable scope:global in industry) / suffix=98_chars (per-session scope:null)]
+[AUDIT] [BOUNDARY sentinel='__SYSTEM_PROMPT_DYNAMIC_BOUNDARY__' (教学版不真插入，由 assemble 拆分内置)]
+
+========== ROUND 5  stop_reason=tool_use ==========
+[
+  {
+    "type": "text",
+    "text": "**文件 d.txt 总结：** 同样是 500 字节的模拟内容块，保持与前几个文件一致的格式和大小。\n\n接下来读最后一个文件 /tmp/e.txt："
+  },
+  {
+    "type": "tool_use",
+    "id": "call_00_Is1SSfMgvLaE4eOk0g8Q4101",
+    "name": "read_file",
+    "input": {
+      "path": "/tmp/e.txt"
+    }
+  }
+]
+[AUDIT] [CACHE hit=5/6 miss=1/6 cache_size=6]
+[AUDIT] [CACHE hit-sections=core_instruction,tool_list_hint,env_info,memory,session_context]
+[AUDIT] [CACHE miss-sections=mcp_instructions]
+[AUDIT] [BOUNDARY prefix=743_chars (cacheable scope:global in industry) / suffix=98_chars (per-session scope:null)]
+[AUDIT] [BOUNDARY sentinel='__SYSTEM_PROMPT_DYNAMIC_BOUNDARY__' (教学版不真插入，由 assemble 拆分内置)]
+
+========== ROUND 6  stop_reason=end_turn ==========
+[
+  {
+    "type": "text",
+    "text": "**文件 e.txt 总结：** 500 字节的模拟内容块，延续统一格式。\n\n---\n\n**全部五个文件读取完毕：**\n\n| 文件 | 大小 | 内容特征 |\n|------|------|----------|\n| `/tmp/a.txt` | 500 字节 | 模拟内容块 |\n| `/tmp/b.txt` | 500 字节 | 模拟内容块 |\n| `/tmp/c.txt` | 500 字节 | 模拟内容块 |\n| `/tmp/d.txt` | 500 字节 | 模拟内容块 |\n| `/tmp/e.txt` | 500 字节 | 模拟内容块 |\n\n所有文件均成功读取，无错误发生。五个文件内容一致，都是 500 字节的模拟文本块，适合用作分析测试用例。"
+  }
+]
+
+========== FINAL MESSAGES ==========
+[
+  {
+    "role": "user",
+    "content": "[COMPACTED SUMMARY]\n<analysis>\nUser intent: Read five files sequentially (/tmp/a.txt through /tmp/e.txt), summarizing each file in one sentence before reading the next.\n\nKey decisions: The assistant agreed to read files one at a time, using one read_file call per file, and provide a one-sentence summary after each read before proceeding.\n\nFiles mentioned: /tmp/a.txt, /tmp/b.txt, /tmp/c.txt (plus /tmp/d.txt and /tmp/e.txt still pending in the sequence).\n\nCode: The assistant used the `read_file` tool with the `path` parameter for each file (e.g., `read_file({ \"path\": \"/tmp/a.txt\" })`).\n\nErrors encountered: None so far; all reads completed without error.\n\nNote: The conversation history provided is incomplete (only up to reading /tmp/c.txt), so the full five-file sequence was not completed in the given snippet.\n</analysis>\n<summary>\nThe user requested sequential reading of five files (/tmp/a.txt through /tmp/e.txt), with each file read followed by a one-sentence summary before proceeding. The assistant agreed and implemented this using repeated read_file tool calls. Three files (a.txt, b.txt, c.txt) were read successfully — all contained simulated 500-byte text blocks for analysis. No errors occurred. The sequence was not finished in the provided history; d.txt and e.txt remain unread.\n</summary>"
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "**文件 c.txt 总结：** 依然是 500 字节的模拟内容块，延续一致的格式。\n\n接下来读 /tmp/d.txt："
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_zF3mk93pYMRPnQg6O7TH4430",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/d.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_zF3mk93pYMRPnQg6O7TH4430",
+        "content": "Read /tmp/d.txt: <mocked content of /tmp/d.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "**文件 d.txt 总结：** 同样是 500 字节的模拟内容块，保持与前几个文件一致的格式和大小。\n\n接下来读最后一个文件 /tmp/e.txt："
+      },
+      {
+        "type": "tool_use",
+        "id": "call_00_Is1SSfMgvLaE4eOk0g8Q4101",
+        "name": "read_file",
+        "input": {
+          "path": "/tmp/e.txt"
+        }
+      }
+    ]
+  },
+  {
+    "role": "user",
+    "content": [
+      {
+        "type": "tool_result",
+        "tool_use_id": "call_00_Is1SSfMgvLaE4eOk0g8Q4101",
+        "content": "Read /tmp/e.txt: <mocked content of /tmp/e.txt — pretend this is a 500-byte chunk of file contents that the model will analyze>",
+        "is_error": false
+      }
+    ]
+  },
+  {
+    "role": "assistant",
+    "content": [
+      {
+        "type": "text",
+        "text": "**文件 e.txt 总结：** 500 字节的模拟内容块，延续统一格式。\n\n---\n\n**全部五个文件读取完毕：**\n\n| 文件 | 大小 | 内容特征 |\n|------|------|----------|\n| `/tmp/a.txt` | 500 字节 | 模拟内容块 |\n| `/tmp/b.txt` | 500 字节 | 模拟内容块 |\n| `/tmp/c.txt` | 500 字节 | 模拟内容块 |\n| `/tmp/d.txt` | 500 字节 | 模拟内容块 |\n| `/tmp/e.txt` | 500 字节 | 模拟内容块 |\n\n所有文件均成功读取，无错误发生。五个文件内容一致，都是 500 字节的模拟文本块，适合用作分析测试用例。"
+      }
+    ]
+  }
+]
+[AUDIT] [CACHE final] sectionCache final size=6 (entries kept across rounds = warm cache value)
