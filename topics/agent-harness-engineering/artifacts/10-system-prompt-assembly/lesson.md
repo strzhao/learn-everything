@@ -54,7 +54,7 @@ bun run topics/agent-harness-engineering/artifacts/10-system-prompt-assembly/age
 
 ## §20: 6 个 section 注册
 
-下面是 6 段 prompt 的注册代码。注意哪些用普通工厂（memoized），哪些用 DANGEROUS 工厂（每轮重算）：
+下面是 6 段 prompt 的注册代码。注意 `core_instruction` 的三层结构——身份定位 / 做事哲学 / 风险判断，这才是工业版 system prompt 的真正核心（不是工具清单）。再看哪些用普通工厂（memoized），哪些用 DANGEROUS 工厂（每轮重算）：
 
 @include(./agent-v10-system-prompt.ts, section=20)
 

@@ -782,16 +782,31 @@ async function resolveSystemPromptSections(
 // v10 教学版不真发 cache_control 到 API（DeepSeek 端点未必支持），只在 audit 输出两段长度
 
 const PROMPT_SECTIONS_BEFORE_BOUNDARY: SystemPromptSectionDef[] = [
-  // 1. core_instruction (static, memoized) —— 对应工业 simple system / actions / tool usage section
+  // 1. core_instruction (static, memoized)
+  // 对应工业 getSimpleIntroSection + getSimpleDoingTasksSection + getActionsSection 三段合一
+  // 工业核心定位是"身份 + 做事哲学 + 风险判断"，不是工具清单
+  // 参照 prompts.ts:175-267 (intro/doingTasks/actions 三段总计 ~90 行)
   systemPromptSection("core_instruction", () =>
-    "You manage files via read_file / edit_file / delete_file. " +
-    "If you are unsure about user intent, use ask_user to clarify (if available in your tools). " +
-    "When a tool returns is_error: true, report the error honestly and suggest next steps. " +
+    // 身份定位（对应工业 intro section）
+    "You are an interactive agent that helps users with software engineering tasks. " +
+    "Use the tools available to you to assist the user.\n\n" +
+    // 做事哲学（对应工业 doingTasks section）
+    "Prefer editing existing files over creating new ones. " +
+    "Don't add features, refactor, or introduce abstractions beyond what the task requires. " +
+    "Default to writing no comments — only add one when the WHY is non-obvious. " +
+    "When a tool returns is_error: true, report the error honestly and suggest next steps.\n\n" +
+    // 风险判断（对应工业 actions section）
+    "Carefully consider the reversibility and blast radius of actions. " +
+    "For actions that are hard to reverse or affect shared systems, check with the user before proceeding. " +
+    "If you are unsure about user intent, use ask_user to clarify (if available). " +
     "If you have spawn_swarm available, prefer fanning out independent subtasks IN PARALLEL."),
 
   // 2. tool_list_hint (static, memoized) —— 对应工业 getUsingYourToolsSection
+  // 工具使用策略：专用工具优先于通用 shell，保持工具选择纪律
   systemPromptSection("tool_list_hint", () =>
-    "Available tool families: file operations (read/edit/delete) + meta (ask_user / spawn_swarm if available) + MCP tools (mcp__* prefix)."),
+    "Available tool families: file operations (read_file / edit_file / delete_file) + " +
+    "meta (ask_user / spawn_swarm if available) + MCP tools (mcp__* prefix). " +
+    "Prefer dedicated file tools over shell commands. Reserve shell for system operations only."),
 
   // 3. env_info (per-session, memoized) —— 对应工业 env_info_simple
   // 一个 session 内不变，所以 memoize 即可；不像 mcp_instructions 那样 turn 间会变
