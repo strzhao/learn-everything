@@ -439,3 +439,5 @@ Socratic 10 全对（Q1+Q3 一次过 / Q2 错→收紧通过）—— streaming 
 ### 2026-05-26T15:05:00+00:00 [task] Task 10 下发: v10 System Prompt Assembly Engine (memoization + DANGEROUS_uncached + BOUNDARY 切分 + compact 副作用 clear cache + 2 run-logs cache-warm/compact-clear); ~150 新增行
 
 ### 2026-05-27T01:00:00+08:00 [accept] task-10 → artifacts/10-system-prompt-assembly; bloom create (9th); 4 论断 ✅
+
+### 2026-05-27T02:30:00+08:00 [retrospective] task-05 lesson§14+notes§7.5: microCompact 炸 cache prefix + cached-MC 修正
