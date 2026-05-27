@@ -1,5 +1,0 @@
-{
-  "ANTHROPIC_AUTH_TOKEN": "***REVOKED-DEEPSEEK-KEY***",
-  "ANTHROPIC_BASE_URL": "https://api.deepseek.com/anthropic",
-  "MODEL": "deepseek-chat"
-}
