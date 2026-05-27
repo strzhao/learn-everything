@@ -36,6 +36,8 @@ learn-everything/
 
 **新任务交付约定**：instructor 下发新 task 时直接以 `topics/<slug>/artifacts/NN-name/` 为交付地址，**不再借助外部实战工程仓**。这避免了"半教学半工程"双重身份导致的归档割裂。lesson.md 里的所有 `@include` 用相对路径，artifact 目录可作原子单元搬运。
 
+**lesson.md 写作原则**：lesson.md 是学生的首要阅读面，结构要求定义在 SKILL.md「lesson.md 叙事规范」小节。核心要求：开头必须回答"这是什么+为什么现在学"（不以历史/背景开头）；必须有"怎么跑"物理锚点；@include 使用三明治模式（前置说明→代码/日志→观察总结）；工业对照细节放 notes.md。lesson.md 追求认知流而非全面性。
+
 **已有归档**：`topics/agent-harness-engineering/artifacts/01-minimal-agent-loop/` 与 `02-permission-gate/` 是这套约定的范例。
 
 ---
