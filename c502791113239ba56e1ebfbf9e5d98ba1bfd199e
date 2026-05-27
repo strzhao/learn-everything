@@ -1,0 +1,43 @@
+topics/agent-harness-engineering/artifacts/11-skill-system/spec.md
+  227e1e32e515694a 1-139
+topics/agent-harness-engineering/artifacts/10-system-prompt-assembly/lesson.md
+  227e1e32e515694a 57
+topics/agent-harness-engineering/artifacts/10-system-prompt-assembly/agent-v10-system-prompt.ts
+  227e1e32e515694a 785-788,790-801,805,807-809
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.8",
+  "base_commit_sha": "c502791113239ba56e1ebfbf9e5d98ba1bfd199e",
+  "prompts": {
+    "227e1e32e515694a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e9bdfc2e-ecb0-475e-87b7-d19425148701",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 160,
+      "total_deletions": 6,
+      "accepted_lines": 160,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "topics/agent-harness-engineering/artifacts/10-system-prompt-assembly/lesson.md": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        },
+        "topics/agent-harness-engineering/artifacts/11-skill-system/spec.md": {
+          "additions": 139,
+          "accepted_lines": 139
+        },
+        "topics/agent-harness-engineering/artifacts/10-system-prompt-assembly/agent-v10-system-prompt.ts": {
+          "additions": 20,
+          "deletions": 5,
+          "accepted_lines": 20
+        }
+      }
+    }
+  }
+}
