@@ -1,0 +1,42 @@
+topics/agent-harness-engineering/artifacts/10-system-prompt-assembly/lesson.md
+  227e1e32e515694a 1,3,5,7,9,11,13,16-19,22,25-28,31,33,35-36,39-41,43,45,49,51-53,55,57,59,61,63-70,72,76,78,80-83,85,87,89-91,93-96,98,100,102,106,108,112,114,116,118,120,122,124,126,128-133,135,137,139
+.claude/skills/learn/SKILL.md
+  227e1e32e515694a 362-404
+CLAUDE.md
+  227e1e32e515694a 39-40
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.8",
+  "base_commit_sha": "6abd8d40bf885c4407a7ba7458b5326d2c0d5e6c",
+  "prompts": {
+    "227e1e32e515694a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e9bdfc2e-ecb0-475e-87b7-d19425148701",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 124,
+      "total_deletions": 125,
+      "accepted_lines": 124,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "topics/agent-harness-engineering/artifacts/10-system-prompt-assembly/lesson.md": {
+          "additions": 79,
+          "deletions": 125,
+          "accepted_lines": 79
+        },
+        ".claude/skills/learn/SKILL.md": {
+          "additions": 43,
+          "accepted_lines": 43
+        },
+        "CLAUDE.md": {
+          "additions": 2,
+          "accepted_lines": 2
+        }
+      }
+    }
+  }
+}
