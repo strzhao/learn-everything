@@ -53,8 +53,15 @@ learn-everything/
 3. **不能确定时显式声明**。如果实在没源码可读，开头明确说"以下基于命名推断，准确度待验证"，而不是混在叙述里让学生分不清"事实 vs 推测"
 4. **修正机制**：发现之前讲错（无论是 lesson.md 写错还是对话里讲错），要**显式纠正**，列出"我说错了 X / 真相是 Y"，不要悄悄滑过去
 5. **lesson.md 也可能错**：lesson.md 是过去某次对话的产出，引用的行号、函数名、调用链可能漂移。学生指出疑点时优先去源码核实，不要假设 lesson.md 一定对
+6. **术语层 0 假设：跨层概念词必须前缀限定**。`context` / `state` / `scope` / `process` / `swarm` / `fork sub-agent` 这类跨层抽象词，在不同**语境**（mini harness vs 工业 claude-code）和不同**层级**（messages 隔离 / AsyncLocalStorage 隔离 / process 隔离）下指代不同。**用这类词前必须前缀限定**：
+   - **层级限定**：`messages context` / `AsyncLocalStorage context` / `process context` —— 不是裸 `context`
+   - **语境限定**：开头标"在 mini harness 里" / "在工业 claude-code 里" —— 跨语境对照时尤其必须
+   - **不带限定的孤词不能上工业对照表**——会把多层不同的隔离糊成一句，造成学生概念漂移
 
-**反例**（已发生）：在讨论 task 05 context-compactor 时，instructor 凭命名推断 `apiMicrocompact = 客户端最后一秒紧急砍历史`，实际源码是 `apiMicrocompact 不修改本地 messages，由 Claude API 服务器侧代劳`。这种错误会让学生建立完全相反的心智模型。
+**反例**（已发生）：
+
+- **task 05（凭命名推断类）**：instructor 凭命名推断 `apiMicrocompact = 客户端最后一秒紧急砍历史`，实际源码 `apiMicrocompact 不修改本地 messages，由 Claude API 服务器侧代劳`。这种错误会让学生建立完全相反的心智模型。
+- **task 11 连环 2 轮（术语跨层糊化类，规则 6 补丁来源）**：(1) 学生问"v11 swarm-worker 为何不挂 SkillTool"，instructor 用工业 in-process teammate 语义回答 mini harness 上下文的问题，没标语境切换 → 学生察觉"swarm 跟 fork sub-agent 是两个东西吗"困惑（mini harness 里两者同构 / 工业里是两条路径）。(2) instructor 修正时说 v4 swarm "没有独立 context / 没有 AsyncLocalStorage / 共享父 process" → 学生 catch line 195 字面 messages 数组独立 → instructor 把 messages context / AsyncLocalStorage / process 三层不同的隔离压成一句糊化掉。两轮都是术语跨层糊化造成的。
 
 **这条规则比"对话流畅"更重要**——宁可多花几次 tool call 读源码，也不要给出听起来很对的猜测。
 
