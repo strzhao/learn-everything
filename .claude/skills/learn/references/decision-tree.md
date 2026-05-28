@@ -59,12 +59,12 @@ test -w .
 - 问题文本："你想继续哪个学习 topic？"
 - 每个活跃 topic 一个选项，label 含 topic 名（≤12 字符限制内尽量精简），description 含 `bloom_level + artifacts数 + 最后更新日期`
 - 最近 `updated_at` 的 topic 放首位 + label 末尾标 "（推荐）"
-- 必须包含一个"开始新主题"选项（学生选后用 "Other" 输入新主题名，或在后续轮次提供）
+- 必须包含一个"开始新主题"选项（你选后用 "Other" 输入新主题名，或在后续轮次提供）
 - 活跃 topic 数 > 3：仅列出最近更新的 3 个 + "查看更多"选项（选后 AI 用纯文本完整列出后再次发起 AskUserQuestion）
 
 如归档区非空，在 AskUserQuestion 调用前先用一行文本告知："已归档 N 个 topic（位于 _archive/）。"
 
-→ 学生选定后写 `_active` 指针，进入阶段 2。
+→ 你选定后写 `_active` 指针，进入阶段 2。
 
 **情况 C：`topics/_active` 存在且含有效 slug**
 
@@ -107,10 +107,10 @@ test -w .
 | 1 | `stuck_count >= 3` | **stuck->lecture**（escape） |
 | 2 | `status == "completed"` | 提示已完成；如未归档则触发 archive 动作 |
 | 3 | 上轮 `lecture` 且无卡迹象 | **socratic**（lecture 后必反问） |
-| 4 | 上轮 `socratic` 且学生展示理解 | **accept** → 决定下一步（lecture / task / assemble） |
+| 4 | 上轮 `socratic` 且你展示理解 | **accept** → 决定下一步（lecture / task / assemble） |
 | 5 | 上轮 `socratic` 但回答不完整/错 | `stuck_count++` → **stuck-detected** + escalating hint |
 | 6 | 上轮 `task` 且提交了产物 | **accept**（写 artifacts/）→ 决定下一步 |
-| 7 | 上轮 `assemble` 且学生确认 final | **accept** → `status: completed` → 触发 **archive** |
+| 7 | 上轮 `assemble` 且你确认 final | **accept** → `status: completed` → 触发 **archive** |
 | 8 | 兜底 | **lecture**（推进新概念） |
 
 ---
@@ -148,7 +148,7 @@ archive          topic 完成后自动归档（移到 _archive/）
 
 ### `task`
 - 描述：目标 + 交付物格式 + 验收标准（**纯文本输出**——task 描述是教学内容而非问询）
-- **过渡态动作，不落盘**——任务描述在对话上下文中可被学生回顾；pending 状态可由"上轮是 accept"推断
+- **过渡态动作，不落盘**——任务描述在对话上下文中可被你回顾；pending 状态可由"上轮是 accept"推断
 - 完成后 AI 必须在响应中显式声明 `[本轮无落盘]`
 
 ### `accept`
@@ -168,9 +168,9 @@ archive          topic 完成后自动归档（移到 _archive/）
     - "已交付（推荐）"
     - "还需修改"
     - "跳过此任务"
-  - 学生选"已交付" → 进入下面步骤 1-4
-  - 学生选"还需修改" → 给反馈，不 accept，等下一轮（不升 stuck_count）
-  - 学生选"跳过" → 不写 artifact，journal 记 `[stuck-detected]`（视为不通过）
+  - 你选"已交付" → 进入下面步骤 1-4
+  - 你选"还需修改" → 给反馈，不 accept，等下一轮（不升 stuck_count）
+  - 你选"跳过" → 不写 artifact，journal 记 `[stuck-detected]`（视为不通过）
   - 步骤 1-4：
     1. `mkdir -p topics/<slug>/artifacts/<NN-name>`，NN 两位零填充（`artifact_count + 1`，最小 `01`）
     2. 写 `topics/<slug>/artifacts/<NN-name>/README.md`，必含三段：
@@ -191,10 +191,10 @@ archive          topic 完成后自动归档（移到 _archive/）
 - journal 追单行 `### <ISO8601> [stuck-detected] stuck_count=<N> concept=<X>`（≤50 字符）
 - state.md：`updated_at` 更新；`stuck_count` 字段更新；`## 卡点记录` 追一行：`- <date> <concept>（hint <N>）`
 - 输出 escalating hint（第 1 次小提示，第 2 次更明显）
-- **hint 后必须用 `AskUserQuestion` 重新发起问询**，避免学生陷入"我该说什么"的次生困惑：
-  - 选项可简化到 2 个："我有思路了 / 还是不太明白"——让学生在不暴露细节的情况下表达"是否要更多提示"
+- **hint 后必须用 `AskUserQuestion` 重新发起问询**，避免你陷入"我该说什么"的次生困惑：
+  - 选项可简化到 2 个："我有思路了 / 还是不太明白"——让你在不暴露细节的情况下表达"是否要更多提示"
   - 或：重出原 socratic 问题但选项减少 1 个（去掉最有干扰性的错误选项），降低难度
-  - 若 `stuck_count == 2`（下一轮就会 escape），选项 description 显式说明"再答错就切换讲解模式"，让学生有心理预期
+  - 若 `stuck_count == 2`（下一轮就会 escape），选项 description 显式说明"再答错就切换讲解模式"，让你有心理预期
 
 ### `stuck->lecture`
 
@@ -205,11 +205,11 @@ archive          topic 完成后自动归档（移到 _archive/）
   - "换类比再讲（推荐）"
   - "我想再试一次回答"
   - "跳过这个概念暂存卡点"
-- 学生选"换类比再讲" → 执行 `lecture` 动作，针对卡住的概念用全新类比/角度
-- 学生选"再试一次" → 重出原 socratic（不进入 lecture），但**不再 +stuck_count**（已经在 escape 临界）
-- 学生选"跳过暂存" → 在 state.md 卡点记录标"暂存"，开**新概念**的 lecture
+- 你选"换类比再讲" → 执行 `lecture` 动作，针对卡住的概念用全新类比/角度
+- 你选"再试一次" → 重出原 socratic（不进入 lecture），但**不再 +stuck_count**（已经在 escape 临界）
+- 你选"跳过暂存" → 在 state.md 卡点记录标"暂存"，开**新概念**的 lecture
 - `stuck_count = 0`（任一分支都归零）
-- journal 追单行 `### <ISO8601> [stuck->lecture] reset; <学生选择>: <角度/概念>`（≤50 字符）
+- journal 追单行 `### <ISO8601> [stuck->lecture] reset; <你选择>: <角度/概念>`（≤50 字符）
 - state.md：`updated_at` 更新；`stuck_count` 归零；`## 卡点记录` 对应条目补"→ 已切换讲解模式"或"→ 暂存"
 
 ### `assemble`
@@ -220,9 +220,9 @@ archive          topic 完成后自动归档（移到 _archive/）
   - "现在拼装 final（推荐）"
   - "再加一节内容"
   - "暂停 topic"
-- 学生选"现在拼装" → 执行下方步骤
-- 学生选"再加一节" → 不写 final，按 AI 判断继续 lecture 或 socratic
-- 学生选"暂停" → 设 `status: paused`，不归档，下次 `/learn` 时仍可恢复
+- 你选"现在拼装" → 执行下方步骤
+- 你选"再加一节" → 不写 final，按 AI 判断继续 lecture 或 socratic
+- 你选"暂停" → 设 `status: paused`，不归档，下次 `/learn` 时仍可恢复
 - 拼装步骤：
   - `mkdir -p topics/<slug>/final`
   - 写 `topics/<slug>/final/README.md`：
@@ -245,7 +245,7 @@ archive          topic 完成后自动归档（移到 _archive/）
 4. **不修改 state.md**：归档时 state.md status 已是 completed，无需再改
 5. **INDEX.md 重生成**：归档动作触发 INDEX.md 全量重建（status / 路径都变了）
 
-**注意**：归档前必须确保 final/ 目录已建且学生已 accept；如果 status 已 completed 但归档因任何原因失败（mv 出错），不要静默继续，向用户报告。
+**注意**：归档前必须确保 final/ 目录已建且你已 accept；如果 status 已 completed 但归档因任何原因失败（mv 出错），不要静默继续，向用户报告。
 
 ---
 
@@ -367,12 +367,12 @@ archive          topic 完成后自动归档（移到 _archive/）
 2. 读 `state.md` 全文（frontmatter + 三 H2）
 3. 读 `journal.md` 末尾 5 条（全是里程碑变化日志）
 4. 推断"上次里程碑"和"当前应做什么"
-5. **关键**：上次里程碑之后的 lecture/socratic/task 状态**直接放弃**——不询问用户、不试图复原（询问破坏沉浸感，学生大概率也想不起来）
+5. **关键**：上次里程碑之后的 lecture/socratic/task 状态**直接放弃**——不询问用户、不试图复原（询问破坏沉浸感，你大概率也想不起来）
 6. 根据末条 journal 推断下一步：
    - `[accept]` → 下一步是 lecture 或 task（按 bloom_level 选）
    - `[stuck-detected]` → 按 `stuck_count` 判断再尝试 socratic（hint 加码）还是触发 escape（≥3 时）
    - `[stuck->lecture]` → 重出原 socratic 或推进新概念
-   - `[assemble]` → 等待学生 accept 完成 final
+   - `[assemble]` → 等待你 accept 完成 final
    - `[archive]` → 提示该 topic 已完成，建议 `/learn <new-topic>`
 7. 若 AI 实在拿不准上下文（如 5 条 journal 都不足以推断），用 `AskUserQuestion` 问"我们上次到 X，想继续推进 / 复习 / 换方向"
 
@@ -384,7 +384,7 @@ archive          topic 完成后自动归档（移到 _archive/）
 [初始]
 stuck_count = 0
    │
-   │ 学生回答未推进
+   │ 你回答未推进
    ▼
 stuck_count = 1  →  [stuck-detected] 追加 hint 1
    │
