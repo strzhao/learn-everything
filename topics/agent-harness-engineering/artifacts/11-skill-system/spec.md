@@ -6,10 +6,11 @@
 
 在 v10 ~900 行之上加 ~150-200 行实现 mini skill 系统。验证 4 个核心论断：
 
-1. **Skill = 行为策略注入**——工具层不变、model 不变，变的是 system prompt 区域的指令文本 + allowed-tools 临时权限
-2. **Skill 正文通过 tool_result 通道注入**——SkillTool 跟 read_file 并列，skill 内容作为 tool_result 返回，model 在对话历史中读到指令
-3. **Shell 模板引擎**——SKILL.md 正文支持 `` !`command` `` 和 ` ```! ``` ` 语法，harness 加载时执行 shell 并用输出替换原文，model 只看到成品
-4. **架构正交性第五次验证**——v2 permission / v6 hook / v7 obs 对 SkillTool 零修改自动生效
+1. **Skill = 行为策略注入**——工具层不变、model 不变，变的是 messages 流里多了 user-role 文本（skill 正文）+ 多了 attachment 形式的 skill_listing + allowed-tools 临时权限。dispatch/hook/permission/obs/cache 全部字面不动
+2. **Skill 正文通过 user-role text 通道注入**——工业 SkillTool inline 模式返回 `newMessages: [createUserMessage({ content: finalContent, isMeta: true })]`（SkillTool.ts:1101-1108）。教学版简化为 dispatch 返回 tool_result（tool_result 本就是 `{role:"user", content:[...]}` 的一种 content type），让 model 下一轮看到 skill 指令——本质都是 user-role 把 skill 正文塞进 messages 流
+3. **Skill listing 走 attachment 通道注入为 <system-reminder>**——工业用 `getSkillListingAttachments` 每轮 emit attachment，渲染时被 `wrapInSystemReminder` 包成 `<system-reminder>\n[Available Skills]\n...\n</system-reminder>` 文本块（attachments.ts:2661 + messages.ts:3097）。教学版简化为首轮在 user message 之前 prepend 一段 system-reminder text block。**不是 system prompt section**——dynamic 内容不锁死在 cacheable system prompt 里，跟 v10 mcp_instructions 选 DANGEROUS_uncached 同源
+4. **Shell 模板引擎运行在主 agent 加载期**——SKILL.md 正文支持 `` !`command` `` 和 ` ```! ``` ` 语法。getPromptForCommand 内部跑 shell 替换 + 临时 alwaysAllow merge allowed-tools，跟 fork/inline 正交（shell 是加载期动作，运行期隔离是后续 spawn_swarm 的事）。MCP skill 强制跳过 shell 执行（loadSkillsDir.ts:371-374），因为 MCP server 是 untrusted remote——跟 task 02 双层防御 + task 09 路径注入陷阱同源
+5. **架构正交性第五次验证**——v2 permission / v6 hook / v7 obs / v10 prompt cache 对 SkillTool 零修改自动生效
 
 ## 教学复杂度控制（工业砍掉项）
 
@@ -44,11 +45,14 @@
   5. 返回处理后的文本作为 tool_result
 - **`allowed-tools` 临时权限注入**：执行期间把 skill 声明的工具加入 `alwaysAllowTools` 临时集合；执行结束后恢复
 
-### §25: Skill 清单注入（skill listing）
+### §25: Skill 清单注入（skill listing as system-reminder attachment）
 
-- agent 启动时，把所有已加载 skill 的 `name: description` 格式化为一段文本
-- 注入方式：在 v10 `assembleSystemPrompt` 返回的 suffix 末尾追加一段 `"\n\n[Available Skills]\n- name: description\n- ..."`
-- 目的：让 model 在 system prompt 中看到可用 skill 清单，知道什么时候可以调用 SkillTool
+- agent 启动时，把所有已加载 skill 的 `name: description (mode)` 格式化为一段文本
+- 注入方式：**首轮 user message 之前 prepend 一段 `<system-reminder>\n[Available Skills]\n- name: description (mode)\n- ...\n</system-reminder>` text block**（对照工业 `wrapInSystemReminder` + `getSkillListingAttachments`）
+- **不是 system prompt section** —— skill_listing 是 dynamic 内容，不应锁死在 v10 PROMPT_SECTIONS 里
+- 目的：让 model 在 messages 流首位看到可用 skill 清单，区分这是"系统提示"而非"用户消息"，知道什么时候自主调用 SkillTool
+- 教学版简化：只在首轮 inject，不做工业的 `sentSkillNames` Set delta-dedup
+- v10 §21 assembleSystemPrompt **字面不动**
 
 ### §26: Shell 模板引擎（executeShellInSkill）
 
@@ -123,10 +127,11 @@ git log --oneline -3
 
 | v10 位置 | 改动 | 行数 |
 |---|---|---|
-| §3 TOOLS 数组 | 追加 SkillTool 定义 | +15 |
-| §5 dispatch | 加 `case "skill":` 分支调用 getPromptForCommand | +5 |
-| §21 assembleSystemPrompt | suffix 末尾追加 skill listing | +8 |
-| 新增 §23-§26 | 加载器 + SkillTool execute + listing + shell 引擎 | +170 |
+| §3 TOOLS 数组 | 追加 SkillTool 定义（所有 role 可见） | +15 |
+| §5 execute() | 加 `if (name === "Skill")` 分支调用 getPromptForCommand；inline 返回 markdown 作为 tool_result.content / fork 调 spawn_swarm 返回 worker summary | +12 |
+| §10 runInteractive/runCoordinator/runSwarm 入口 | 首轮 user message 前 prepend `<system-reminder>` skill_listing text block | +10 |
+| §21 assembleSystemPrompt | **字面不动**（skill_listing 不进 system prompt） | 0 |
+| 新增 §23-§26 | 加载器 + SkillTool execute + listing builder + shell 引擎 | +165 |
 | **总计** | | **~200 行新增** |
 
 ## 验收标准

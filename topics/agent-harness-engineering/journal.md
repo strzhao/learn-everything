@@ -441,3 +441,7 @@ Socratic 10 全对（Q1+Q3 一次过 / Q2 错→收紧通过）—— streaming 
 ### 2026-05-27T01:00:00+08:00 [accept] task-10 → artifacts/10-system-prompt-assembly; bloom create (9th); 4 论断 ✅
 
 ### 2026-05-27T02:30:00+08:00 [retrospective] task-05 lesson§14+notes§7.5: microCompact 炸 cache prefix + cached-MC 修正
+
+### 2026-05-28T20:00:00+08:00 [accept] socratic 13 全 4 题一次过 + 主动联想 task 05; create 第 10 次巩固; skill 4 论断概念前置验证完成 / spec.md 3 处工业偏离已修正
+
+### 2026-05-28T21:30:00+08:00 [accept] task-11 → artifacts/11-skill-system; bloom create (10th); artifact_count 10→11; 5 论断 ✅ + 第 5 次正交性 + 2 踩坑修正
