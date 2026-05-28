@@ -1,0 +1,29 @@
+.claude/skills/learn/SKILL.md
+  1a1f22f644a29df8 100-113
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.8",
+  "base_commit_sha": "5a05b46f6e4336749dc5074701b043e124835c2a",
+  "prompts": {
+    "1a1f22f644a29df8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "039e2049-33f9-44a8-acf6-e687073152b7",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 14,
+      "total_deletions": 0,
+      "accepted_lines": 14,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".claude/skills/learn/SKILL.md": {
+          "additions": 14,
+          "accepted_lines": 14
+        }
+      }
+    }
+  }
+}
