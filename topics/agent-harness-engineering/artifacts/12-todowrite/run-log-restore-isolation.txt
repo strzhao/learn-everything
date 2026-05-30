@@ -1,0 +1,38 @@
+# v12 确定性机制 demo —— 不打 API，直接验证 §29 restore + §27 per-agent 隔离
+# 这两个机制（无文件持久化 / per-agent 隔离）跨会话、跨进程，用确定性 demo 比靠 LLM 触发更精确可复现
+
+$ bun run agent-v12-todowrite.ts --demo=restore
+--------------------------------------------------------
+========== RESTORE DEMO ==========
+上个会话 transcript 共 8 条消息，最后一次 TodoWrite 是 t2（之后还有 read_file + text 噪声）
+没有读任何文件 —— 只倒扫这个 messages 数组：
+
+extractTodosFromTranscript() 还原出 3 个 todo（应跳过尾部 read_file/text，命中 t2）：
+  [completed] 抽取 token 校验函数
+  [in_progress] 拆分 login handler
+  [pending] 补单测
+
+hydrate → appStateTodos["session-rf4sgbdr"] 现在有 3 个 todo
+证明：messages 数组即数据库，restore 无需文件（论断 5）。
+
+
+$ bun run agent-v12-todowrite.ts --demo=isolation
+--------------------------------------------------------
+========== ISOLATION DEMO ==========
+主 agent key = session-bjddr52g / swarm worker key = swarm[0]
+
+主 agent 的 todo（key=session-bjddr52g）：
+  [in_progress] 协调整体重构计划
+  [pending] 分派子任务给 worker
+swarm worker 的 todo（key=swarm[0]）：
+  [in_progress] worker: 只负责 auth.ts 这一个文件
+
+appStateTodos 共有 2 个独立 key，互不可见。
+证明：todoKey = agentId ?? sessionId 把每个 agent 的 todo 分到独立 bucket（论断 4，与 v4 multi-agent context 二分同源）。
+
+
+# 补充：live swarm-worker 路径的 per-agent key（修复 auto-allow 漏传 agentId 的 bug 后实测）
+$ bun run agent-v12-todowrite.ts --role=swarm-worker --mode=bypassPermissions --prompt='调 TodoWrite 建一项清单'
+--------------------------------------------------------
+---------- swarm[0] ROUND 1  stop_reason=tool_use 
+[TODO write key=swarm[0]
