@@ -453,3 +453,7 @@ Socratic 10 全对（Q1+Q3 一次过 / Q2 错→收紧通过）—— streaming 
 ### 2026-05-30T17:58:00+08:00 [accept] socratic 15 毕业前确认 3/3 一次过(软契约/缺席探测/倒扫messages); 源码先行验证; create 11th
 
 ### 2026-05-30T18:00:00+08:00 [accept] task-12 → artifacts/12-todowrite; 6 论断✅; count 11→12
+
+### 2026-06-01T15:00:00+08:00 [accept] socratic 16+17 ✅ lesson 13 CLAUDE.md 双轨/双dedup/every-line-test; create 13th
+
+### 2026-06-01T17:00:00+08:00 [accept] task-12+13 ✅ v12 TodoWrite + v13 CLAUDE.md; artifact_count 11→13; 第7次正交性

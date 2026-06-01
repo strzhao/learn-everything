@@ -1,0 +1,21 @@
+[AUDIT] [BOOT] role=interactive mode=bypassPermissions hooks=audit stream=batch mcp=(disabled) cache-audit=false OTEL_LOG_USER_PROMPTS=(unset, redacting)
+[AUDIT] [SKILL dir not found: ./skills]
+[AUDIT] [BOOT v11] loaded 0 skills from ./skills: (none)
+[AUDIT] [MEMORY LOAD] cwd=/Users/stringzhao/workspace/agi/live/learn-everything/topics/agent-harness-engineering/artifacts/13-claude-md-system/demo-project/packages/foo loaded=5 layers=[User:~/.claude/CLAUDE.md, Project:~/CLAUDE.md, Project:~/workspace/agi/live/learn-everything/CLAUDE.md, Project:~/workspace/agi/live/learn-everything/topics/agent-harness-engineering/artifacts/13-claude-md-system/demo-project/CLAUDE.md, Project:~/workspace/agi/live/learn-everything/topics/agent-harness-engineering/artifacts/13-claude-md-system/demo-project/packages/foo/CLAUDE.md]
+598 | async function callModel(messages: any[], system: string, tools: any[]): Promise<any> {
+599 |   return await fetch(`${ANTHROPIC_BASE_URL}/v1/messages`, {
+600 |     method: "POST",
+601 |     headers: { "x-api-key": ANTHROPIC_AUTH_TOKEN, "anthropic-version": "2023-06-01", "content-type": "application/json" },
+602 |     body: JSON.stringify({ model: MODEL_NAME, max_tokens: 2048, system, messages, ...(tools.length > 0 ? { tools } : {}) }),
+603 |   }).then((r) => r.json());
+           ^
+error: Unable to connect. Is the computer able to access the url?
+  path: "https://stub.invalid/v1/messages",
+ errno: 0,
+  code: "ConnectionRefused"
+
+      at async callModel (/Users/stringzhao/workspace/agi/live/learn-everything/topics/agent-harness-engineering/artifacts/13-claude-md-system/agent-v13-claude-md-system.ts:603:6)
+      at async runRounds (/Users/stringzhao/workspace/agi/live/learn-everything/topics/agent-harness-engineering/artifacts/13-claude-md-system/agent-v13-claude-md-system.ts:275:25)
+      at async runInteractive (/Users/stringzhao/workspace/agi/live/learn-everything/topics/agent-harness-engineering/artifacts/13-claude-md-system/agent-v13-claude-md-system.ts:483:9)
+
+Bun v1.3.14 (macOS arm64)
