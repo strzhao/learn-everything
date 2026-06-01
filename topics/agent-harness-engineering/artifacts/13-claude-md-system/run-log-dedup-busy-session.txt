@@ -1,0 +1,35 @@
+========== LRU-BUSY DEMO ==========
+LRU 容量 = 8 / 模拟依次"加载" 9 个不同的 nested CLAUDE.md path
+第 9 次必驱逐最早的 entry / 然后用同一个驱逐过的 path 再次 attempt → Session-Set 拦截
+
+--- 阶段 1: 9 次依次加载 ---
+[Step 1] add /fake/dir-1/CLAUDE.md  → LRU size=1 / Session-Set size=1
+[Step 2] add /fake/dir-2/CLAUDE.md  → LRU size=2 / Session-Set size=2
+[Step 3] add /fake/dir-3/CLAUDE.md  → LRU size=3 / Session-Set size=3
+[Step 4] add /fake/dir-4/CLAUDE.md  → LRU size=4 / Session-Set size=4
+[Step 5] add /fake/dir-5/CLAUDE.md  → LRU size=5 / Session-Set size=5
+[Step 6] add /fake/dir-6/CLAUDE.md  → LRU size=6 / Session-Set size=6
+[Step 7] add /fake/dir-7/CLAUDE.md  → LRU size=7 / Session-Set size=7
+[Step 8] add /fake/dir-8/CLAUDE.md  → LRU size=8 / Session-Set size=8
+[AUDIT] [LRU EVICT] /fake/dir-1/CLAUDE.md (cap=8)
+[Step 9] add /fake/dir-9/CLAUDE.md  → LRU size=8 / Session-Set size=9
+
+阶段 1 后：LRU size=8 (cap=8 触顶) / Session-Set size=9 (永不驱逐 / 全 9 个保留)
+
+--- 阶段 2: 验证 dir-1 已被 LRU 驱逐 ---
+检查 /fake/dir-1/CLAUDE.md:
+  在 LRU 里？  false  (期望 false / 已被驱逐)
+  在 Session-Set 里？ true  (期望 true / 永不驱逐)
+
+--- 阶段 3: 模拟同 path 重新 nested attempt ---
+如果只用 LRU 单层 dedup → 已驱逐 → 重新加载 → 重复注入炸 context + 破坏 cache prefix
+双重 dedup → Session-Set 拦截 → 跳过加载 → 字面 audit:
+[AUDIT] [DEDUP] path=/fake/dir-1/CLAUDE.md already in session-set, skipping (LRU evicted but Session-Set retained)
+
+✅ 防御成功 / Session-Set 是 CLAUDE.md 子系统的真正防线
+
+========== DEMO 完成 ==========
+结论：LRU 假设 '被驱逐 = 不再用' 对 model 主动访问的文件成立
+        / 对 CLAUDE.md 这种系统自动注入的内容不成立
+        / Session-Set 处理 LRU 抽象覆盖不到的访问模式
+跟 task 02 sandbox+permission 双层防御同源 (针对不同失效模式)
