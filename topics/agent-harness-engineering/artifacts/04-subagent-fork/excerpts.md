@@ -1,7 +1,8 @@
-# excerpts —— claude-code coordinator/swarm 关键源码
+# excerpts —— claude-code subagent fork 关键源码
 
 > 备查文档。所有片段来自本机 `/Users/stringzhao/workspace/claude-code/` 工作副本。
 > notes.md 的 4 条洞察对照按需引用本文片段。
+> **命名修订（2026-05-30）**：v4 对应工业 `AgentTool`（spawn sub-agent）。下方片段里 "swarmWorker" / "swarm" 字面是工业历史命名（claude-code 早期代码用了同一个词指 sub-agent），本质就是 fork 出的 sub-agent。lesson 13 的 agent team（多进程 + mailbox）跟这里完全是两套机制。
 
 ---
 

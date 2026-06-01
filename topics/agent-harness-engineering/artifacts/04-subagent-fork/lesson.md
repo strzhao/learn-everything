@@ -1,6 +1,8 @@
-# Task 04：coordinator + swarm worker —— 把 multi-agent 落到代码
+# Task 04：coordinator + subagent fork —— 把 multi-agent 落到代码
 
-> v3 解决了 `(tool × mode)` 二维矩阵问题，但 production 还有一个被压住的维度：**agent-role**。当 coordinator 需要派 swarm 并行处理时，swarm 既没有 ask user 的物理通道，也不能把内部上下文全部带回 coordinator。本任务把 Lecture 04 抽象出的 4 条 multi-agent 洞察落到 284 行 v4 代码 + 4 份真实 run-log，对照 claude-code 工业实现验证每一条。看完你应该能说清三件事：(1) agent-role 为什么是物理约束维度（不是软约束）；(2) swarm 上行路由的 in-process Promise 与工业 mailbox 在语义上为什么等价；(3) "context 从深度变广度" 的实测数据形态是什么。
+> v3 解决了 `(tool × mode)` 二维矩阵问题，但 production 还有一个被压住的维度：**agent-role**。当 coordinator 需要并行处理多个子任务时，fork 出去的 sub-agent 既没有 ask user 的物理通道，也不能把内部上下文全部带回 coordinator。本任务把 Lecture 04 抽象出的 4 条 multi-agent 洞察落到 284 行 v4 代码 + 4 份真实 run-log，对照 claude-code 工业 `AgentTool`（spawn sub-agent）验证每一条。看完你应该能说清三件事：(1) agent-role 为什么是物理约束维度（不是软约束）；(2) sub-agent 上行路由的 in-process Promise 与工业 mailbox 在语义上为什么等价；(3) "context 从深度变广度" 的实测数据形态是什么。
+
+> **命名修订（2026-05-30）**：本课原叫 "coordinator-swarm"，已重命名为 `04-subagent-fork`。**工业 "swarm" 字面 = "team" = 多进程持久化协作系统**（mailbox + 共享 task list + idle 状态机，见 `TeamCreateTool` / `utils/swarm/constants.ts:2 SWARM_SESSION_NAME` / `isAgentSwarmsEnabled()`），那是 lesson 13 的主题。v4 实际做的是**同进程 fork sub-agent 跑独立 messages 数组、同步返回 summary string**，对应工业 `AgentTool`（`subagent_type=general-purpose`）。下文里 `"swarm-worker"` role 字面、`spawn_swarm` tool 名、`swarmId` 等保留作 historical code identifier（5-12 lesson 共享这套 role 名 / 代码改 role 名会让 5-12 ts 引用全断）；**叙述层面读到 "swarm worker" 请理解为 "fork 出的 sub-agent"**。两个概念在 lesson 13 会精确切分。
 
 ## 是什么
 

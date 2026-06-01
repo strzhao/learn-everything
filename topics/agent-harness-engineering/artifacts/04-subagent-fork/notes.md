@@ -1,10 +1,12 @@
-# notes.md —— Task 04 对照报告
+# notes.md —— Task 04 对照报告（v4 Coordinator + Subagent Fork）
 
-> Lecture 04 抽象出的 4 条 multi-agent 洞察 ↔ v4 代码 ↔ claude-code 工业实现的对照报告。
+> Lecture 04 抽象出的 4 条 multi-agent 洞察 ↔ v4 代码 ↔ claude-code 工业 `AgentTool`（spawn sub-agent）的对照报告。
 >
-> 4 条洞察源自 Socratic 05 全对一次通过的内化：(1) agent-role 是物理约束维度；(2) swarm 物理约束本质 = 没有 ask user 的物理通道；(3) context 从深度变广度；(4) 判决与执行分层在三维下不退化。
+> 4 条洞察源自 Socratic 05 全对一次通过的内化：(1) agent-role 是物理约束维度；(2) sub-agent 物理约束本质 = 没有 ask user 的物理通道；(3) context 从深度变广度；(4) 判决与执行分层在三维下不退化。
 >
 > v4 的 284 行代码不是凭空设计 —— 它是这 4 条洞察的代码物理化。本文档证明每一行 v4 都对应某条洞察 + 工业实现的某段源码。
+>
+> **命名修订（2026-05-30）**：原叫 "coordinator-swarm"，已改名 `04-subagent-fork`。工业 "swarm" = "team" = 多进程协作（lesson 13），v4 实际是 fork sub-agent ≈ 工业 `AgentTool`。`"swarm-worker"` role 字面与 `spawn_swarm` 工具名保留作 historical code identifier。下文里 "swarm worker" / "swarm" 一律读作 "fork 出的 sub-agent"。
 
 ---
 

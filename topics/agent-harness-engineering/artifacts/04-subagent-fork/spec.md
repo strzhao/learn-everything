@@ -1,6 +1,6 @@
-# Task 04 Spec —— v4 Coordinator + Swarm Worker Harness
+# Task 04 Spec —— v4 Coordinator + Subagent Fork（原 "Swarm Worker Harness"）
 
-下发日期：2026-05-24
+下发日期：2026-05-24（命名修订 2026-05-30：原叫 coordinator-swarm，已改名 subagent-fork——工业 swarm/team 是多进程协作系统/lesson 13 主题，v4 实际是 fork sub-agent ≈ 工业 AgentTool）
 父 topic：agent-harness-engineering
 前置 artifact：[`03-mode-matrix-agent/`](../03-mode-matrix-agent/)
 对照源码：`/Users/stringzhao/workspace/claude-code/src/coordinator/coordinatorMode.ts` (18.6K) + `src/hooks/toolPermission/handlers/{coordinatorHandler,swarmWorkerHandler,interactiveHandler}.ts`
