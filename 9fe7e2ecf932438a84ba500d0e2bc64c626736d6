@@ -1,0 +1,49 @@
+topics/INDEX.md
+  ade3ee9ada105d57 9
+topics/agent-harness-engineering/journal.md
+  ade3ee9ada105d57 460-461
+topics/agent-harness-engineering/state.md
+  ade3ee9ada105d57 7,14,122-149
+topics/agent-harness-engineering/artifacts/14-auto-memory/spec.md
+  ade3ee9ada105d57 1-289
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.8",
+  "base_commit_sha": "9fe7e2ecf932438a84ba500d0e2bc64c626736d6",
+  "prompts": {
+    "ade3ee9ada105d57": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e72d255f-310a-497f-a8f5-dfc9fc3b7a6c",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 325,
+      "total_deletions": 8,
+      "accepted_lines": 324,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "topics/agent-harness-engineering/state.md": {
+          "additions": 33,
+          "deletions": 7,
+          "accepted_lines": 32
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/spec.md": {
+          "additions": 289,
+          "accepted_lines": 289
+        },
+        "topics/agent-harness-engineering/journal.md": {
+          "additions": 2,
+          "accepted_lines": 2
+        },
+        "topics/INDEX.md": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        }
+      }
+    }
+  }
+}
