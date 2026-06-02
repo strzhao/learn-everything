@@ -1,0 +1,22 @@
+========== COMPACT-RELOAD DEMO ==========
+（§31 修复验证 / compact 必须清 Session-Set 否则 CLAUDE.md 永久丢失）
+场景：一个已加载 5 层 memory 的 session 触发 full compact。
+
+--- compact 前 ---
+Session-Set size=5 / memoryCache size=1 / LRU size=5
+闸门状态：Project 层 has(/proj/CLAUDE.md)=true / nested has(/proj/subdir/CLAUDE.md)=true
+→ 若 compact 保留 Session-Set：上轨 cascade line 992 命中 has()→continue → Project 层不重注
+   下轨 line 1047 同理 → nested 不重注 → system prompt 只剩 User+Local，Project*N 与 nested 永久丢失 ❌
+
+[AUDIT] [CACHE CLEAR] memoryCache + LRU + session-set cleared by compact: 11 entries dropped (dedup gate reopened → all layers re-inject next round)
+
+--- compact 后（§31 clearMemoryCache）---
+Session-Set size=0 / memoryCache size=0 / LRU size=0
+闸门状态：Project 层 has(/proj/CLAUDE.md)=false / nested has(/proj/subdir/CLAUDE.md)=false
+→ 闸门全部重开（has()=false）→ 下一轮上轨 loadMemoryFiles 缓存 miss 重算 + cascade 全层重注 / 下轨按 FileReadTool trigger 重注 ✅
+
+断言 三者全清 = PASS ✅
+
+========== DEMO 完成 ==========
+结论：dedup 闸门是同会话承诺，compact 是会话语义重置 —— 注入内容已随 messages 蒸发，闸门必须重开。
+对齐工业 compact.ts:521-522：readFileState 与 loadedNestedMemoryPaths 永远一起 clear。

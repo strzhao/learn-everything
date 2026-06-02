@@ -226,32 +226,37 @@ if (readTimestamp) {
 
 ---
 
-## §8 compact-triggered cache clear: `postCompactCleanup`
+## §8 compact-triggered cache clear: **两个 clear site**
 
-**文件**: `src/services/compact/postCompactCleanup.ts:25,52-54`
+内存清理分两处协作完成：
+
+**Site 1 — `src/services/compact/compact.ts:521-522`（full）/ `:920-921`（partial）** 清 **per-context** 状态：
 
 ```typescript
-// :25 入口
-export function postCompactCleanup(...): void {
-  // ... 各 sub-system clear ...
-  clearMemoryFiles()  // ← :25
-  clearSystemPromptSections()  // ← v10 学过的同精神
-}
+// 生成 summary 后、丢历史前：
+const preCompactReadFileState = cacheToObject(context.readFileState) // 先快照
+context.readFileState.clear()
+context.loadedNestedMemoryPaths?.clear()   // ← Session-Set 跟 readFileState 绑一起 clear
+// 对比 :524-529 注释：sentSkillNames 故意 NOT clear（skill content 另由 invoked_skills attachment 保留）
+// 再 createPostCompactFileAttachments(preCompactReadFileState, ctx, 5) 回灌最近 5 文件
+```
 
-// :52-54 clearMemoryFiles 实现
-function clearMemoryFiles(): void {
-  // 清 getMemoryFiles memoize cache
-  // 清 cachedClaudeMdContent state
-  // 清 readFileState (在其他位置清)
-}
+**Site 2 — `src/services/compact/postCompactCleanup.ts:31-70`（`runPostCompactCleanup`）** 清 **module-level** memoize 缓存：
+
+```typescript
+getUserContext.cache.clear?.()           // :59 外层 memoize
+resetGetMemoryFilesCache('compact')      // :60 getMemoryFiles cache（否则下轮命中外层 cache，armed hook 不 fire）
+clearSystemPromptSections()              // :62 v10 学过的同精神
+// Intentionally NOT resetSentSkillNames() :65-69
 ```
 
 **关键设计点**:
-- compact 后语义状态变 → cached value stale → 必须丢 cache 强制重算
-- 跟 v10 `clearSystemPromptSections` 同精神（task 10 学过的因果链）
-- **但 Session-Set `loadedNestedMemoryPaths` 不清** —— dedup 承诺不能跨 compact 失效
+- compact 后语义状态变 → cached value stale → 必须丢 cache 强制重算（跟 v10 `clearSystemPromptSections` 同因果链）
+- **`loadedNestedMemoryPaths` 必须清**（Site 1）：compact 抹掉持有 nested CLAUDE.md 注入内容的历史 messages，闸门若不重开 → path 永远命中 `.has()` → 永不重注 → 永久丢失。
+- 对比：`sentSkillNames` 故意不清（skill content 另存）—— 两类 dedup 区别对待，正说明清 nested dedup 是刻意的。
+- **区分两种"不清"**：Session-Set 对 LRU 驱逐免疫（non-evicting / §5），但对 compact 不免疫。
 
-**v13 教学等价**: §31 `clearMemoryCache` 清 `memoryCache` + `readFileStateLRU` / 不清 `loadedNestedMemoryPaths` Set / 跟工业一致。
+**v13 教学等价**: §31 `clearMemoryCache` 把两个 site 合一 —— 清 `memoryCache`（≈Site2 getMemoryFiles cache）+ `readFileStateLRU`（≈Site1 readFileState）+ `loadedNestedMemoryPaths`（≈Site1 Session-Set）三者，对齐工业。
 
 ---
 

@@ -6,9 +6,9 @@
 //   §10 runRounds attachment 收集阶段调 getNestedMemoryAttachments(toolUseContext) +5 行
 // 新增 5 段：§27 ProjectMemoryLoader（loadMemoryFiles + safelyReadMemoryFile + memoryCache + 三层加载：User → Project root→CWD cascade → Local）
 //          §28 双轨注入 wiring（loadMemoryPrompt 上轨 / getNestedMemoryAttachments 下轨）
-//          §29 双重 dedup（loadedNestedMemoryPaths Session-Set 永不驱逐 + readFileStateLRU 100 entry / 25MB 双限）
+//          §29 双重 dedup（loadedNestedMemoryPaths Session-Set 对 LRU 驱逐免疫 non-evicting + readFileStateLRU 100 entry / 25MB 双限）
 //          §30 TOCTOU rule（safelyReadMemoryFile 直接 fs.readFile 失败回 null 不预 stat / 工程通用规则不限 CLAUDE.md）
-//          §31 clearMemoryCache（compact 触发清空 memoryCache + LRU 但保留 Session-Set / 跟 v10 clearSystemPromptSections 同精神）
+//          §31 clearMemoryCache（compact 触发清空 memoryCache + LRU + Session-Set 三者 / 对齐工业 compact.ts:521-522 / 跟 v10 clearSystemPromptSections 同精神）
 // 对照: claude-code src/utils/claudemd.ts:618-625 processMemoryFile + :790-934 三层加载顺序 + :424-436 safelyReadMemoryFileAsync
 // 对照: src/utils/attachments.ts:1718-1750 双层 dedup 物理实现 + :1792-1862 getNestedMemoryAttachmentsForFile (4 阶段处理) + :2167-2194 触发链
 // 对照: src/utils/messages.ts:3700-3707 nested_memory case wrapMessagesInSystemReminder
@@ -376,7 +376,7 @@ async function maybeCompact(messages: any[], role: Role, system: string): Promis
     //      cached value 变 stale → 必须丢 cache 强制下一轮重算
     // 注意：放 fullCompact 之后而非之前——之前清等于浪费上一轮已建立的 cache
     clearSystemPromptSections("compact");
-    // §7 v13 改造（+1 行）: compact 触发清空 memoryCache + LRU（保留 Session-Set / 跟 v10 clearSystemPromptSections 同精神）
+    // §7 v13 改造（+1 行）: compact 触发清空 memoryCache + LRU + Session-Set（对齐工业 compact.ts:521-522 / 跟 v10 clearSystemPromptSections 同精神）
     // 对照 src/services/compact/postCompactCleanup.ts:25,52-54 clearMemoryFiles 同位置
     clearMemoryCache();
   }
@@ -924,7 +924,9 @@ type MemoryFile = {
 };
 
 // §29 双重 dedup：
-//   loadedNestedMemoryPaths = Session-Set 永不驱逐（CLAUDE.md 子系统的真正防线 / 跟 task 02 双层防御同源）
+//   loadedNestedMemoryPaths = Session-Set，对 LRU 驱逐免疫（non-evicting / 工业 attachments.ts:1719 "non-evicting Set"）
+//     —— "non-evicting" 仅指不被 LRU cap 驱逐；compact 仍会清它（§31 / 工业 compact.ts:522）。二者不矛盾：
+//        驱逐免疫是同会话内的 dedup 承诺，compact 清除是会话语义重置（注入内容已随 messages 蒸发）。
 //   readFileStateLRU = 教学版 8 entry LRU（工业 100 / 25MB / 这里小规模演示驱逐场景）
 // 对照 src/Tool.ts:217-222 注释 + src/utils/fileStateCache.ts:18 + src/utils/attachments.ts:1719-1750
 const loadedNestedMemoryPaths = new Set<string>();
@@ -1064,14 +1066,20 @@ async function getNestedMemoryAttachments(): Promise<NestedMemoryAttachment[]> {
   return attachments;
 }
 
-// §31 clearMemoryCache: compact 触发清空 memoryCache + LRU 但保留 Session-Set
-// 对照 src/services/compact/postCompactCleanup.ts:25,52-54 + 跟 v10 clearSystemPromptSections 同精神
-// 为什么只清前两个不清 Session-Set: dedup 防御是 session 级承诺 / compact 不应让 dedup 失效
+// §31 clearMemoryCache: compact 触发清空 memoryCache + LRU + Session-Set 三者
+// 对照 src/services/compact/compact.ts:521-522（full）/ :920-921（partial）—— readFileState 与
+//   loadedNestedMemoryPaths 绑在一起 clear（postCompactCleanup.ts 另清 module-level memo）。
+// 为什么 Session-Set 也要清: 它把守上轨 Project cascade（line 992）和下轨 nested（line 1047）的 dedup 闸门。
+//   compact 抹掉持有 nested CLAUDE.md 注入内容的历史 messages，闸门必须重开，否则 path 永远命中 .has()
+//   → 永不重注 → 指令丢失（只剩 User+Local，二者无 .has() 守卫才幸存）。
+//   区分两种"不清"（不矛盾）: Session-Set 对 LRU 驱逐免疫(non-evicting/§29)，但对 compact 不免疫
+//   ——前者是同会话 dedup 承诺，后者是会话语义重置。
 function clearMemoryCache(): void {
-  const cleared = memoryCache.size + readFileStateLRU.size;
+  const cleared = memoryCache.size + readFileStateLRU.size + loadedNestedMemoryPaths.size;
   memoryCache.clear();
   readFileStateLRU.clear();
-  audit(`[CACHE CLEAR] memoryCache + LRU cleared by compact: ${cleared} entries dropped (session-set retained, ${loadedNestedMemoryPaths.size} entries kept)`);
+  loadedNestedMemoryPaths.clear();  // 工业 compact.ts:522 字面 —— 闸门重开：下一轮上轨 cascade 全层重注 / 下轨按 trigger 重注
+  audit(`[CACHE CLEAR] memoryCache + LRU + session-set cleared by compact: ${cleared} entries dropped (dedup gate reopened → all layers re-inject next round)`);
 }
 
 // ⬆⬆⬆⬆⬆ v13 新增结束：以上整段是 v13 新加的 CLAUDE.md 子系统实现 ⬆⬆⬆⬆⬆
@@ -1467,6 +1475,43 @@ async function runLruBusyDemo(): Promise<void> {
   console.log("        / Session-Set 处理 LRU 抽象覆盖不到的访问模式");
   console.log("跟 task 02 sandbox+permission 双层防御同源 (针对不同失效模式)");
 }
+// --demo=compact-reload：确定性证明 §31 修复（compact 必须清 Session-Set 否则 CLAUDE.md 永久丢失）
+// 不调 model API / 不读真实磁盘文件 —— 直接 seed dedup 闸门状态，验证 clear 前后 .has() 行为翻转
+// 对照工业 src/services/compact/compact.ts:521-522（readFileState 与 loadedNestedMemoryPaths 一起 clear）
+async function runCompactReloadDemo(): Promise<void> {
+  console.log("========== COMPACT-RELOAD DEMO ==========");
+  console.log("（§31 修复验证 / compact 必须清 Session-Set 否则 CLAUDE.md 永久丢失）");
+  console.log("场景：一个已加载 5 层 memory 的 session 触发 full compact。\n");
+
+  // 模拟"compact 前"已加载状态：上轨 cascade 的 Project 层 + 下轨 nested，全部进了 dedup 闸门
+  const projPath = "/proj/CLAUDE.md";          // 上轨 Project cascade 命中点（line 992 守卫）
+  const nestedPath = "/proj/subdir/CLAUDE.md"; // 下轨 nested 命中点（line 1047 守卫）
+  const seeded = ["~/.claude/CLAUDE.md", projPath, "/proj/sub/CLAUDE.md", nestedPath, "/proj/CLAUDE.local.md"];
+  for (const p of seeded) {
+    loadedNestedMemoryPaths.add(p);
+    lruSet(p, { content: `mem(${p})`, timestamp: 1, isPartialView: false });
+  }
+  memoryCache.set("/proj", []); // 上轨 memoization
+
+  console.log("--- compact 前 ---");
+  console.log(`Session-Set size=${loadedNestedMemoryPaths.size} / memoryCache size=${memoryCache.size} / LRU size=${readFileStateLRU.size}`);
+  console.log(`闸门状态：Project 层 has(${projPath})=${loadedNestedMemoryPaths.has(projPath)} / nested has(${nestedPath})=${loadedNestedMemoryPaths.has(nestedPath)}`);
+  console.log("→ 若 compact 保留 Session-Set：上轨 cascade line 992 命中 has()→continue → Project 层不重注");
+  console.log("   下轨 line 1047 同理 → nested 不重注 → system prompt 只剩 User+Local，Project*N 与 nested 永久丢失 ❌\n");
+
+  // §31：三者一起清（对齐工业 compact.ts:521-522）
+  clearMemoryCache();
+
+  console.log("\n--- compact 后（§31 clearMemoryCache）---");
+  console.log(`Session-Set size=${loadedNestedMemoryPaths.size} / memoryCache size=${memoryCache.size} / LRU size=${readFileStateLRU.size}`);
+  console.log(`闸门状态：Project 层 has(${projPath})=${loadedNestedMemoryPaths.has(projPath)} / nested has(${nestedPath})=${loadedNestedMemoryPaths.has(nestedPath)}`);
+  const fixed = loadedNestedMemoryPaths.size === 0 && memoryCache.size === 0 && readFileStateLRU.size === 0;
+  console.log(`→ 闸门全部重开（has()=false）→ 下一轮上轨 loadMemoryFiles 缓存 miss 重算 + cascade 全层重注 / 下轨按 FileReadTool trigger 重注 ✅`);
+  console.log(`\n断言 三者全清 = ${fixed ? "PASS ✅" : "FAIL ❌"}`);
+  console.log("\n========== DEMO 完成 ==========");
+  console.log("结论：dedup 闸门是同会话承诺，compact 是会话语义重置 —— 注入内容已随 messages 蒸发，闸门必须重开。");
+  console.log("对齐工业 compact.ts:521-522：readFileState 与 loadedNestedMemoryPaths 永远一起 clear。");
+}
 // --demo=restore：构造一段"上个会话"的 transcript（TodoWrite 之后还有别的轮次），证明倒扫能跳过尾部噪声找到最后一次 TodoWrite
 function runRestoreDemo(): void {
   const priorTranscript: any[] = [
@@ -1526,6 +1571,7 @@ const demoArg = process.argv.find((a) => a.startsWith("--demo="))?.slice(7);
 if (demoArg === "restore") { runRestoreDemo(); process.exit(0); }
 if (demoArg === "isolation") { runIsolationDemo(); process.exit(0); }
 if (demoArg === "lru-busy") { await runLruBusyDemo(); process.exit(0); }
+if (demoArg === "compact-reload") { await runCompactReloadDemo(); process.exit(0); }
 const mcpServerArg = process.argv.find((a) => a.startsWith("--mcp="))?.slice(6);
 const USE_CACHE_AUDIT = process.argv.includes("--cache-audit");
 const SWARM_AUDIT_CACHE = USE_CACHE_AUDIT; // swarm 同样开 audit

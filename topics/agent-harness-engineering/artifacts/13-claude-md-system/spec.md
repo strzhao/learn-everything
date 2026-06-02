@@ -152,7 +152,7 @@
 | 新增 §28 双轨注入 wiring | loadMemoryPrompt（上轨）+ getNestedMemoryAttachments（下轨）| +60 |
 | 新增 §29 双重 dedup | loadedNestedMemoryPaths Session-Set + readFileStateLRU 实现 | +40 |
 | 新增 §30 TOCTOU 文档化 | safelyReadMemoryFile 内联（已在 §27）+ 注释 | +0 |
-| 新增 §31 clearMemoryCache | 清 memoryCache + LRU / 保留 Session-Set | +15 |
+| 新增 §31 clearMemoryCache | 清 memoryCache + LRU + **Session-Set 三者**（对齐工业 compact.ts:521-522）| +15 |
 | **总计** | | **~197 行新增** |
 
 ## mini-CLAUDE.md 重写实操指南（下半场设计哲学落地）

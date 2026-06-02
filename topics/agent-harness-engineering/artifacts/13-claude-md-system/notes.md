@@ -27,7 +27,7 @@
 | 下轨 nested_memory case | `messages.ts:3700-3707` | §10 `<system-reminder>\nContents of...` text block append |
 | 4 阶段 nested 加载处理 | `attachments.ts:1792-1862` | §28 简化只走 Phase 3 nested directories |
 | Session-Set + readFileState LRU 双层 dedup | `Tool.ts:217-225` + `attachments.ts:1718-1750` + `fileStateCache.ts:30-93` | §29 `loadedNestedMemoryPaths` Set + 自实现 LRU 8-entry Map |
-| compact-triggered cache clear | `postCompactCleanup.ts:25,52-54` | §31 `clearMemoryCache` |
+| compact-triggered cache clear | `compact.ts:521-522`（full）/ `:920-921`（partial）+ `postCompactCleanup.ts:25,52-54` | §31 `clearMemoryCache` 清 memoryCache + LRU + **Session-Set 三者**（对齐工业：readFileState 与 loadedNestedMemoryPaths 绑一起 clear）|
 | every-line-test 立法门槛 | `init.ts:97` + `:110-117` | demo-project/CLAUDE.md 6 条规则全 pass test |
 
 ## §3 双重 dedup 工程必要性详解（论断 3 深化）
@@ -74,8 +74,8 @@ cwd=demo-project/packages/foo 启动 / 5 层 cascade 全部加载 / model thinki
 ### run-log-nested-trigger.txt（91 行 / DeepSeek API / 含真 bug 修复）
 cwd=demo-project / model read_file ./subdir/file.ts → triggers Set 登记 → 下一轮 [NESTED INJECT] / 三层规则同时生效 `[LOCAL-OVERRIDE] task done [NESTED-LOADED]` / Round 1 显示原 prepend 实现失败的 API 报错（修复后 append-only）。**论断 1+2+5 物理证据 + 真 bug 修复纪录**。
 
-### run-log-compact-clear.txt（207 行 / DeepSeek API / 5 round + maybeCompact）
-5 个文件顺序 read_file 让 rounds=5 触发 fullCompact / [CACHE CLEAR] 字面 / Session-Set 跨 compact 保留（"7 entries kept"）/ compact 后 [MEMORY LOAD] 只 2 层（Session-Set 拦截 Project 层重新加载）。**论断 4 物理证据 + Session-Set 跨 compact 防御**。
+### run-log-compact-reload-fix.txt（compact-reload demo / 不调 API）
+seed 5 层 memory 进 dedup 闸门 → `clearMemoryCache()` 三者全清 → 闸门 `.has()` 由 true 翻 false → 下一轮全层重注。**论断 4 物理证据（§31 compact 清三者 → 闸门重开 → 重注）**。
 
 ### run-log-dedup-busy-session.txt（lru-busy demo / 不调 API）
 9 次 nested attempt → LRU 8 entry 触顶 → dir-1 驱逐 → Session-Set 9 个全保留 → 同 path 重 attempt 被 Session-Set 拦截。**论断 3 物理证据**。
@@ -101,9 +101,28 @@ Each tool_use block must have a corresponding tool_result block in the next mess
 
 详见 lesson.md "工业偏离教学化简（合规清单）" 段。
 
-关键偏离 2 项需要 lesson 标注：
-1. **上轨 cascade 也查 Session-Set**（工业不查）—— 让 [MEMORY LOAD] 跨 compact 减少 / Session-Set 跨 compact 保留更直观演示
+关键偏离需要 lesson 标注：
+1. **上轨 cascade 也查 Session-Set**（工业不查）—— 把 User/Project/Local 主层也接进统一 dedup 的教学化简。因 §31 compact 时三者一起清，主层下一轮照常重注，无副作用。
 2. **nested_memory 同 user message append**（工业独立 isMeta message）—— 避开 tool_use→tool_result 位置约束需要 toolResults-first 顺序
+
+## §5 compact 为什么必须清 Session-Set
+
+compact 抹掉持有 nested CLAUDE.md 注入内容的历史 messages，内容随之蒸发。Session-Set 同时把守上轨 Project cascade（line 992）和下轨 nested（line 1047）的 dedup 闸门 —— 闸门若不重开，path 永远命中 `.has()` → 永不重注 → 指令永久丢失。
+
+**工业 ground truth**：`src/services/compact/compact.ts:521-522`（full / `compactConversation`）与 `:920-921`（partial）两条路径都是：
+```ts
+const preCompactReadFileState = cacheToObject(context.readFileState) // 先快照
+context.readFileState.clear()
+context.loadedNestedMemoryPaths?.clear()                            // 闸门一起重开
+// ... createPostCompactFileAttachments(preCompactReadFileState, ctx, 5) 再回灌最近 5 文件
+```
+对比 `:524-529` 注释明确 sentSkillNames **故意不清**（skill content 另由 invoked_skills attachment 保留）—— 两类 dedup 区别对待，正说明清 nested dedup 是刻意为之，目的就是 post-compact 重注。
+
+**两种"不清"分清**：
+- Session-Set 对 **LRU 驱逐**免疫（non-evicting / `attachments.ts:1719`）—— 这是它相对 LRU 的存在意义（论断 3 lru-busy demo 证明的层）。
+- Session-Set 对 **compact** 不免疫 —— compact 是会话语义重置，注入内容已蒸发，必须重开闸门。
+
+**mini 重注路径**：上轨 `loadMemoryFiles` 缓存 miss 重算（每轮装配 system prompt 自动触发）/ 下轨按 FileReadTool trigger 重注。工业额外有 `createPostCompactFileAttachments` 立即回灌 top-5，mini 不实现（"走到哪触发哪"语义足够，下一轮自然重注）。`--demo=compact-reload` 确定性证明闸门 `.has()` 翻转（不调 API）。
 
 ## §8 task 13 设计哲学下半场总结
 

@@ -105,7 +105,7 @@ bloom: create | 已覆盖: harness≠APIcall, agent loop 三角骨架, 观察→
 - README.md 三段式
 - spec.md（5 个反馈点固化版）
 
-**5 条核心论断全部 ✅ 字面命中**：(1) 双轨注入 = v10/v11 通道字面 0 修改接住整个 CLAUDE.md 子系统（[MEMORY LOAD] 5 层 + [NESTED INJECT] 字面证据）(2) 三层 append + 后加载者优先（model thinking 字面引用 3 层 CLAUDE.md 规则 + 输出 [LOCAL-OVERRIDE]+[NESTED-LOADED] 多层叠加）(3) 双重 dedup = task 02 双层防御同源（[LRU EVICT] + [DEDUP] already in session-set + 跨 compact 保留 7 entries 物理证据）(4) TOCTOU + compact-clear（safelyReadMemoryFile graceful + [CACHE CLEAR] memoryCache+LRU dropped session-set retained 字面）(5) 架构正交性第 7 次 + prompt-as-actionable-constraint 极致体现（v12 §1-26 字面 0 修改 + every-line-test 元约束写在 prompt 即 demo CLAUDE.md 6 条规则物理产出）。
+**5 条核心论断全部 ✅ 字面命中**：(1) 双轨注入 = v10/v11 通道字面 0 修改接住整个 CLAUDE.md 子系统（[MEMORY LOAD] 5 层 + [NESTED INJECT] 字面证据）(2) 三层 append + 后加载者优先（model thinking 字面引用 3 层 CLAUDE.md 规则 + 输出 [LOCAL-OVERRIDE]+[NESTED-LOADED] 多层叠加）(3) 双重 dedup = task 02 双层防御同源（[LRU EVICT] + [DEDUP] already in session-set / Session-Set 对 LRU 驱逐免疫 non-evicting）(4) TOCTOU + compact-clear（safelyReadMemoryFile graceful + [CACHE CLEAR] memoryCache+LRU+Session-Set 三者一起清 → 闸门重开全层重注 / 对齐工业 compact.ts:521-522）(5) 架构正交性第 7 次 + prompt-as-actionable-constraint 极致体现（v12 §1-26 字面 0 修改 + every-line-test 元约束写在 prompt 即 demo CLAUDE.md 6 条规则物理产出）。
 
 **真 bug 发现 + 工业洞察**：起步实现把 nestedReminders prepend 到 toolResults 之前 → API 报 "tool_use ids were found without tool_result blocks immediately after" → 修复为 append。这次踩坑反向揭示工业 messages.ts:3700-3707 用独立 isMeta user message 不是为了 isMeta semantics，**是为了避开 tool_use→tool_result 位置约束**。spec 文档没有 / 真跑才发现 / 验证 0 假设原则的价值。
 
