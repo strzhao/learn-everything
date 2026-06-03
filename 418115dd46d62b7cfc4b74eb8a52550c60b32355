@@ -1,0 +1,131 @@
+topics/agent-harness-engineering/artifacts/14-auto-memory/run-log-main-write-direct.txt
+  6542c77c0db1b80c 1-156
+topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/.claude-memory/MEMORY.md
+  6542c77c0db1b80c 1-3
+topics/agent-harness-engineering/artifacts/14-auto-memory/run-log-mutual-exclusion-skip.txt
+  6542c77c0db1b80c 1-254
+topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/.claude-memory/feedback_terse.md
+  6542c77c0db1b80c 1-8
+topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/CLAUDE.md
+  6542c77c0db1b80c 1-6
+topics/agent-harness-engineering/artifacts/14-auto-memory/excerpts.md
+  6542c77c0db1b80c 1-144
+topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/.claude-memory/user_role.md
+  6542c77c0db1b80c 1-8
+topics/agent-harness-engineering/artifacts/14-auto-memory/README.md
+  6542c77c0db1b80c 1-44
+topics/agent-harness-engineering/artifacts/14-auto-memory/run-log-relevant-prefetch-double-dedup.txt
+  6542c77c0db1b80c 1-194
+topics/agent-harness-engineering/artifacts/14-auto-memory/notes.md
+  6542c77c0db1b80c 1-75
+topics/agent-harness-engineering/artifacts/14-auto-memory/lesson.md
+  6542c77c0db1b80c 1-108
+topics/agent-harness-engineering/artifacts/14-auto-memory/agent-v14-auto-memory.ts
+  6542c77c0db1b80c 1-1933
+topics/agent-harness-engineering/artifacts/14-auto-memory/run-log-background-extract-fallback.txt
+  6542c77c0db1b80c 1-192
+topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/.claude-memory/project_release.md
+  6542c77c0db1b80c 1-11
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.8",
+  "base_commit_sha": "418115dd46d62b7cfc4b74eb8a52550c60b32355",
+  "prompts": {
+    "6542c77c0db1b80c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f82531b7-ea37-4e7d-bc45-211ecf5fb2a7",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 3247,
+      "total_deletions": 111,
+      "accepted_lines": 3136,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/.claude-memory/auth-perf-demo.md": {
+          "additions": 11,
+          "deletions": 11
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/.claude-memory/project_release.md": {
+          "additions": 11,
+          "accepted_lines": 11
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/.claude-memory/review_perf.md": {
+          "additions": 7,
+          "deletions": 7
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/CLAUDE.md": {
+          "additions": 6,
+          "accepted_lines": 6
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/.claude-memory/feedback-typescript.md": {
+          "additions": 7,
+          "deletions": 7
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/.claude-memory/feedback_terse.md": {
+          "additions": 8,
+          "accepted_lines": 8
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/agent-v14-auto-memory.ts": {
+          "additions": 1966,
+          "deletions": 33,
+          "accepted_lines": 1933
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/excerpts.md": {
+          "additions": 144,
+          "accepted_lines": 144
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/.claude-memory/user_role.md": {
+          "additions": 8,
+          "accepted_lines": 8
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/run-log-mutual-exclusion-skip.txt": {
+          "additions": 254,
+          "accepted_lines": 254
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/.claude-memory/feedback-terse.md": {
+          "additions": 7,
+          "deletions": 7
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/run-log-main-write-direct.txt": {
+          "additions": 162,
+          "deletions": 6,
+          "accepted_lines": 156
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/notes.md": {
+          "additions": 75,
+          "accepted_lines": 75
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/.claude-memory/MEMORY.md": {
+          "additions": 5,
+          "deletions": 2,
+          "accepted_lines": 3
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/README.md": {
+          "additions": 44,
+          "accepted_lines": 44
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/run-log-background-extract-fallback.txt": {
+          "additions": 192,
+          "accepted_lines": 192
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/lesson.md": {
+          "additions": 108,
+          "accepted_lines": 108
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/run-log-relevant-prefetch-double-dedup.txt": {
+          "additions": 224,
+          "deletions": 30,
+          "accepted_lines": 194
+        },
+        "topics/agent-harness-engineering/artifacts/14-auto-memory/demo-project/.claude-memory/feedback_typescript.md": {
+          "additions": 8,
+          "deletions": 8
+        }
+      }
+    }
+  }
+}
