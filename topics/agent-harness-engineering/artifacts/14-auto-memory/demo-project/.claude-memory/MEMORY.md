@@ -1,0 +1,3 @@
+- [User Role](user_role.md) — Senior engineer, prefers concise responses
+- [Feedback Terse](feedback_terse.md) — User wants brief, no-fluff communication style
+- [Project Release](project_release.md) — Release cadence is every Tuesday, freeze Wednesday
