@@ -1,0 +1,42 @@
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/spec.md
+  d7aba450d9632d9d 1-168
+topics/agent-harness-engineering/state.md
+  d7aba450d9632d9d 7,14,132-138
+topics/agent-harness-engineering/journal.md
+  d7aba450d9632d9d 464-465
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9",
+  "base_commit_sha": "850f6e09f2e4b0a1c0a011141047dc0187759f4a",
+  "prompts": {
+    "d7aba450d9632d9d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d487b362-3986-47d3-9331-15a082fd33f8",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 179,
+      "total_deletions": 2,
+      "accepted_lines": 179,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "topics/agent-harness-engineering/state.md": {
+          "additions": 9,
+          "deletions": 2,
+          "accepted_lines": 9
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/spec.md": {
+          "additions": 168,
+          "accepted_lines": 168
+        },
+        "topics/agent-harness-engineering/journal.md": {
+          "additions": 2,
+          "accepted_lines": 2
+        }
+      }
+    }
+  }
+}
