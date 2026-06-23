@@ -1,0 +1,259 @@
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/demo-project/.claude-memory/MEMORY.md
+  22111d91174404c3 1-4
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/run-log-enqueue-while-busy.txt
+  22111d91174404c3 1-420
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/run-log-multi-turn-session.txt
+  22111d91174404c3 1-388
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/agent-v15-interactive-loop.ts
+  22111d91174404c3 1-2277
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/demo-project/.claude-memory/learning-strict-accuracy.md
+  22111d91174404c3 1-14
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/demo-project/.claude-memory/active-topic-agent-harness.md
+  22111d91174404c3 1-10
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/demo-project/.claude-memory/language-preference.md
+  22111d91174404c3 1-8
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/demo-project/.claude-memory/user-codename.md
+  22111d91174404c3 1-8
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/demo-project/.claude-memory/deployment-and-git-workflow.md
+  22111d91174404c3 1-14
+topics/agent-harness-engineering/state.md
+  22111d91174404c3 7,9,14,157-166
+topics/INDEX.md
+  22111d91174404c3 9
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/run-log-interrupt-mid-round.txt
+  22111d91174404c3 1-490
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/notes.md
+  22111d91174404c3 1-113
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/lesson.md
+  22111d91174404c3 1-189
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/README.md
+  22111d91174404c3 1-58
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/excerpts.md
+  22111d91174404c3 1-195
+topics/agent-harness-engineering/journal.md
+  22111d91174404c3 466-467
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9",
+  "base_commit_sha": "08e6a383aaac4e90b00262da0ac6b55dccbc0ac6",
+  "prompts": {
+    "0c2d8a5d15f111f9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d11bd4bc-ad7f-4b47-9c1b-92580a5b18aa",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 36,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "tools/agent-notebook/tests/fixtures/v11/normal/README.md": {
+          "accepted_lines": 18
+        },
+        "tools/agent-notebook/tests/fixtures/normal/README.md": {
+          "accepted_lines": 18
+        }
+      }
+    },
+    "0ddee575fecb3486": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1935cee-7501-4e8c-9b3b-584a4c606156",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 824,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "tools/agent-notebook/tests/fixtures/normal/run-log.txt": {
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/fixtures/errors/run-log.txt": {
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/run-log.txt": {
+          "accepted_lines": 149
+        },
+        "tools/agent-notebook/tests/fixtures/normal/README.md": {
+          "accepted_lines": 76
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/agent.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/fixtures/v11/normal/README.md": {
+          "accepted_lines": 76
+        },
+        "tools/agent-notebook/tests/fixtures/normal/agent.ts": {
+          "accepted_lines": 75
+        },
+        "tools/agent-notebook/tests/fixtures/errors/agent.ts": {
+          "accepted_lines": 75
+        }
+      }
+    },
+    "22111d91174404c3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9812a7bb-34d8-428f-ac57-a4803356d487",
+        "model": "glm-5.2"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 4974,
+      "total_deletions": 774,
+      "accepted_lines": 4204,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "topics/INDEX.md": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/run-log-enqueue-while-busy.txt": {
+          "additions": 683,
+          "deletions": 263,
+          "accepted_lines": 420
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/notes.md": {
+          "additions": 113,
+          "accepted_lines": 113
+        },
+        "topics/agent-harness-engineering/journal.md": {
+          "additions": 2,
+          "accepted_lines": 2
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/demo-project/.claude-memory/active-topic-agent-harness.md": {
+          "additions": 10,
+          "accepted_lines": 10
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/agent-v15-interactive-loop.ts": {
+          "additions": 2279,
+          "deletions": 2,
+          "accepted_lines": 2277
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/demo-project/.claude-memory/language-preference.md": {
+          "additions": 8,
+          "accepted_lines": 8
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/run-log-interrupt-mid-round.txt": {
+          "additions": 645,
+          "deletions": 155,
+          "accepted_lines": 490
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/demo-project/.claude-memory/user-codename.md": {
+          "additions": 9,
+          "deletions": 1,
+          "accepted_lines": 8
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/lesson.md": {
+          "additions": 194,
+          "deletions": 5,
+          "accepted_lines": 189
+        },
+        "topics/agent-harness-engineering/state.md": {
+          "additions": 14,
+          "deletions": 4,
+          "accepted_lines": 13
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/excerpts.md": {
+          "additions": 195,
+          "accepted_lines": 195
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/demo-project/.claude-memory/MEMORY.md": {
+          "additions": 4,
+          "accepted_lines": 4
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/demo-project/.claude-memory/learning-strict-accuracy.md": {
+          "additions": 14,
+          "accepted_lines": 14
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/run-log-multi-turn-session.txt": {
+          "additions": 731,
+          "deletions": 343,
+          "accepted_lines": 388
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/README.md": {
+          "additions": 58,
+          "accepted_lines": 58
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/demo-project/.claude-memory/deployment-and-git-workflow.md": {
+          "additions": 14,
+          "accepted_lines": 14
+        }
+      }
+    },
+    "2c61a2575acdea39": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e1f45a9d-e472-47f7-9724-97bfab125e86",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 115,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".claude/skills/learn/pedagogy/socratic-method.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/gemini-learning-mode.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/blooms-taxonomy.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/spaced-repetition.md": {
+          "accepted_lines": 23
+        },
+        ".claude/skills/learn/pedagogy/feynman-technique.md": {
+          "accepted_lines": 23
+        }
+      }
+    },
+    "38f776e52dc72a18": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019eca2c-5d70-7cd0-8dc7-83aaf8e83aef",
+        "model": "gpt-5.4"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 36,
+      "total_deletions": 0,
+      "accepted_lines": 0,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "assets/scripts/autopilot_stop.py": {
+          "additions": 36
+        }
+      }
+    },
+    "9b09e84aa8bfdadc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "88ec1183-412e-4889-acc7-f08b95248d09",
+        "model": "claude-opus-4-7"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 0,
+      "total_deletions": 0,
+      "accepted_lines": 1,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        ".learn/active.md": {
+          "accepted_lines": 1
+        }
+      }
+    }
+  }
+}
