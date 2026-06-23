@@ -1,0 +1,4 @@
+- [Language Preference](language-preference.md) — thinks in English, replies in Chinese; apps target Chinese users
+- [Learning Pedagogy Rules](learning-strict-accuracy.md) — Zero-Assumption + Why/How-First: read source before answering, never guess code behavior
+- [Active Topic: Agent Harness Engineering](active-topic-agent-harness.md) — learning agent-harness-engineering, artifact 15, source at ../claude-code/
+- [Deployment & Git Workflow](deployment-and-git-workflow.md) — never trigger Vercel deploys unless asked; watch CI/CD after push; commit .autopilot/ files
