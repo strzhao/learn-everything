@@ -4,7 +4,7 @@ slug: agent-harness-engineering
 status: active
 stuck_count: 0
 created_at: 2026-05-21T06:50:43+00:00
-updated_at: 2026-06-22T22:30:00+08:00
+updated_at: 2026-06-23T21:36:00+08:00
 bloom_level: create
 artifact_count: 15
 ---

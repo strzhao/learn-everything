@@ -40,18 +40,9 @@ bun agent-v15-interactive-loop.ts --interactive
 
 ## 论断 1：内/外循环二分，边界是 async generator
 
-外循环消费 `query()`，`query()` 是 async generator（`async function*`），yield 事件流；外循环 `for await` 消费。一次 `query()` 调用 = 一个会话 turn（可能含多 round）。下面是 §39 `query()` 完整实现（**100% v15 新增 / v14 无此段**）：
+外循环消费 `query()`，`query()` 是 async generator（`async function*`），yield 事件流；外循环 `for await` 消费。一次 `query()` 调用 = 一个会话 turn（可能含多 round）。下面是 §39 `query()` 完整实现（**100% v15 新增 / v14 无此段**），点击片段可在抽屉查看完整源文件上下文：
 
-```ts
-async function* query(messages: any[], mode: Mode, signal: AbortSignal): AsyncGenerator<SessionEvent> {
-  yield { type: "request_start" };
-  const tools = getToolsForRole("interactive");
-  const assembler = () => assembleSystemPrompt(USE_CACHE_AUDIT);
-  const spawnFn = (task: string, m: Mode) => runSwarm(task, m, interactiveAsk);
-  yield* runRoundsGen(messages, assembler, tools, mode, "interactive", interactiveAsk, spawnFn, signal);
-  await hooks.emit("Stop", { messages, role: "interactive", agentId: SESSION_ID }).catch(() => []);
-}
-```
+@include(./agent-v15-interactive-loop.ts, section=39)
 
 工业对照：`query.ts:219 export async function* query` + `:230 yield* queryLoop` + `REPL.tsx:2793 for await (event of query(...))`。
 
@@ -63,21 +54,7 @@ async function* query(messages: any[], mode: Mode, signal: AbortSignal): AsyncGe
 
 **QueryGuard 是一把锁**（三态机 idle/dispatching/running），站在所有输入路径的汇合点。running 时 tryStart 返回 null，第二个 turn 被改道去排队（**100% v15 新增 / 对照 QueryGuard.ts:29-121**）：
 
-```ts
-class QueryGuard {
-  private _status: GuardStatus = "idle";
-  private _generation = 0;
-  tryStart(): number | null {
-    if (this._status === "running") return null;   // 拒绝第二个 turn
-    this._status = "running"; ++this._generation;
-    return this._generation;                        // generation 防 stale finally
-  }
-  end(generation: number): boolean {
-    if (this._generation !== generation || this._status !== "running") return false;
-    this._status = "idle"; return true;
-  }
-}
-```
+@include(./agent-v15-interactive-loop.ts, section=37)
 
 **消息队列是被动账本**（enqueue/dequeue/peek + 优先级 now/next/later），**没有 run-loop**。"一次一个 + 自动下一个"由外部驱动：turn 结束的 finally 调 drainQueue，检查闸门 idle + 队列非空才 dequeue。
 
@@ -108,18 +85,9 @@ turn 2（drain 出来的插队输入被处理 / 控制权经 drain 交还）：
 
 ## 论断 5：中断 = 协作式取消，messages 完整
 
-中断信号 → `abortController.abort('user-cancel')` → signal 经 query() 穿到 runRoundsGen → **在 round 边界检查** signal.aborted 早退。已 emit 的消息保留完整（不回滚）。round 边界检查（**100% v15 新增**）：
+中断信号 → `abortController.abort('user-cancel')` → signal 经 query() 穿到 runRoundsGen → **在 round 边界检查** signal.aborted 早退。已 emit 的消息保留完整（不回滚）。round 边界检查在 `runRoundsGen` 循环体开头（**100% v15 新增**），点击片段可在抽屉查看完整 runRoundsGen 上下文：
 
-```ts
-for (let round = 1; round <= 8; round++) {
-  if (signal.aborted) {                              // 协作式取消 / 对照 query.ts:1015
-    yield { type: "aborted", reason: String(signal.reason ?? "unknown"), atRound: round };
-    return;                                          // 早退 / messages 保留
-  }
-  const res = await callModel(messages, sys, tools); // callModel 本身不检查 signal
-  ...
-}
-```
+@include(./agent-v15-interactive-loop.ts, section=38)
 
 注意"协作式"：callModel 本身**不检查** signal（v14 callModel 没 signal 参数）。abort 不会打断正在 await 的 model call——它要等当前 round 的 callModel 返回，**下一个 round 开头**才检查。这是 round 原子性（同 v5）。工业对照 `query.ts:1015 if (signal.aborted)` + `:1046 signal.reason !== 'interrupt'`。
 

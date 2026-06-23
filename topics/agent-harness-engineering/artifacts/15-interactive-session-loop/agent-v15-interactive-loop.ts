@@ -1909,6 +1909,7 @@ function runIsolationDemo(): void {
 // 【generation 计数器】防 stale finally：cancel 旧 turn + resubmit 新 turn 后，旧 turn 的
 //   finally end(gen) 看到 gen 不匹配 → 跳过 cleanup（不会把新 turn 的 guard 误清）。
 // 对照 QueryGuard.ts:30-105 字面（mini 去 React useSyncExternalStore，保留三态+generation）。
+// ---------- 37. QueryGuard 三态机（v15 新增 / 对照 QueryGuard.ts:29-121）----------
 type GuardStatus = "idle" | "dispatching" | "running";
 class QueryGuard {
   private _status: GuardStatus = "idle";
@@ -1930,6 +1931,7 @@ class QueryGuard {
 }
 const queryGuard = new QueryGuard();
 
+// ---------- 41. §38 消息队列（v15 新增 / 切片边界 / 对照 messageQueueManager.ts）----------
 // ─── §38 消息队列：被动数据结构 + 优先级（不防并发）──────────────────────────
 // 【为什么需要】turn 跑到一半用户又敲一句，闸门拒绝（tryStart null）。这句不能丢——用户会
 //   以为 harness 没响应。
@@ -1991,6 +1993,7 @@ async function* runRoundsGen(
   signal: AbortSignal,
 ): AsyncGenerator<SessionEvent, void, unknown> {
   let lastSystem = "";
+// ---------- 38. runRoundsGen round 边界检查（§39 内部切片 / 仅供 lesson 15 引用 / 对照 query.ts:1015）----------
   // v15 修复 B：round 全局递增（跨 turn 累计 / ROUND 标记跨 turn 唯一 / 让 agent-notebook buildRuns 的 round sort 正确）
   // 代价：round 号不再每 turn 从 1 重置，但仍是"while 一圈"语义（spec 1.2 turn≠round 区分不受影响 / 只是编号跨 turn 累计）
   for (let i = 1; i <= 8; i++) {
@@ -2025,6 +2028,7 @@ async function* runRoundsGen(
   }
 }
 
+// ---------- 39. query() 外层 async generator（v15 新增 / 对照 query.ts:219）----------
 /** 外层 async generator（对照 query.ts:219-239）。一次调用 = 一个会话 turn。 */
 async function* query(messages: any[], mode: Mode, signal: AbortSignal): AsyncGenerator<SessionEvent, void, unknown> {
   yield { type: "request_start" };
@@ -2039,6 +2043,7 @@ async function* query(messages: any[], mode: Mode, signal: AbortSignal): AsyncGe
   await hooks.emit("Stop", { messages, role: "interactive", agentId: SESSION_ID }).catch(() => []);
 }
 
+// ---------- 42. §40 外循环 driver（v15 新增 / 切片边界 / 对照 handlePromptSubmit.ts）----------
 // ─── §40 外循环 driver（handleInput / runOneTurn / drain / runSessionLoop）──
 // 【两条输入路径汇合于闸门】空闲时 handleInput→tryStart 成功→runOneTurn（直冲，绕过队列）；
 //   忙时 tryStart 返回 null→enqueue（改道）。两条路径最终都过 tryStart 串行化——反证队列不防
