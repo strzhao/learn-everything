@@ -1,0 +1,50 @@
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/agent-v15-interactive-loop.ts
+  d9f7f6e3aa4e3574 1912,1934,1996,2031,2046
+topics/agent-harness-engineering/journal.md
+  d9f7f6e3aa4e3574 468-469
+topics/agent-harness-engineering/artifacts/15-interactive-session-loop/lesson.md
+  d9f7f6e3aa4e3574 43,45,57,88,90
+topics/agent-harness-engineering/state.md
+  d9f7f6e3aa4e3574 7
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.8-ntes.9",
+  "base_commit_sha": "3a4c90d1cb988dd25592f9f09314b92164af661a",
+  "prompts": {
+    "d9f7f6e3aa4e3574": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "64d8b3e6-7af5-4aba-b244-757e417e3534",
+        "model": "glm-5.2"
+      },
+      "human_author": "赵桂雄",
+      "messages": [],
+      "total_additions": 14,
+      "total_deletions": 39,
+      "accepted_lines": 13,
+      "overriden_lines": 0,
+      "per_file_stats": {
+        "topics/agent-harness-engineering/journal.md": {
+          "additions": 2,
+          "accepted_lines": 2
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/lesson.md": {
+          "additions": 5,
+          "deletions": 37,
+          "accepted_lines": 5
+        },
+        "topics/agent-harness-engineering/state.md": {
+          "additions": 1,
+          "deletions": 1,
+          "accepted_lines": 1
+        },
+        "topics/agent-harness-engineering/artifacts/15-interactive-session-loop/agent-v15-interactive-loop.ts": {
+          "additions": 6,
+          "deletions": 1,
+          "accepted_lines": 5
+        }
+      }
+    }
+  }
+}
